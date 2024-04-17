@@ -31,6 +31,7 @@ const Welcome = () => {
         </Button>
 
         <Button
+          component={Link} to="/sign-up"
           type="submit"
           variant="contained"
           color="primary"

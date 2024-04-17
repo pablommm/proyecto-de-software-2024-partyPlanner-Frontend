@@ -1,7 +1,4 @@
-import { TextField, Button, Container, Box, InputAdornment, InputLabel } from '@mui/material'
-import LockIcon from '@mui/icons-material/Lock'
-import PersonIcon from '@mui/icons-material/Person'
-
+import { TextField, Button, Container, Box, Grid, Typography } from '@mui/material'
 
 const LoginView = () => {
 
@@ -17,7 +14,9 @@ const LoginView = () => {
         }}
       >
         <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
-
+        <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }} >
+          Iniciar sesión
+        </Typography>
 
         <form
           style={{
@@ -26,39 +25,38 @@ const LoginView = () => {
             gap: '1rem',
           }}
         >
-          <InputLabel htmlFor="username" sx={{ alignSelf: 'flex-start' }}>
-            Usuario
-          </InputLabel>
-          <TextField
-            variant="outlined"
-            type="text"
-            placeholder="Usuario"
-            InputProps={{
-              startAdornment:
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ,
-            }}
-            sx={{ width: '100%' }}
-          />
-          <InputLabel htmlFor="password" sx={{ alignSelf: 'flex-start' }}>
-            Contraseña
-          </InputLabel>
-          <TextField
-            variant="outlined"
-            type="password"
-            placeholder="Contraseña"
-            InputProps={{
-              startAdornment:
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ,
-            }}
-            sx={{ width: '100%' }}
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="User-name"
+                required
+                fullWidth
+                id="userName"
+                label="User Name"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+              />
+            </Grid>
+          </Grid>
+
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 1, mb: 2 }}
+          >
             Ingresar
           </Button>
         </form>

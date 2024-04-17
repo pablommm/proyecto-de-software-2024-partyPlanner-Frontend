@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginView from './views/login'
 import Layout from './views/layout'
 import Welcome from './views/welcome'
+import SignUpView from './views/signUp'
 
 export const PartyRoutes = () => {
 
@@ -11,6 +12,8 @@ export const PartyRoutes = () => {
     <Routes>
       <Route path="/login" element={<LoginView />} />
       <Route path="/welcome" element={<Welcome />} />
+      <Route path="/sign-up" element={<SignUpView />} />
+
 
       <Route path="/" element={<Layout />} >
       </Route>
