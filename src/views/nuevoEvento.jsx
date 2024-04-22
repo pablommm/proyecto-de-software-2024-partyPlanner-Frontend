@@ -1,11 +1,13 @@
-import { Button, Container, TextField } from "@mui/material"
+import { Button, Container, TextField, Typography } from "@mui/material"
 
 const NuevoEvento = () => {
 
     return (
-
         <Container className="main" style={{ marginBottom: "5rem" }} >
-            <form >
+            <Typography variant="h5" align="center" gutterBottom>
+                Nuevo Evento
+            </Typography>
+            <form>
                 <TextField
                     label="Nombre"
                     fullWidth
@@ -15,26 +17,33 @@ const NuevoEvento = () => {
                     label="Lugar"
                     fullWidth
                     margin="normal"
-
                 />
                 <TextField
                     label="Fecha"
+                    type="date"
                     fullWidth
                     margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
-
+                <TextField
+                    label="Hora"
+                    type="time"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
                 <div>
                     <Button type="submit" variant="contained" fullWidth>
                         Crear
                     </Button>
                 </div>
             </form>
-
         </Container >
-
-
     )
-
 }
 
 export default NuevoEvento

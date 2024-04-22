@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom' // Importa Link de React Router
+import { Link } from 'react-router-dom'
 import { TextField, Button, Container, Box, Grid, Typography } from '@mui/material'
 
 const LoginView = () => {

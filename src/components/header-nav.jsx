@@ -25,18 +25,16 @@ export const HeaderNav = () => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    {/* Icono de menú en la esquina izquierda */}
                     <IconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        onClick={() => { }}
+                        onClick={handleMenu}
                         sx={{ mr: 2 }}
                     >
                         <MenuIcon />
                     </IconButton>
-                    {/* Icono de usuario en la esquina derecha */}
                     <div>
                         <IconButton
                             size="large"
@@ -49,7 +47,6 @@ export const HeaderNav = () => {
                         >
                             <AccountCircle />
                         </IconButton>
-                        {/* Menú desplegable */}
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorEl}
