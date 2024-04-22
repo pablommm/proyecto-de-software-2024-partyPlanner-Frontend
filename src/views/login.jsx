@@ -1,24 +1,30 @@
 import { useNavigate  } from 'react-router-dom'
-import { TextField, Button, Container, Box, Grid, Typography } from '@mui/material'
+import { TextField, Button, Container, Box, Grid, Typography,Alert } from '@mui/material'
 import { useState } from 'react'
-import LoginService from '../Services/login.service'
+import usuarioService from '../Services/login.service'
 
 const LoginView = () => {
   const navigate = useNavigate()
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-
-  const getLoginUser = async () => {
-    const loginData = { user: usuario, pass: password }
+  const [error, setError] = useState(false)
+  const iniciarSesion = async () => {
     try {
-      const userData = await LoginService.getUsuarioLogin(loginData)
-      console.log('Usuario autenticado:', userData)
-      //rolUser(userData)
-      navigate('/instalaciones', {state:{usuario:userData}})
+      if (!usuario || !password) {
+        setError('Por favor, complete todos los campos')
+        return
+      }
+      const usuarioId = await usuarioService.validarUsuario(usuario, password)
+      console.log(usuario)
+      console.log(password)
+      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
+      localStorage.setItem('usuId', usuarioId.toString())
+      navigate('/instalaciones')
     } catch (error) {
-      mostrarMensajeError(error, setErrorMessage)
-      setSnackbarOpen(true)
+      console.log(usuario)
+      console.log(password)
+      console.error('Error al iniciar sesión:', error.message)
+      setError('Error al iniciar sesión. Por favor, verifica tus datos.')
     }
   }
 
@@ -39,10 +45,9 @@ const LoginView = () => {
         </Typography>
 
         <form
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
+          onSubmit={(event) => {
+            event.preventDefault()
+            iniciarSesion()
           }}
         >
           <Grid container spacing={2}>
@@ -56,6 +61,7 @@ const LoginView = () => {
                 id="userName"
                 label="User Name"
                 autoFocus
+                value = {usuario}
               />
             </Grid>
             <Grid item xs={12}>
@@ -68,29 +74,21 @@ const LoginView = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                value = {password}
               />
             </Grid>
           </Grid>
           <Button
-            onClick={getLoginUser}
-            //component={Link}
-            //to="/instalaciones"
-            //fullWidth
+            type = "Submit"
+  
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
           >
             Ingresar
           </Button>
-
-          {snackbarOpen && 
-                    <div className="notification is-danger">
-                      <button
-                        className="delete"
-                        onClick={() => setSnackbarOpen(false)}
-                      ></button>
-                      {errorMessage}
-                    </div>
-                  }
+          {error && <Alert severity="error" style={{ position: 'absolute', bottom: '60px' }}> {error}</Alert>
+        }
+         
         </form>
       </Box>
     </Container>
