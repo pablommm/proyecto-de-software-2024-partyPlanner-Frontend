@@ -15,7 +15,7 @@ const Welcome = () => {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          ¡Bienvenido!
+          ¡Bienvenid@!
         </Typography>
 
 

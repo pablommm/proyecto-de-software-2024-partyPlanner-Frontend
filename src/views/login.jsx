@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom' // Importa Link de React Router
 import { TextField, Button, Container, Box, Grid, Typography } from '@mui/material'
 
 const LoginView = () => {
-
   return (
     <Container maxWidth="xs" className='main'>
       <Box
@@ -49,10 +49,9 @@ const LoginView = () => {
               />
             </Grid>
           </Grid>
-
-
           <Button
-            type="submit"
+            component={Link}
+            to="/instalaciones"
             fullWidth
             variant="contained"
             sx={{ mt: 1, mb: 2 }}

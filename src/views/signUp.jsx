@@ -89,8 +89,8 @@ const SignUpView = () => {
                     >
                         Registrarme
                     </Button>
-                    <Link href="#" variant="body2">
-                        Ya tienes una cuenta? inicia sesion
+                    <Link component={Link} to="/login" variant="body2">
+                        ¿Ya tienes una cuenta? Inicia sesión
                     </Link>
                 </form>
             </Box>
