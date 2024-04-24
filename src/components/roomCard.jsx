@@ -3,7 +3,7 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typo
 import { useState } from "react"
 
 const EventRoomCard = ({ room, onClick }) => {
-    const { imagen, nombre, descripcion, costo, capacidad, localidad } = room
+    const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
     const [expanded, setExpanded] = useState(false)
 
     const toggleExpanded = () => {
@@ -25,23 +25,30 @@ const EventRoomCard = ({ room, onClick }) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image={imagen}
+                    image={imagenPrincipal}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {nombre}
+                        {nombreDeInstalacion}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {expanded ? descripcion : descripcion.slice(0, 30)}
-                        {descripcion.length > 30 &&
-                            <Button onClick={toggleExpanded}>
+                        {expanded ? descripcionDeInstalacion : descripcionDeInstalacion.slice(0, 30)}
+                        {descripcionDeInstalacion.length > 30 &&
+                            <Button onClick={(e) => { toggleExpanded(); e.stopPropagation() }}>
                                 {expanded ? 'Leer menos' : 'Leer más'}
                             </Button>
                         }
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {capacidad}
+                        Ubicacion:    {localidadDeInstalacion}
                     </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Capacidad:   {capacidadInstalacion}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Costo:    ${costoDeInstalacion}
+                    </Typography>
+
                 </CardContent>
             </CardActionArea>
             <CardActions style={{ justifyContent: 'center' }}>
@@ -55,12 +62,12 @@ const EventRoomCard = ({ room, onClick }) => {
 
 EventRoomCard.propTypes = {
     room: PropTypes.shape({
-        imagen: PropTypes.string.isRequired,
-        nombre: PropTypes.string.isRequired,
-        descripcion: PropTypes.string.isRequired,
-        costo: PropTypes.number.isRequired,
-        capacidad: PropTypes.number.isRequired,
-        localidad: PropTypes.string.isRequired,
+        imagenPrincipal: PropTypes.string.isRequired,
+        nombreDeInstalacion: PropTypes.string.isRequired,
+        descripcionDeInstalacion: PropTypes.string.isRequired,
+        costoDeInstalacion: PropTypes.number.isRequired,
+        capacidadInstalacion: PropTypes.number.isRequired,
+        localidadDeInstalacion: PropTypes.string.isRequired,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
 }

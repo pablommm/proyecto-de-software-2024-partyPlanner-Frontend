@@ -1,32 +1,24 @@
 import { Container, Grid } from "@mui/material"
 import EventRoomCard from "src/components/roomCard"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import BasicModal from "src/components/modalReservar"
-
+import InstalacionService from "src/Services/instalacionService"
 const PrincipalView = () => {
     const [openModal, setOpenModal] = useState(false)
     const [selectedRoom, setSelectedRoom] = useState(null)
+    const [instalaciones, setInstalaciones] = useState([]) // Estado para almacenar las instalaciones
 
-    const roomsData = [
-        {
-            //imagen: 'https://cdn0.casamientos.com.ar/vendor/4957/3_2/960/jpg/11146682-1631660073730391-2695685667774858443-o_7_114957.webp',
-            imagen: 'https://i.ibb.co/DwGzkdy/foto-salon-diamante.webp',
-            nombre: 'Salon Diamante',
-            descripcion: 'Diamante es un espacio con dos salones para su casamiento. Decorado de manera elegante y con buen gusto por los detalles, el lugar se convertirá en el escenario ideal para su unión nupcial.',
-            costo: '$100',
-            capacidad: '100 personas',
-            localidad: 'Ciudad 1'
-        },
-        {
-            //imagen: 'https://cdn0.casamientos.com.ar/vendor/8760/3_2/640/jpg/micl9085_7_118760-1552680382.webp',
-            imagen: 'https://i.ibb.co/HGdW34k/foto-salon-mix.webp',
-            nombre: 'Salon Mix',
-            descripcion: 'Aca escribo algo lindo y descriptivo luego ',
-            costo: '$200',
-            capacidad: '200 personas',
-            localidad: 'Ciudad 2'
+    useEffect(() => {
+        const fetchInstalaciones = async () => {
+            try {
+                const response = await InstalacionService.traerInstalaciones()
+                setInstalaciones(response.data)
+            } catch (error) {
+                console.error("Error al obtener las instalaciones:", error)
+            }
         }
-    ]
+        fetchInstalaciones()
+    }, [])
 
     const handleRoomClick = (room) => {
         setSelectedRoom(room)
@@ -40,9 +32,9 @@ const PrincipalView = () => {
     return (
         <Container className="main" style={{ marginBottom: "5rem" }}>
             <Grid container spacing={3} justifyContent="center">
-                {roomsData.map((room, index) =>
+                {instalaciones.map((instalacion, index) =>
                     <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                        <EventRoomCard room={room} onClick={() => handleRoomClick(room)} />
+                        <EventRoomCard room={instalacion} onClick={() => handleRoomClick(instalacion)} />
                     </Grid>
                 )}
             </Grid>
