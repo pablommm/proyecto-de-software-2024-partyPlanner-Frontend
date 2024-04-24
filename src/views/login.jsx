@@ -15,14 +15,12 @@ const LoginView = () => {
         return
       }
       const usuarioId = await usuarioService.validarUsuario(usuario, password)
-      console.log(usuario)
-      console.log(password)
+     
       console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
       localStorage.setItem('usuId', usuarioId.toString())
       navigate('/instalaciones')
     } catch (error) {
-      console.log(usuario)
-      console.log(password)
+
       console.error('Error al iniciar sesión:', error.message)
       setError('Error al iniciar sesión. Por favor, verifica tus datos.')
     }

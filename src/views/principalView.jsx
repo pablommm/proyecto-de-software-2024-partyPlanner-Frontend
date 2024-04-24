@@ -9,7 +9,8 @@ const PrincipalView = () => {
 
     const roomsData = [
         {
-            imagen: 'https://cdn0.casamientos.com.ar/vendor/4957/3_2/960/jpg/11146682-1631660073730391-2695685667774858443-o_7_114957.webp',
+            //imagen: 'https://cdn0.casamientos.com.ar/vendor/4957/3_2/960/jpg/11146682-1631660073730391-2695685667774858443-o_7_114957.webp',
+            imagen: 'https://i.ibb.co/DwGzkdy/foto-salon-diamante.webp',
             nombre: 'Salon Diamante',
             descripcion: 'Diamante es un espacio con dos salones para su casamiento. Decorado de manera elegante y con buen gusto por los detalles, el lugar se convertirá en el escenario ideal para su unión nupcial.',
             costo: '$100',
@@ -17,7 +18,8 @@ const PrincipalView = () => {
             localidad: 'Ciudad 1'
         },
         {
-            imagen: 'https://cdn0.casamientos.com.ar/vendor/8760/3_2/640/jpg/micl9085_7_118760-1552680382.webp',
+            //imagen: 'https://cdn0.casamientos.com.ar/vendor/8760/3_2/640/jpg/micl9085_7_118760-1552680382.webp',
+            imagen: 'https://i.ibb.co/HGdW34k/foto-salon-mix.webp',
             nombre: 'Salon Mix',
             descripcion: 'Aca escribo algo lindo y descriptivo luego ',
             costo: '$200',
