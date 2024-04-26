@@ -6,7 +6,7 @@ import InstalacionService from "src/Services/instalacionService"
 const PrincipalView = () => {
     const [openModal, setOpenModal] = useState(false)
     const [selectedRoom, setSelectedRoom] = useState(null)
-    const [instalaciones, setInstalaciones] = useState([]) // Estado para almacenar las instalaciones
+    const [instalaciones, setInstalaciones] = useState([])
 
     useEffect(() => {
         const fetchInstalaciones = async () => {

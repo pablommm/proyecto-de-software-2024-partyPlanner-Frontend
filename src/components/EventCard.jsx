@@ -3,17 +3,20 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
+import { Link } from 'react-router-dom'
 
 const EventCard = () => {
     return (
 
-        <Card sx={{
-            display: 'flex',
-            borderRadius: '0.5rem',
-            border: '1px solid black',
-            boxShadow: '-2px 2px 4px 0px rgba(0, 0, 0, 0.75)',
+        <Card component={Link}
+            to={"/eventDetails"}
+            sx={{
+                display: 'flex',
+                borderRadius: '0.5rem',
+                border: '1px solid black',
+                boxShadow: '-2px 2px 4px 0px rgba(0, 0, 0, 0.75)',
 
-        }}>
+            }}>
             <CardMedia
                 component="img"
                 sx={{ width: 100 }}

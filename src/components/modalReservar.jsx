@@ -15,7 +15,9 @@ const style = {
     p: 4,
 }
 
-const BasicModal = ({ openModal, cerrarModal }) => {
+const BasicModal = ({ openModal, cerrarModal, seleccion }) => {
+    const { nombreDeInstalacion } = seleccion || {} // Desestructura el nombre de la instalación
+
 
     return (
         <Modal
@@ -43,6 +45,9 @@ const BasicModal = ({ openModal, cerrarModal }) => {
                             label="Lugar"
                             variant="standard"
                             style={{ marginBottom: "1rem" }}
+                            defaultValue={nombreDeInstalacion}
+
+
                         />
                         <TextField
                             id="standard-basic"
@@ -72,6 +77,7 @@ const BasicModal = ({ openModal, cerrarModal }) => {
 BasicModal.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
+    seleccion: PropTypes.object
 }
 
 export default BasicModal
