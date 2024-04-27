@@ -22,7 +22,7 @@ export const HeaderNav = () => {
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 0 }}>
             <AppBar position="static">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <IconButton

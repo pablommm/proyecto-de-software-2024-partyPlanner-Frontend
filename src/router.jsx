@@ -7,6 +7,7 @@ import PrincipalView from './views/principalView'
 import Eventos from './views/eventosView'
 import NuevoEvento from './views/nuevoEvento'
 import EventDetails from './views/eventDetails'
+import UserProfile from './views/UserProfile'
 
 export const PartyRoutes = () => {
 
@@ -22,6 +23,7 @@ export const PartyRoutes = () => {
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/nuevo" element={<NuevoEvento />} />
         <Route path="/eventDetails" element={<EventDetails />} />
+        <Route path="/perfilUsuario" element={<UserProfile />} />
 
       </Route>
 
