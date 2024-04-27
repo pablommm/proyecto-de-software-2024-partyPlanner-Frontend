@@ -2,6 +2,7 @@ import { useNavigate  } from 'react-router-dom'
 import { TextField, Button, Container, Box, Grid, Typography,Alert } from '@mui/material'
 import { useState } from 'react'
 import usuarioService from '../Services/login.service'
+import { Link } from 'react-router-dom'
 
 const LoginView = () => {
   const navigate = useNavigate()
@@ -77,13 +78,25 @@ const LoginView = () => {
             </Grid>
           </Grid>
           <Button
-            type = "Submit"
-  
-            variant="contained"
-            sx={{ mt: 1, mb: 2 }}
-          >
-            Ingresar
-          </Button>
+          component={Link} to="/login"
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ my: 1 }}
+        >
+          Iniciar Sesión
+        </Button>
+
+        <Button
+          component={Link} to="/sign-up"
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ my: 1 }}
+        >
+          Registrarse
+        </Button>
           {error && <Alert severity="error" style={{ position: 'absolute', bottom: '60px' }}> {error}</Alert>
         }
          
