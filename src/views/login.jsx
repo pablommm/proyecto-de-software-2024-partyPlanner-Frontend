@@ -78,7 +78,7 @@ const LoginView = () => {
             </Grid>
           </Grid>
           <Button
-          component={Link} to="/login"
+          component={Link} to="/instalaciones"
           type="submit"
           variant="contained"
           color="primary"
