@@ -4,11 +4,14 @@ import {
   Avatar,
   Box,
   Button,
-  
   CardContent,  
   Grid,
   Typography,  
 } from '@material-ui/core'
+import TextField from '@mui/material/TextField'
+//import Input from '@mui/material/Input'
+
+//const ariaLabel = { 'aria-label': 'description' }
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,22 +21,13 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     height: 200,
   },
-
-  CardContent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center', 
-  },
-
+ 
   avatar: {
     width: 100,
     height: 100,    
-    
-    
-
   },
   userInfo: {
-    marginLeft: theme.spacing(2),
+    margin: theme.spacing(2),
   },
   name: {
     fontWeight: 'bold',
@@ -51,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   statItem: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(5),
   },
   statIcon: {
     marginRight: theme.spacing(1),
@@ -59,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
   statValue: {
     fontWeight: 'bold',
   },
+  campo: {
+   margin: 15,
+  }
+  
   
 }))
 
@@ -66,7 +64,12 @@ const UserProfile = () => {
   const classes = useStyles()
 
   return (
-    <Box className={classes.root}>
+    <Box className={classes.root}  component="form"
+    sx={{
+      'campo': { m: 5, width: '25ch' },
+    }}
+    noValidate
+    autoComplete="off">
       
         <CardContent>
           <Grid container alignItems="center">
@@ -78,19 +81,37 @@ const UserProfile = () => {
           </Grid>
         </CardContent>
         <Grid container className={classes.statsGrid}>
-        <Grid item className={classes.userInfo}>
-              <Typography variant="h6"  className={classes.texto}>
-                Nombre del usuario
-              </Typography>
-              <Typography variant="h6" className={classes.texto}>
-                Username
-              </Typography>
-              <Typography variant="h6" className={classes.texto}>
-                Rol
-              </Typography>
-              <Typography variant="h6" className={classes.texto}>
-                Saldo
-              </Typography>
+          <Grid item className={classes.userInfo} >
+
+            <TextField            
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="Nombre del usuario"
+              defaultValue=" pepito lopez"
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
+            <TextField
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="Username"
+              defaultValue="pLopez"
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
+            <TextField  
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="Rol"
+              defaultValue="Admin"
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
+                                
+            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+              Saldo
+            </Typography>
+
           </Grid>
 
       </Grid>
