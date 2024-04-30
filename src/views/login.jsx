@@ -1,6 +1,6 @@
 import { useNavigate  } from 'react-router-dom'
 import { TextField, Button, Container, Box, Grid, Typography,Alert } from '@mui/material'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import usuarioService from '../Services/login.service'
 import { Link } from 'react-router-dom'
 
@@ -9,23 +9,33 @@ const LoginView = () => {
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+
+
+
+  
   const iniciarSesion = async () => {
     try {
       if (!usuario || !password) {
         setError('Por favor, complete todos los campos')
+        
         return
       }
-      const usuarioId = await usuarioService.validarUsuario(usuario, password)
-     
+      const usuarioId = await usuarioService.validarUsuario(usuario, password)      
       console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
       localStorage.setItem('usuId', usuarioId.toString())
       navigate('/instalaciones')
     } catch (error) {
-
       console.error('Error al iniciar sesión:', error.message)
       setError('Error al iniciar sesión. Por favor, verifica tus datos.')
     }
   }
+
+  useEffect(() => {
+    console.log("Componente renderizado")
+  }, [])
+
+  
+
 
   return (
     <Container maxWidth="xs" className='main'>
@@ -38,7 +48,7 @@ const LoginView = () => {
           mt: 3,
         }}
       >
-        <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
+        <img src="/logoIII.png" alt="Logo"  style={{ width: '150px', marginBottom: '1rem' }} />
         <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }} >
           Iniciar sesión
         </Typography>
@@ -78,15 +88,16 @@ const LoginView = () => {
             </Grid>
           </Grid>
           <Button
-          component={Link} to="/instalaciones"
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ my: 1 }}
-        >
-          Iniciar Sesión
-        </Button>
+              onClick={iniciarSesion}
+              //component={Link} to="/instalaciones"
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ my: 1 }}
+                >
+              Iniciar Sesión
+          </Button>
 
         <Button
           component={Link} to="/sign-up"

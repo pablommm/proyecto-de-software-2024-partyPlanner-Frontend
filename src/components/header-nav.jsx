@@ -6,13 +6,18 @@ import {
     Menu,
     MenuItem,
     Toolbar,
+    
 } from '@mui/material'
 import { AccountCircle } from "@mui/icons-material"
 import MenuIcon from '@mui/icons-material/Menu'
-
+//import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 export const HeaderNav = () => {
     const [anchorEl, setAnchorEl] = useState(null)
+    //const navigate = useNavigate()
 
+    
+   
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -62,8 +67,9 @@ export const HeaderNav = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem component={Link} to="/perfilUsuario">My account</MenuItem>
+                            <MenuItem component={Link} to="/Login">Cerrar Sesion</MenuItem>
+                            
                         </Menu>
                     </div>
                 </Toolbar>
