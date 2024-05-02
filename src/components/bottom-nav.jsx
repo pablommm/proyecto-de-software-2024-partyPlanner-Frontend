@@ -12,7 +12,6 @@ const BotomNav = () => {
 
     return (
 
-
         <BottomNavigation
             className='footer'
             value={value}
@@ -21,9 +20,10 @@ const BotomNav = () => {
             }}
             showLabels
         >
-            <BottomNavigationAction label="Instalaciones" component={Link} to="/instalaciones" icon={<AutoAwesomeOutlinedIcon />} />
-            <BottomNavigationAction label="Mis eventos" component={Link} to="/eventos" icon={<FavoriteIcon />} />
-            <BottomNavigationAction label="Nuevo" component={Link} to="/nuevo" icon={<AddBoxOutlinedIcon />} />
+            <BottomNavigationAction label="Instalaciones" component={Link} to="/instalaciones" icon={<AutoAwesomeOutlinedIcon sx={{ color: '#ff9800' }} />} />
+            <BottomNavigationAction label="Evento personalizado" component={Link} to="/nuevo" icon={<AddBoxOutlinedIcon sx={{ color: '#1c54b2' }} />} style={{ textAlign: 'center' }} />
+            <BottomNavigationAction label="Mis eventos" component={Link} to="/eventos" icon={<FavoriteIcon sx={{ color: '#ba000d' }} />} />
+
         </BottomNavigation>
     )
 }

@@ -1,8 +1,8 @@
-import { useNavigate  } from 'react-router-dom'
-import { TextField, Button, Container, Box, Grid, Typography,Alert } from '@mui/material'
-import { useState,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { TextField, Button, Container, Box, Grid, Typography, Alert } from '@mui/material'
+import { useState, useEffect } from 'react'
 import usuarioService from '../Services/login.service'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 
 import { useContext } from 'react'
 import UserContext from 'src/Services/context'
@@ -14,21 +14,21 @@ const LoginView = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
 
-  const [user,setUser] = useContext(UserContext)
+  const [user, setUser] = useContext(UserContext)
 
-  
+
   const iniciarSesion = async () => {
     try {
       if (!usuario || !password) {
         setError('Por favor, complete todos los campos')
-        
+
         return
       }
-      const usuarioId = await usuarioService.validarUsuario(usuario, password)      
+      const usuarioId = await usuarioService.validarUsuario(usuario, password)
       console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
       localStorage.setItem('usuId', usuarioId.toString())
       console.log("pase el login y el valor del usuario es", usuarioId)
-      setUser( usuarioId)
+      setUser(usuarioId)
       navigate('/instalaciones')
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
@@ -40,7 +40,7 @@ const LoginView = () => {
     console.log("Componente renderizado")
   }, [])
 
-  
+
   return (
     <Container maxWidth="xs" className='main'>
       <Box
@@ -52,7 +52,7 @@ const LoginView = () => {
           mt: 3,
         }}
       >
-        <img src="/logoIII.png" alt="Logo"  style={{ width: '150px', marginBottom: '1rem' }} />
+        <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
         <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }} >
           Iniciar sesión
         </Typography>
@@ -74,7 +74,7 @@ const LoginView = () => {
                 id="userName"
                 label="User Name"
                 autoFocus
-                value = {usuario}
+                value={usuario}
               />
             </Grid>
             <Grid item xs={12}>
@@ -87,34 +87,29 @@ const LoginView = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                value = {password}
+                value={password}
               />
             </Grid>
           </Grid>
           <Button
-              onClick={iniciarSesion}
-              //component={Link} to="/instalaciones"
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ my: 1 }}
-                >
-              Iniciar Sesión
+            onClick={iniciarSesion}
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 1, mb: 2 }}
+          >
+            Iniciar Sesión
           </Button>
 
-        <Button
-          component={Link} to="/sign-up"
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ my: 1 }}
-        >
-          Registrarse
-        </Button>
+          <Box sx={{ textAlign: 'center' }}>
+            <RouterLink to="/sign-up" variant="body2" >
+              ¿Aún no tienes cuenta? Registrate
+            </RouterLink>
+          </Box>
           {error && <Alert severity="error" style={{ position: 'absolute', bottom: '60px' }}> {error}</Alert>
-        }
-         
+          }
+
         </form>
       </Box>
     </Container>

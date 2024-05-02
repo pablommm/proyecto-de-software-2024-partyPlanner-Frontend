@@ -1,11 +1,10 @@
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Container, Grid } from '@mui/material'
-
+import { Link as RouterLink } from "react-router-dom"
 
 
 const SignUpView = () => {
@@ -89,9 +88,11 @@ const SignUpView = () => {
                     >
                         Registrarme
                     </Button>
-                    <Link component={Link} to="/login" variant="body2">
-                        ¿Ya tienes una cuenta? Inicia sesión
-                    </Link>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <RouterLink to="/login" variant="body2" >
+                            ¿Ya tienes una cuenta? Inicia sesión
+                        </RouterLink>
+                    </Box>
                 </form>
             </Box>
         </Container>

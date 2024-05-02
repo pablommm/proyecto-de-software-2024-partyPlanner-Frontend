@@ -1,7 +1,5 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import UserContext from 'src/Services/context'
-import { useState } from 'react'
-
 import {
     AppBar,
     Box,
@@ -9,18 +7,19 @@ import {
     Menu,
     MenuItem,
     Toolbar,
-    
+    Fade,
+
+    Grid
 } from '@mui/material'
 import { AccountCircle } from "@mui/icons-material"
-import MenuIcon from '@mui/icons-material/Menu'
-//import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { ExitToApp } from "@mui/icons-material"
+
+
 export const HeaderNav = () => {
     const [anchorEl, setAnchorEl] = useState(null)
-    //const navigate = useNavigate()
+    const [user, setUser] = useContext(UserContext)
 
-    
-   
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -29,58 +28,64 @@ export const HeaderNav = () => {
         setAnchorEl(null)
     }
 
-    const [user, setUser] = useContext(UserContext)
-
-    const cerrarSession =() =>{
+    const cerrarSession = () => {
         setUser(null)
-        console.log("se cerro la sesion correctamente",user)
+        console.log("se cerro la sesion correctamente", user)
     }
 
     return (
         <Box sx={{ flexGrow: 0 }}>
             <AppBar position="static">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        onClick={handleMenu}
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <h9>Bienvenido {user.nombreYApellido && user.nombreYApellido ? user.nombreYApellido: 'deslogueado'}</h9>
+                    <h9>Bienvenido {user.nombreYApellido ? user.nombreYApellido : 'deslogueado'}</h9>
                     <div>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
-                            onClick={handleMenu}
                             color="inherit"
                             edge="end"
+                            onClick={handleMenu}
                         >
                             <AccountCircle />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
                             anchorOrigin={{
-                                vertical: 'top',
+                                vertical: 'bottom',
                                 horizontal: 'right',
                             }}
-                            keepMounted
                             transformOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right',
                             }}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
+                            TransitionComponent={Fade}
                         >
-                            <MenuItem component={Link} to="/perfilUsuario">My account</MenuItem>
-                            <MenuItem component={Link} to="/Login" onClick={cerrarSession}>Cerrar Sesion</MenuItem>
-                            
+                            <Fade in={Boolean(anchorEl)}>
+                                <Grid container direction="column">
+
+                                    <Grid item>
+                                        <MenuItem component={Link} to="/perfilUsuario">
+                                            <IconButton color="inherit">
+                                                <AccountCircle />
+                                            </IconButton>
+                                            Mi cuenta
+                                        </MenuItem>
+                                    </Grid>
+                                    <Grid item>
+                                        <MenuItem component={Link} to="/Login" onClick={cerrarSession}>
+                                            <IconButton color="inherit">
+                                                <ExitToApp />
+                                            </IconButton>
+                                            Cerrar Sesión
+                                        </MenuItem>
+                                    </Grid>
+                                </Grid>
+                            </Fade>
                         </Menu>
                     </div>
                 </Toolbar>

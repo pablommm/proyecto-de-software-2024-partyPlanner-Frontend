@@ -4,9 +4,9 @@ import {
   Avatar,
   Box,
   Button,
-  CardContent,  
+  CardContent,
   Grid,
-  Typography,  
+  Typography,
 } from '@material-ui/core'
 import TextField from '@mui/material/TextField'
 
@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     height: 200,
   },
- 
+
   avatar: {
     width: 100,
-    height: 100,    
+    height: 100,
   },
   userInfo: {
     margin: theme.spacing(2),
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     padding: theme.spacing(2)
   },
- 
+
   statsGrid: {
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
@@ -55,75 +55,75 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   campo: {
-   margin: 15,
+    margin: 15,
   }
-  
-  
+
+
 }))
 
 const UserProfile = () => {
   const classes = useStyles()
 
   return (
-    
-    <Box className={classes.root}  component="form"
-    sx={{
-      'campo': { m: 5, width: '25ch' },
-    }}
-    noValidate
-    autoComplete="off">
-      
-        <CardContent>
-          <Grid container alignItems="center">
-            <Grid item>
-              <Avatar className={classes.avatar}>
-                {/* Imagen de perfil del usuario */}
-              </Avatar>
-            </Grid>            
-          </Grid>
-        </CardContent>
-        <Grid container className={classes.statsGrid}>
-          <Grid item className={classes.userInfo} >
 
-            <TextField            
-              className={classes.campo}
-              required
-              id="outlined-required"
-              label="Nombre del usuario"
-              defaultValue=" pepito lopez"
-              style={{ margin: '10px', padding: '5px 10px' }}
-            />
-            <TextField
-              className={classes.campo}
-              required
-              id="outlined-required"
-              label="Username"
-              defaultValue="pLopez"
-              style={{ margin: '10px', padding: '5px 10px' }}
-            />
-            <TextField  
-              className={classes.campo}
-              required
-              id="outlined-required"
-              label="Rol"
-              defaultValue="Admin"
-              style={{ margin: '10px', padding: '5px 10px' }}
-            />
-                                
-            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-              Saldo
-            </Typography>
+    <Box className={classes.root} component="form"
+      sx={{
+        'campo': { m: 5, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off">
 
+      <CardContent>
+        <Grid container alignItems="center">
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              {/* Imagen de perfil del usuario */}
+            </Avatar>
           </Grid>
+        </Grid>
+      </CardContent>
+      <Grid container className={classes.statsGrid}>
+        <Grid item className={classes.userInfo} >
+
+          <TextField
+            className={classes.campo}
+            required
+            id="outlined-required"
+            label="Nombre del usuario"
+            defaultValue=" pepito lopez"
+            style={{ margin: '10px', padding: '5px 10px' }}
+          />
+          <TextField
+            className={classes.campo}
+            required
+            id="outlined-required"
+            label="Username"
+            defaultValue="pLopez"
+            style={{ margin: '10px', padding: '5px 10px' }}
+          />
+          <TextField
+            className={classes.campo}
+            required
+            id="outlined-required"
+            label="Rol"
+            defaultValue="Admin"
+            style={{ margin: '10px', padding: '5px 10px' }}
+          />
+
+          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+            Saldo
+          </Typography>
+
+        </Grid>
 
       </Grid>
       <Button variant="contained" color="primary" fullWidth>
         Guardar Cambios
       </Button>
-    
-     
+
+
     </Box>
-    
+
   )
 }
 

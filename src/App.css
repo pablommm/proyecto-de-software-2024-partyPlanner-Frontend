@@ -36,7 +36,7 @@ body {
 }
 
 .footer {
-  min-height: 4vh;
+  min-height: 13vh;
   min-width: 100vw;
   display: flex;
   align-items: center;
