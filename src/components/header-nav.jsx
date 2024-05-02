@@ -1,4 +1,7 @@
+import { useContext } from 'react'
+import UserContext from 'src/Services/context'
 import { useState } from 'react'
+
 import {
     AppBar,
     Box,
@@ -26,6 +29,13 @@ export const HeaderNav = () => {
         setAnchorEl(null)
     }
 
+    const [user, setUser] = useContext(UserContext)
+
+    const cerrarSession =() =>{
+        setUser(null)
+        console.log("se cerro la sesion correctamente",user)
+    }
+
     return (
         <Box sx={{ flexGrow: 0 }}>
             <AppBar position="static">
@@ -40,6 +50,7 @@ export const HeaderNav = () => {
                     >
                         <MenuIcon />
                     </IconButton>
+                    <h9>Bienvenido {user.nombreYApellido && user.nombreYApellido ? user.nombreYApellido: 'deslogueado'}</h9>
                     <div>
                         <IconButton
                             size="large"
@@ -68,7 +79,7 @@ export const HeaderNav = () => {
                             onClose={handleClose}
                         >
                             <MenuItem component={Link} to="/perfilUsuario">My account</MenuItem>
-                            <MenuItem component={Link} to="/Login">Cerrar Sesion</MenuItem>
+                            <MenuItem component={Link} to="/Login" onClick={cerrarSession}>Cerrar Sesion</MenuItem>
                             
                         </Menu>
                     </div>

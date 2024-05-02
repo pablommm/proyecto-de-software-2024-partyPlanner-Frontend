@@ -4,13 +4,17 @@ import { useState,useEffect } from 'react'
 import usuarioService from '../Services/login.service'
 import { Link } from 'react-router-dom'
 
+import { useContext } from 'react'
+import UserContext from 'src/Services/context'
+
+
 const LoginView = () => {
   const navigate = useNavigate()
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
 
-
+  const [user,setUser] = useContext(UserContext)
 
   
   const iniciarSesion = async () => {
@@ -23,6 +27,8 @@ const LoginView = () => {
       const usuarioId = await usuarioService.validarUsuario(usuario, password)      
       console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
       localStorage.setItem('usuId', usuarioId.toString())
+      console.log("pase el login y el valor del usuario es", usuarioId)
+      setUser( usuarioId)
       navigate('/instalaciones')
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
@@ -35,8 +41,6 @@ const LoginView = () => {
   }, [])
 
   
-
-
   return (
     <Container maxWidth="xs" className='main'>
       <Box

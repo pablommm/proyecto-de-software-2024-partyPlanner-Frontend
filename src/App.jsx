@@ -1,9 +1,12 @@
 import { Box, ThemeProvider, createTheme } from '@mui/material'
 import './App.css'
 import { PartyRouter } from './router'
+import UserContext from 'src/Services/context'
+import UsuarioService from '../src/Services/login.service'
+import { useState } from 'react'
 
 function App() {
-
+  
   const theme = createTheme({
     palette: {
       primary: {
@@ -15,8 +18,11 @@ function App() {
     },
   })
 
+  const [user, setUser] = useState(null)
+
   return (
-  
+    //<UserContext.Provider value={{name: "nada"}}>
+    <UserContext.Provider value={[user, setUser]}>
   <ThemeProvider theme={theme}>
       <Box
          sx={{
@@ -29,6 +35,7 @@ function App() {
       <PartyRouter />
     </Box>
 </ThemeProvider>
+</UserContext.Provider>
       )
 }
 
