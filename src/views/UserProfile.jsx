@@ -1,7 +1,6 @@
 //import React from 'react'
 import { useContext } from 'react'
 import UserContext from 'src/Services/context'
-import { useState } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -96,7 +95,7 @@ const UserProfile = () => {
             required
             id="outlined-required"
             label="Nombre del usuario"
-            defaultValue= {user.nombreYapellido}
+            defaultValue= {user.nombreYApellido}
             style={{ margin: '10px', padding: '5px 10px' }}
           />
           <TextField
