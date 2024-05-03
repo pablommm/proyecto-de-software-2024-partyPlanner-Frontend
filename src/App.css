@@ -49,3 +49,9 @@ body {
 .header {
   min-height: 10vh;
 }
+
+.card-media {
+  width: 100%;
+  height: auto;
+  border-radius: var(--card-border) var(--card-border) 0 0;
+}

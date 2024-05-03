@@ -17,19 +17,20 @@ export const PartyRoutes = () => {
       <Route path="/login" element={<LoginView />} />
       <Route path="/sign-up" element={<SignUpView />} />
       <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/eventDetails" element={<EventDetails />} />
+
 
       <Route path="/" element={<Layout />} >
         <Route path="/instalaciones" element={<PrincipalView />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/nuevo" element={<NuevoEvento />} />
-        <Route path="/eventDetails" element={<EventDetails />} />
         <Route path="/perfilUsuario" element={<UserProfile />} />
 
       </Route>
 
 
       <Route path="*" element={<Navigate to="/login" />} />
-      
+
 
     </Routes>
   )
