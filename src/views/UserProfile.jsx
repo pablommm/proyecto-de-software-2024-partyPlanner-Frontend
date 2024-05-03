@@ -1,4 +1,8 @@
 //import React from 'react'
+import { useContext } from 'react'
+import UserContext from 'src/Services/context'
+import { useState } from 'react'
+
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Avatar,
@@ -64,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 const UserProfile = () => {
   const classes = useStyles()
 
+  const[user] = useContext(UserContext)
+
   return (
 
     <Box className={classes.root} component="form"
@@ -90,7 +96,7 @@ const UserProfile = () => {
             required
             id="outlined-required"
             label="Nombre del usuario"
-            defaultValue=" pepito lopez"
+            defaultValue= {user.nombreYapellido}
             style={{ margin: '10px', padding: '5px 10px' }}
           />
           <TextField
@@ -98,17 +104,12 @@ const UserProfile = () => {
             required
             id="outlined-required"
             label="Username"
-            defaultValue="pLopez"
+            defaultValue={user.username}
             style={{ margin: '10px', padding: '5px 10px' }}
           />
-          <TextField
-            className={classes.campo}
-            required
-            id="outlined-required"
-            label="Rol"
-            defaultValue="Admin"
-            style={{ margin: '10px', padding: '5px 10px' }}
-          />
+          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+            Rol : {user.rol}
+          </Typography>
 
           <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
             Saldo
