@@ -1,28 +1,27 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from '../Services/configuracion'
-class EventoService {
 
-    async createEvento(nuevoEvento) {
+class EventoService {
+    async crearEvento(nuevoEvento) {
         try {
-            await axios.post(`${REST_SERVER_URL}/CrearEventos`, nuevoEvento)
-            return response.data
+            console.log("llegue al service")
+            const crearEvento = await axios.post(`${REST_SERVER_URL}/CrearEventos`, nuevoEvento)
+            console.log('Evento creado:', crearEvento.data)
+            return crearEvento.data
         } catch (error) {
-            console.error('Error al crear el evento:', error)
+            console.error('Error creating evento:', error)
             throw error
         }
     }
 
-    async getEventos() {
-        const response = await axios.get(`${REST_SERVER_URL}/eventos`)
-        return response.data
+    async getEventosById(usuarioId) {
+
+        const eventosByid = await axios.get(`${REST_SERVER_URL}/MisEventos/${usuarioId}`)
+        console.log('Eventos obtenidos en el service  para el usuario con ID', usuarioId, ':', eventosByid.data)
+        return eventosByid
+
+
     }
-
-    async getEventoById(id) {
-        const response = await axios.get(`${REST_SERVER_URL}/eventosById/${id}`)
-        return response.data
-    }
-
-}   
-export default EventoService
-
-
+}
+const eventoService = new EventoService()
+export default eventoService

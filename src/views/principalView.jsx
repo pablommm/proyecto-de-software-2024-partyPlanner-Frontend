@@ -33,12 +33,12 @@ const PrincipalView = () => {
         <Container className="main" style={{ marginBottom: "5rem" }}>
             <Grid container spacing={3} justifyContent="center">
                 {instalaciones.map((instalacion, index) =>
-                    <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <Grid item key={index}>
                         <EventRoomCard room={instalacion} onClick={() => handleRoomClick(instalacion)} />
                     </Grid>
                 )}
             </Grid>
-            <BasicModal openModal={openModal} cerrarModal={handleCloseModal} seleccion={selectedRoom} />
+            <BasicModal openModal={openModal} cerrarModal={handleCloseModal} instalacion={selectedRoom} />
         </Container>
     )
 }

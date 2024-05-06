@@ -12,7 +12,7 @@ class ServicioService {
             console.error('Error al crear el servicio:', error)
             throw error
         }
-        
+
     }
 
     async traerServicios() {
@@ -25,6 +25,8 @@ class ServicioService {
         return servicio.data
     }
 
-    
+
 }
-export default ServicioService
+const servicioService = new ServicioService()
+
+export default servicioService

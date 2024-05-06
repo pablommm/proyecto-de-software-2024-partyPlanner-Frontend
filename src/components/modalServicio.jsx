@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { Box, Modal, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material"
 import PropTypes from 'prop-types'
-import React from "react"
+import servicioService from 'src/Services/servicio.service'
 
 const style = {
     position: 'absolute',
@@ -15,10 +16,31 @@ const style = {
 }
 
 const BasicModalService = ({ openModal, cerrarModal }) => {
-    const [categoria, setCategoria] = React.useState('')
+    const [categoria, setCategoria] = useState('')
+    const [nombreDeServicio, setNombreDeServicio] = useState('')
+    const [descripcion, setDescripcion] = useState('')
+    const [monto, setMonto] = useState('')
 
     const handleChangeCategoria = (event) => {
         setCategoria(event.target.value)
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            const newServicio = {
+                categoria,
+                nombreDeServicio,
+                descripcion,
+                monto
+            }
+            await servicioService.crearServicio(newServicio)
+            console.log('Servicio creado exitosamente')
+            cerrarModal()
+        } catch (error) {
+            console.error('Error al crear el servicio:', error)
+            // Manejar el error según tu aplicación
+        }
     }
 
     return (
@@ -32,7 +54,7 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
                 <Typography variant="h6" align="center" gutterBottom>
                     Nuevo Servicio
                 </Typography>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
                         <FormControl style={{ marginBottom: "1rem" }}>
                             <InputLabel id="categoria-label">Categoria</InputLabel>
@@ -55,6 +77,8 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
                             name="nombreDeServicio"
                             label="Nombre"
                             variant="standard"
+                            value={nombreDeServicio}
+                            onChange={(event) => setNombreDeServicio(event.target.value)}
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
@@ -62,6 +86,8 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
                             name="descripcion"
                             label="Descripcion"
                             variant="standard"
+                            value={descripcion}
+                            onChange={(event) => setDescripcion(event.target.value)}
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
@@ -70,13 +96,15 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
                             label="Gasto"
                             variant="standard"
                             type="number"
+                            value={monto}
+                            onChange={(event) => setMonto(event.target.value)}
                             style={{ marginBottom: "1rem" }}
                         />
 
 
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>Volver</Button>
-                            <Button variant="text" onClick={cerrarModal}>Guardar</Button>
+                            <Button type="submit" variant="text">Guardar</Button>
                         </div>
                     </div>
                 </form>

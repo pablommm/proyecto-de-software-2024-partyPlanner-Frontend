@@ -15,8 +15,8 @@ const style = {
     p: 4,
 }
 
-const BasicModal = ({ openModal, cerrarModal, seleccion }) => {
-    const { nombreDeInstalacion } = seleccion || {} // Desestructura el nombre de la instalación
+const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
+    const { nombreDeInstalacion } = instalacion || {}
 
 
     return (
@@ -51,17 +51,17 @@ const BasicModal = ({ openModal, cerrarModal, seleccion }) => {
                         />
                         <TextField
                             id="standard-basic"
-                            name="fecha"
+                            name="fecha Inicio"
                             variant="standard"
                             style={{ marginBottom: "1rem" }}
                             type="date"
                         />
                         <TextField
                             id="standard-basic"
-                            name="hora"
+                            name="fecha Final"
                             variant="standard"
                             style={{ marginBottom: "1rem" }}
-                            type="time"
+                            type="date"
                         />
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>Volver</Button>
@@ -77,7 +77,7 @@ const BasicModal = ({ openModal, cerrarModal, seleccion }) => {
 BasicModal.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
-    seleccion: PropTypes.object
+    instalacion: PropTypes.object
 }
 
 export default BasicModal

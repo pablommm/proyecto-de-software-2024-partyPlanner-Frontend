@@ -24,11 +24,12 @@ const LoginView = () => {
 
         return
       }
-      const usuarioId = await usuarioService.validarUsuario(usuario, password)
-      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
+      const usuarioObjeto = await usuarioService.validarUsuario(usuario, password)
+      console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
+      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
       localStorage.setItem('usuId', usuarioId.toString())
-      console.log("pase el login y el valor del usuario es", usuarioId)
-      setUser(usuarioId)
+      console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
+      setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
       navigate('/instalaciones')
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
@@ -92,7 +93,6 @@ const LoginView = () => {
             </Grid>
           </Grid>
           <Button
-            onClick={iniciarSesion}
             type="submit"
             variant="contained"
             color="primary"
