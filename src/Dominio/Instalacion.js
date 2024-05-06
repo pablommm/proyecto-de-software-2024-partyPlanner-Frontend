@@ -1,5 +1,6 @@
 export class Instalaciones {
     constructor() {
+        this.id = 0
         this.nombreDeInstalacion = ""
         this.descripcionDeInstalacion = ""
         this.costoDeInstalacion = 0

@@ -4,16 +4,14 @@ import { REST_SERVER_URL } from '../Services/configuracion'
 class ServicioService {
 
     async crearServicio(nuevoServicio) {
-        try {
-            await axios.post(`${REST_SERVER_URL}/CrearServicio`, nuevoServicio)
-            return response.data
-        }
-        catch (error) {
-            console.error('Error al crear el servicio:', error)
-            throw error
-        }
+        console.log("llegue al service")
+
+        const response = await axios.post(`${REST_SERVER_URL}/CrearServicio`, nuevoServicio)
+        return response.data
 
     }
+
+
 
     async traerServicios() {
         const servicios = await axios.get(`${REST_SERVER_URL}/servicios`)

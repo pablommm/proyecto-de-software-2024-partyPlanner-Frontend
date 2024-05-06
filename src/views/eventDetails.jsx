@@ -5,7 +5,6 @@ import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns' // Importar la función format de date-fns
-import ServicioService from "src/Services/servicio.service"
 
 
 const EventDetails = () => {
@@ -26,15 +25,7 @@ const EventDetails = () => {
     const handleOpenModal = () => {
         setOpenModal(true)
     }
-    const handleSubmit = async (formData) => {
-        try {
-            const response = await ServicioService.crearServicio(formData)
-            console.log('Evento creado:', response)
-            handleCloseModal()
-        } catch (error) {
-            console.error('Error al crear el evento:', error)
-        }
-    }
+
 
 
 
@@ -110,6 +101,8 @@ const EventDetails = () => {
                     <Typography variant="h5" sx={{ marginBottom: "0.5rem" }}>{event.nombreDelEvento}</Typography>
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Inicio: {format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}</Typography>
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Fin: {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}</Typography>
+                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
+
                 </Container>
             }
             {section === 'lugar' &&
@@ -118,6 +111,8 @@ const EventDetails = () => {
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Capacidad: {event.lugar.capacidadInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Costo: {event.lugar.costoDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Descripción: {event.lugar.descripcionDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
                 </Container>
             }
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
@@ -159,7 +154,7 @@ const EventDetails = () => {
                     <Add />
                 </Fab>
             }
-            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} onSubmit={handleSubmit} />
+            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} />
         </Container>
     )
 }
@@ -174,6 +169,10 @@ EventDetails.propTypes = {
             capacidadInstalacion: PropTypes.number.isRequired,
             costoDeInstalacion: PropTypes.number.isRequired,
             descripcionDeInstalacion: PropTypes.string.isRequired,
+            localidadDeInstalacion: PropTypes.string.isRequired,
+            montoDeReserva: PropTypes.number.isRequired,
+            activo: PropTypes.bool.isRequired,
+
         }).isRequired,
         serviciosAdquiridos: PropTypes.arrayOf(
             PropTypes.shape({

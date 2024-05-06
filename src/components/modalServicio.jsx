@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, Modal, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material"
 import PropTypes from 'prop-types'
+import { Servicio } from 'src/Dominio/servicio'
 import servicioService from 'src/Services/servicio.service'
 
 const style = {
@@ -28,20 +29,35 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const newServicio = {
-                categoria,
-                nombreDeServicio,
-                descripcion,
-                monto
+            console.log("Submitting form...")
+
+            // Crear nuevo objeto de servicio
+            const nuevoServicio = new Servicio()
+            nuevoServicio.categoria = categoria
+            nuevoServicio.nombreDeServicio = nombreDeServicio
+            nuevoServicio.descripcion = descripcion
+            nuevoServicio.monto = monto
+
+            console.log("New servicio object:", nuevoServicio)
+
+            // Llamar al servicio para crear el servicio
+            const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
+            console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
+
+            // Manejar la respuesta según sea necesario
+            if (respuestaCrearServicio.status === 'success') {
+                console.log("El servicio se creó exitosamente.")
+                // Aquí puedes hacer algo como cerrar el modal o actualizar la lista de servicios, según tu aplicación
+            } else {
+                console.error("Hubo un error al crear el servicio:", respuestaCrearServicio.error)
+                // Aquí puedes mostrar un mensaje de error al usuario o tomar otras acciones según tu aplicación
             }
-            await servicioService.crearServicio(newServicio)
-            console.log('Servicio creado exitosamente')
-            cerrarModal()
         } catch (error) {
             console.error('Error al crear el servicio:', error)
-            // Manejar el error según tu aplicación
         }
     }
+
+
 
     return (
         <Modal
@@ -66,9 +82,9 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
                                 onChange={handleChangeCategoria}
                                 variant="standard"
                             >
-                                <MenuItem value="entretenimiento">Entretenimiento</MenuItem>
-                                <MenuItem value="gastronomia">Gastronomía</MenuItem>
-                                <MenuItem value="accesorios">Accesorios</MenuItem>
+                                <MenuItem value="entretenimiento">ENTRETENIMIENTO</MenuItem>
+                                <MenuItem value="gastronomia">GASTRONOMIA</MenuItem>
+                                <MenuItem value="accesorios">ACCESORIOS</MenuItem>
                             </Select>
                         </FormControl>
 

@@ -1,7 +1,6 @@
 import { BottomNavigation, BottomNavigationAction } from "@mui/material"
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined'
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -21,7 +20,6 @@ const BotomNav = () => {
             showLabels
         >
             <BottomNavigationAction label="Instalaciones" component={Link} to="/instalaciones" icon={<AutoAwesomeOutlinedIcon sx={{ color: '#ff9800' }} />} />
-            <BottomNavigationAction label="Evento personalizado" component={Link} to="/nuevo" icon={<AddBoxOutlinedIcon sx={{ color: '#1c54b2' }} />} style={{ textAlign: 'center' }} />
             <BottomNavigationAction label="Mis eventos" component={Link} to="/eventos" icon={<FavoriteIcon sx={{ color: '#ba000d' }} />} />
 
         </BottomNavigation>

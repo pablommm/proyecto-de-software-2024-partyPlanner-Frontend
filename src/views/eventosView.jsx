@@ -37,9 +37,11 @@ const Eventos = () => {
                         </Grid>
                     )
                     :
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ textAlign: 'center' }}>
                         No hay eventos disponibles.
                     </Grid>
+
+
                 }
             </Grid>
         </Container>
