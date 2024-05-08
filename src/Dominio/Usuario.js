@@ -5,6 +5,7 @@ export class Usuario{
         this.contrasenia = ""
         this.eventosRealizados = []
         this.rol = ""
+        this.saldo= 0
     }
     static fromJson(UsuarioJSON) {
         const result = Object.assign(new Usuario(), UsuarioJSON)

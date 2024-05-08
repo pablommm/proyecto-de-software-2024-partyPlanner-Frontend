@@ -1,7 +1,5 @@
-//import React from 'react'
-import { useContext } from 'react'
+import { useState, useContext } from 'react'
 import UserContext from 'src/Services/context'
-
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Avatar,
@@ -12,20 +10,11 @@ import {
   Typography,
 } from '@material-ui/core'
 import TextField from '@mui/material/TextField'
-
-//import Input from '@mui/material/Input'
-
-//const ariaLabel = { 'aria-label': 'description' }
-
+import usuarioService from '../Services/login.service'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
   },
-  Box: {
-    width: 200,
-    height: 200,
-  },
-
   avatar: {
     width: 100,
     height: 100,
@@ -33,51 +22,50 @@ const useStyles = makeStyles((theme) => ({
   userInfo: {
     margin: theme.spacing(2),
   },
-  name: {
-    fontWeight: 'bold',
-  },
   texto: {
     color: theme.palette.text.secondary,
     padding: theme.spacing(2)
   },
-
-  statsGrid: {
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-    },
-  },
-  statItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(5),
-  },
-  statIcon: {
-    marginRight: theme.spacing(1),
-  },
-  statValue: {
-    fontWeight: 'bold',
-  },
   campo: {
     margin: 15,
   }
-
-
 }))
 
 const UserProfile = () => {
   const classes = useStyles()
+  const [user, setUser] = useContext(UserContext)
 
-  const[user] = useContext(UserContext)
+  const [editedUser, setEditedUser] = useState({
+    nombreYApellido: user.nombreYApellido,
+    username: user.username,
+    pass: user.contrasenia,
+    // Agrega aquí otros campos editables del usuario si los hay
+  })
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setEditedUser(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  const handleSaveChanges = async () => {
+
+
+    try {
+      const usuarioObjeto = await usuarioService.actualizarUsuario(usuarioModificado)
+      const usuarioId = usuarioObjeto.id
+      localStorage.setItem('usuId', usuarioId.toString())
+      setUser(usuarioObjeto)      
+      }      
+      catch (error) {
+      console.error('Error al enviar la solicitud de actualización:', error)
+    }
+  }
 
   return (
-
-    <Box className={classes.root} component="form"
-      sx={{
-        'campo': { m: 5, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off">
-
+    <Box className={classes.root} component="form" noValidate autoComplete="off">
       <CardContent>
         <Grid container alignItems="center">
           <Grid item>
@@ -89,41 +77,42 @@ const UserProfile = () => {
       </CardContent>
       <Grid container className={classes.statsGrid}>
         <Grid item className={classes.userInfo} >
-
           <TextField
             className={classes.campo}
             required
             id="outlined-required"
             label="Nombre del usuario"
-            defaultValue= {user.nombreYApellido}
-            style={{ margin: '10px', padding: '5px 10px' }}
+            name="nombreYApellido"
+            value={editedUser.nombreYApellido}
+            onChange={handleInputChange}
           />
           <TextField
             className={classes.campo}
             required
             id="outlined-required"
             label="Username"
-            defaultValue={user.username}
-            style={{ margin: '10px', padding: '5px 10px' }}
+            name="username"
+            value={editedUser.username}
+            onChange={handleInputChange}
           />
-          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-            Rol : {user.rol}
-          </Typography>
-
-          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+          <TextField
+            className={classes.campo}
+            required
+            id="outlined-required"
+            label="contrasenia"
+            name="contrasenia"
+            value={editedUser.contrasenia}
+            onChange={handleInputChange}
+          />
+          <Typography variant="h6" className={classes.texto}>
             Saldo
           </Typography>
-
         </Grid>
-
       </Grid>
-      <Button variant="contained" color="primary" fullWidth>
+      <Button variant="contained" color="primary" fullWidth onClick={handleSaveChanges}>
         Guardar Cambios
       </Button>
-
-
     </Box>
-
   )
 }
 
