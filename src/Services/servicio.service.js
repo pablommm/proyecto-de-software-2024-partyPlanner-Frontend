@@ -5,7 +5,6 @@ class ServicioService {
 
     async crearServicio(nuevoServicio) {
         console.log("llegue al service")
-
         const response = await axios.post(`${REST_SERVER_URL}/CrearServicio`, nuevoServicio)
         return response.data
 

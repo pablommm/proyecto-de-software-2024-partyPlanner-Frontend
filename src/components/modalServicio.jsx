@@ -31,10 +31,11 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
         console.log("Submitting form...")
 
         const nuevoServicio = new Servicio()
-        nuevoServicio.categoria = categoria
         nuevoServicio.nombreDeServicio = nombreDeServicio
         nuevoServicio.descripcion = descripcion
+        nuevoServicio.categoria = categoria.toUpperCase()
         nuevoServicio.monto = monto
+        nuevoServicio.eventoID = 1
         console.log("New servicio object:", nuevoServicio)
         const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
         console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
