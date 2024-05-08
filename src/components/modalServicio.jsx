@@ -28,35 +28,29 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        try {
-            console.log("Submitting form...")
+        console.log("Submitting form...")
 
-            // Crear nuevo objeto de servicio
-            const nuevoServicio = new Servicio()
-            nuevoServicio.categoria = categoria
-            nuevoServicio.nombreDeServicio = nombreDeServicio
-            nuevoServicio.descripcion = descripcion
-            nuevoServicio.monto = monto
+        const nuevoServicio = new Servicio()
+        nuevoServicio.nombreDeServicio = nombreDeServicio
+        nuevoServicio.descripcion = descripcion
+        nuevoServicio.categoria = categoria.toUpperCase()
+        nuevoServicio.monto = monto
+        nuevoServicio.eventoID = 1
+        console.log("New servicio object:", nuevoServicio)
+        const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
+        console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
+        cerrarModal()
+        limpiarDatos()
 
-            console.log("New servicio object:", nuevoServicio)
 
-            // Llamar al servicio para crear el servicio
-            const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
-            console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
 
-            // Manejar la respuesta según sea necesario
-            if (respuestaCrearServicio.status === 'success') {
-                console.log("El servicio se creó exitosamente.")
-                // Aquí puedes hacer algo como cerrar el modal o actualizar la lista de servicios, según tu aplicación
-            } else {
-                console.error("Hubo un error al crear el servicio:", respuestaCrearServicio.error)
-                // Aquí puedes mostrar un mensaje de error al usuario o tomar otras acciones según tu aplicación
-            }
-        } catch (error) {
-            console.error('Error al crear el servicio:', error)
-        }
     }
-
+    const limpiarDatos = () => {
+        setCategoria('')
+        setNombreDeServicio('')
+        setDescripcion('')
+        setMonto('')
+    }
 
 
     return (

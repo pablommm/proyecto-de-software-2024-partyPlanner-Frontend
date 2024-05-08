@@ -4,6 +4,7 @@ export class Servicio {
         this.descripcion = ""
         this.categoria = ""
         this.monto = 0
+        this.eventoID = 0
     }
 
     static fromJson(servicioJson) {
