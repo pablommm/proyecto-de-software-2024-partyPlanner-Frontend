@@ -131,13 +131,12 @@ const EventDetails = () => {
                 </Container>
             
             }
-            {/* aca tendria que mostrar el QR */}
-            {section === 'qr' &&
-                <Container>
+            {section === 'qr' && (
+                <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <QRCodeComponent value={qrContent} size={256} />
                 </Container>
+            )}
 
-            }
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container>
                     <Typography variant="h6" sx={{ marginBottom: "1rem", display: 'flex', justifyContent: 'center' }}>Total Gastado: ${totalGastado}</Typography>
