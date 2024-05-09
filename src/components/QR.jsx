@@ -10,7 +10,7 @@ const QRCodeComponent = ({ value, size }) => {
 
 QRCodeComponent.propTypes = {
     value: PropTypes.string.isRequired, 
-    size: PropTypes.object.isRequired, 
+    size: PropTypes.number, 
 }
 
 QRCodeComponent.defaultProps = {
