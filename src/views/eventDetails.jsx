@@ -1,10 +1,12 @@
 import { CardMedia, Container, Grid, IconButton, Typography, Fab } from "@mui/material"
-import { EventNote, AccountBalance, LocationOn, Add } from "@mui/icons-material"
+import { EventNote, AccountBalance, LocationOn, Add} from "@mui/icons-material"
+import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
 import BasicModalService from 'src/components/modalServicio'
 import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
-import { format } from 'date-fns' // Importar la función format de date-fns
+import { format } from 'date-fns'
+import QRCodeComponent from '../components/QR' // Importar la función format de date-fns
 
 
 const EventDetails = () => {
@@ -13,6 +15,8 @@ const EventDetails = () => {
 
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
+    const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
+
 
     const handleCloseModal = () => {
         setOpenModal(false)
@@ -95,6 +99,17 @@ const EventDetails = () => {
                         <AccountBalance />
                     </IconButton>
                 </Grid>
+                <Grid item>
+                    <IconButton
+                        onClick={() => handleSectionClick('qr')}
+                        sx={{
+                            transition: "transform 0.2s",
+                            "&:hover": { transform: "scale(1.1)" }
+                        }}
+                    >
+                        <QrCodeTwoToneIcon />
+                    </IconButton>
+                </Grid>
             </Grid>
             {section === 'evento' &&
                 <Container sx={{ backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
@@ -114,6 +129,14 @@ const EventDetails = () => {
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
                 </Container>
+            
+            }
+            {/* aca tendria que mostrar el QR */}
+            {section === 'qr' &&
+                <Container>
+                    <QRCodeComponent value={qrContent} size={256} />
+                </Container>
+
             }
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container>
@@ -128,6 +151,11 @@ const EventDetails = () => {
                         <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
                         </Grid>
+                        
+
+
+
+
                         {event.serviciosAdquiridos.map(servicio =>
                             <React.Fragment key={servicio.id}>
                                 <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
@@ -143,7 +171,10 @@ const EventDetails = () => {
                         )}
                     </Grid>
                 </Container>
-            }
+            } 
+            
+
+
             {section === 'servicios' && event.serviciosAdquiridos.length === 0 &&
                 <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                     <Typography variant="body1">No hay servicios adquiridos.</Typography>
