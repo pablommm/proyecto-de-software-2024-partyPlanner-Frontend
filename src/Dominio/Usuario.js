@@ -12,3 +12,16 @@ export class Usuario{
         return result
     }
 }
+
+export class UsuarioRegistro{
+    constructor(){
+        this.nombre = ""
+        this.apellido = ""
+        this.usuario = ""
+        this.pwd = ""
+    }
+    static fromJson(UsuarioJSON) {
+        const result = Object.assign(new UsuarioRegistro(), UsuarioJSON)
+        return result
+    }
+}
