@@ -8,6 +8,7 @@ import Eventos from './views/eventosView'
 import NuevoEvento from './views/nuevoEvento'
 import EventDetails from './views/eventDetails'
 import UserProfile from './views/UserProfile'
+import VistaAdminView from './views/vistaAdmin'
 
 export const PartyRoutes = () => {
 
@@ -18,7 +19,7 @@ export const PartyRoutes = () => {
       <Route path="/sign-up" element={<SignUpView />} />
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/eventDetails" element={<EventDetails />} />
-
+      <Route path="/vistaAdmin" element={<VistaAdminView />} />
 
       <Route path="/" element={<Layout />} >
         <Route path="/instalaciones" element={<PrincipalView />} />
