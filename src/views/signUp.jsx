@@ -1,13 +1,44 @@
-
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Container, Grid } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom"
-
+import { useState } from 'react'
+import { UsuarioRegistro } from 'src/Dominio/Usuario'
+import usuarioService from 'src/Services/usuario.service'
+import { useNavigate } from 'react-router-dom'
 
 const SignUpView = () => {
+    const navigate = useNavigate()
+    const [nombre,setNombre]=useState('')
+    const [apellido,setApellido]=useState('')
+    const [username,setUsername]=useState('')
+    const [pwd,setPwd]=useState('')
+    
+
+    const crear = async() =>{
+        const nuevoUsuario = new UsuarioRegistro()
+        nuevoUsuario.nombre = nombre
+        nuevoUsuario.apellido = apellido
+        nuevoUsuario.usuario = username
+        nuevoUsuario.pwd = pwd
+        
+        console.log("Nuevo usuario:", nuevoUsuario)
+
+        const respuestaCrearUsuario = await usuarioService.crearUsuario(nuevoUsuario)
+        console.log("Respuesta de creación de evento:", respuestaCrearUsuario)
+        console.log("usuario creado exitosamente.")
+        navigate('/login')
+
+
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        console.log("se crea el usuario")
+        crear()
+    }
 
     return (
         <Container maxWidth="xs" className='main'>
@@ -26,7 +57,7 @@ const SignUpView = () => {
                 <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }}>
                     Registrate
                 </Typography>
-                <form
+                <form onSubmit={handleSubmit}
                     style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -34,27 +65,33 @@ const SignUpView = () => {
                     }}
                 >
                     <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                            <TextField
+                                autoComplete="given-name"
+                                name="Nombre"
+                                required
+                                fullWidth
+                                id="nombre"
+                                label="Nombre"
+                                autoFocus
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
+                            />
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="given-name"
-                                name="firstName"
+                                name="Apellido"
                                 required
                                 fullWidth
-                                id="firstName"
-                                label="First Name"
+                                id="Apellido"
+                                label="Apellido"
                                 autoFocus
+                                value={apellido}
+                                onChange={(e) => setApellido(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="family-name"
-                            />
-                        </Grid>
+                        
                         <Grid item xs={12} >
                             <TextField
                                 autoComplete="given-name"
@@ -62,8 +99,10 @@ const SignUpView = () => {
                                 required
                                 fullWidth
                                 id="userName"
-                                label="User Name"
+                                label="username"
                                 autoFocus
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </Grid>
 
@@ -72,10 +111,12 @@ const SignUpView = () => {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="Contraseña"
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                value={pwd}
+                                onChange={(e) => setPwd(e.target.value)}
                             />
                         </Grid>
 

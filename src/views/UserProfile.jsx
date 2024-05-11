@@ -1,5 +1,5 @@
 //import React from 'react'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import UserContext from 'src/Services/context'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,9 +13,6 @@ import {
 } from '@material-ui/core'
 import TextField from '@mui/material/TextField'
 
-//import Input from '@mui/material/Input'
-
-//const ariaLabel = { 'aria-label': 'description' }
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,8 +63,26 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfile = () => {
   const classes = useStyles()
-
   const[user] = useContext(UserContext)
+  //const[user,setUser]= useState(new Usuario())
+
+  const [nombreYApellido, setNombreYApellido] = useState('')
+  const [username, setUsername] = useState('')
+  const [pass, setPass] = useState("")
+
+
+  const actualizarUsuario = async() => {
+    try {      
+      const usuarioObjeto = await usuarioService.actualizarUsuario(nombreYApellido,username,pass)    
+      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
+      localStorage.setItem('usuId', usuarioId.toString())      
+      setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
+      
+    } catch (error) {
+      console.error('Error al actualizar usuario', error.message)
+      setError('Error al actualizar usuario. Por favor, verifica tus datos.')
+    }
+}
 
   return (
 
@@ -87,6 +102,12 @@ const UserProfile = () => {
           </Grid>
         </Grid>
       </CardContent>
+      <form
+          onSubmit={(event) => {
+            event.preventDefault()
+            actualizarUsuario()
+          }}
+        >
       <Grid container className={classes.statsGrid}>
         <Grid item className={classes.userInfo} >
 
@@ -96,6 +117,7 @@ const UserProfile = () => {
             id="outlined-required"
             label="Nombre del usuario"
             defaultValue= {user.nombreYApellido}
+            onChange={(event) => setNombreYApellido(event.target.value)}
             style={{ margin: '10px', padding: '5px 10px' }}
           />
           <TextField
@@ -104,20 +126,28 @@ const UserProfile = () => {
             id="outlined-required"
             label="Username"
             defaultValue={user.username}
+            onChange={(event) => setUsername(event.target.defaultValue)}
             style={{ margin: '10px', padding: '5px 10px' }}
           />
-          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-            Rol : {user.rol}
-          </Typography>
+          <TextField
+            className={classes.campo}
+            required
+            id="outlined-required"
+            label="contrasenia"
+            defaultValue={user.contrasenia}
+            onChange={(event) => setPass(event.target.value)}
+            style={{ margin: '10px', padding: '5px 10px' }}
+          />          
 
           <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-            Saldo
+            Saldo 
           </Typography>
 
         </Grid>
 
       </Grid>
-      <Button variant="contained" color="primary" fullWidth>
+      </form>
+      <Button variant="contained" color="primary" fullWidth type="submit">
         Guardar Cambios
       </Button>
 
