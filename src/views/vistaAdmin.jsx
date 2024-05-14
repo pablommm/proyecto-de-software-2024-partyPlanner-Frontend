@@ -43,6 +43,7 @@ function UserTable({ users }) {
                         <TableCell>ID</TableCell>
                         <TableCell>Nombre</TableCell>
                         <TableCell>Eventos Creados</TableCell>
+                        
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -51,6 +52,12 @@ function UserTable({ users }) {
                             <TableCell>{user.id}</TableCell>
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.eventsCreated}</TableCell>
+                            <TableCell>
+                                
+                                <IconButton>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -92,6 +99,8 @@ function InstallationTable({ installations }) {
                             <TableCell>{installation.capacity}</TableCell>
                             <TableCell>{installation.amount}</TableCell>
                             <TableCell>{installation.description}</TableCell>
+                            
+                            
                             <TableCell>
                                 <IconButton>
                                     <EditIcon />
