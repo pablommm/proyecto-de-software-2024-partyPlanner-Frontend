@@ -5,7 +5,8 @@ import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns' // Importar la función format de date-fns
-
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
 const EventDetails = () => {
     const location = useLocation()
@@ -95,6 +96,18 @@ const EventDetails = () => {
                         <AccountBalance />
                     </IconButton>
                 </Grid>
+                <Grid item>
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                </Grid>
+                <Grid item>
+                <IconButton>
+                    <DeleteIcon />
+                </IconButton>
+                </Grid>
+
+                
             </Grid>
             {section === 'evento' &&
                 <Container sx={{ backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
