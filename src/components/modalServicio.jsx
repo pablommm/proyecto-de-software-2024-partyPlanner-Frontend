@@ -42,7 +42,7 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
         cerrarModal()
         limpiarDatos()
 
-
+ 
 
     }
     const limpiarDatos = () => {
@@ -54,7 +54,7 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
 
 
     return (
-        <Modal
+        <Modal 
             open={openModal}
             onClose={cerrarModal}
             aria-labelledby="modal-modal-title"

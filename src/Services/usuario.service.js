@@ -43,3 +43,28 @@ class UsuarioService {
 }
 const usuarioService = new UsuarioService()
 export default usuarioService
+
+
+
+
+// val usuario1 = Usuario(
+//     nombreYApellido = "Juan perez",
+//     username = "Jperez",
+//     contrasenia = "1234",
+//     rol = Rol.ADMINISTRADOR,
+//     eventos = mutableListOf(bodaMYB)
+// )
+// val admin = Usuario(
+//     nombreYApellido = "admin",
+//     username = "admin",
+//     contrasenia = "admin",
+//     rol = Rol.ADMINISTRADOR,
+
+// )
+// val test = Usuario(
+//     nombreYApellido = "admin",
+//     username = "admin",
+//     contrasenia = "admin",
+//     rol = Rol.ADMINISTRADOR,
+
+//     )
