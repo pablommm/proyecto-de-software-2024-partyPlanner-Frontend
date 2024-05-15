@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
 import { Button } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
 
 // Función para generar datos de ejemplo
 function generateData(rows) {
@@ -150,10 +151,13 @@ export default function Dashboard() {
         <div>
             {/* Barra de navegación */}
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar >
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Panel de Control
                     </Typography>
+                    <IconButton color="inherit" component={Link} to="/instalaciones">
+                        <HomeIcon />
+                    </IconButton>                    
                     {/* Icono de cerrar sesión */}
                     <IconButton color="inherit" component={Link} to="/login">
                         <LogoutIcon />

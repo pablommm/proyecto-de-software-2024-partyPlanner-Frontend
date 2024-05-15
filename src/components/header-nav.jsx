@@ -14,7 +14,7 @@ import {
 import { AccountCircle } from "@mui/icons-material"
 import { Link } from 'react-router-dom'
 import { ExitToApp } from "@mui/icons-material"
-
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export const HeaderNav = () => {
     const [anchorEl, setAnchorEl] = useState(null)
@@ -39,6 +39,9 @@ export const HeaderNav = () => {
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <h9>Bienvenido {user.nombreYApellido ? user.nombreYApellido : 'deslogueado'}</h9>
                     <div>
+                        <IconButton>
+                            <AdminPanelSettingsIcon color="secondary"></AdminPanelSettingsIcon>
+                        </IconButton>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
