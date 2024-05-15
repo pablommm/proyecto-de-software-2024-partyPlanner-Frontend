@@ -5,7 +5,8 @@ import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns' // Importar la función format de date-fns
-
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const EventDetails = () => {
     const location = useLocation()
@@ -24,6 +25,16 @@ const EventDetails = () => {
 
     const handleOpenModal = () => {
         setOpenModal(true)
+    }
+    const handleDeleteService = (serviceId) => {
+        // Lógica para eliminar el servicio
+        console.log("Eliminar servicio con ID:", serviceId)
+    }
+
+    const handleEditService = (service) => {
+        // Lógica para editar el servicio
+        console.log("Editar servicio:", service)
+        handleOpenModal(service)
     }
 
 
@@ -117,33 +128,43 @@ const EventDetails = () => {
             }
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container>
-                    <Typography variant="h6" sx={{ marginBottom: "1rem", display: 'flex', justifyContent: 'center' }}>Total Gastado: ${totalGastado}</Typography>
+                    <Typography variant="h6" sx={{ marginBottom: "1rem", textAlign: 'center' }}>Total Gastado: ${totalGastado}</Typography>
                     <Grid container spacing={3} justifyContent="center" className="table-container">
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
                         </Grid>
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
                         </Grid>
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
+                        </Grid>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
                         </Grid>
                         {event.serviciosAdquiridos.map(servicio =>
                             <React.Fragment key={servicio.id}>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                                    <Typography variant="body2" sx={{ textAlign: "center" }}>{servicio.categoria}</Typography>
+                                <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Typography variant={servicio.categoria.length > 6 ? "body2" : "body1"} sx={{ textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{servicio.categoria}</Typography>
                                 </Grid>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
+                                <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>{servicio.nombreDeServicio}</Typography>
                                 </Grid>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
+                                <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>${servicio.monto}</Typography>
+                                </Grid>
+                                <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <IconButton onClick={() => handleEditService(servicio)}><EditIcon /></IconButton>
+                                    <IconButton onClick={() => handleDeleteService(servicio.id)}><DeleteIcon /></IconButton>
+
                                 </Grid>
                             </React.Fragment>
                         )}
                     </Grid>
                 </Container>
             }
+
+
             {section === 'servicios' && event.serviciosAdquiridos.length === 0 &&
                 <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                     <Typography variant="body1">No hay servicios adquiridos.</Typography>
