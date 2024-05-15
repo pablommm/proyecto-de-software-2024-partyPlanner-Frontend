@@ -16,7 +16,7 @@ const style = {
     p: 4,
 }
 
-const BasicModalService = ({ openModal, cerrarModal }) => {
+const BasicModalService = ({ openModal, cerrarModal, eventoID }) => {
     const [categoria, setCategoria] = useState('')
     const [nombreDeServicio, setNombreDeServicio] = useState('')
     const [descripcion, setDescripcion] = useState('')
@@ -35,7 +35,7 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
         nuevoServicio.descripcion = descripcion
         nuevoServicio.categoria = categoria.toUpperCase()
         nuevoServicio.monto = monto
-        nuevoServicio.eventoID = 1
+        nuevoServicio.eventoID = eventoID
         console.log("New servicio object:", nuevoServicio)
         const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
         console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
@@ -126,6 +126,8 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
 BasicModalService.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
+    eventoID: PropTypes.number.isRequired,
+
 }
 
 export default BasicModalService

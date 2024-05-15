@@ -5,8 +5,7 @@ import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns' // Importar la función format de date-fns
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
+
 
 const EventDetails = () => {
     const location = useLocation()
@@ -32,7 +31,7 @@ const EventDetails = () => {
 
 
     // Calcular el total gastado
-    const totalGastado = event.serviciosAdquiridos.reduce((total, servicio) => total + servicio.monto, 0)
+    const totalGastado = event.serviciosAdquiridos.reduce((total, servicio) => total + servicio.monto + (event.lugar.costoDeInstalacion - event.lugar.montoDeReserva), 0)
 
     return (
 
@@ -96,18 +95,6 @@ const EventDetails = () => {
                         <AccountBalance />
                     </IconButton>
                 </Grid>
-                <Grid item>
-                    <IconButton>
-                        <EditIcon />
-                    </IconButton>
-                </Grid>
-                <Grid item>
-                <IconButton>
-                    <DeleteIcon />
-                </IconButton>
-                </Grid>
-
-                
             </Grid>
             {section === 'evento' &&
                 <Container sx={{ backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
@@ -167,13 +154,14 @@ const EventDetails = () => {
                     <Add />
                 </Fab>
             }
-            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} />
+            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} />
         </Container>
     )
 }
 
 EventDetails.propTypes = {
     event: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         nombreDelEvento: PropTypes.string.isRequired,
         fechaEventoIni: PropTypes.string.isRequired,
         fechaEventoFin: PropTypes.string.isRequired,
