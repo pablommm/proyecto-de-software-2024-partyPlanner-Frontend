@@ -9,17 +9,21 @@ import {
     Toolbar,
     Fade,
 
-    Grid
+    Grid,
+    Hidden
 } from '@mui/material'
 import { AccountCircle } from "@mui/icons-material"
 import { Link } from 'react-router-dom'
 import { ExitToApp } from "@mui/icons-material"
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 
 export const HeaderNav = () => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [user, setUser] = useContext(UserContext)
+    //const [adminAccess,setadminAccess] = useState(false)
 
+    var parametroControl = false
+  
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -32,6 +36,12 @@ export const HeaderNav = () => {
         setUser(null)
         console.log("se cerro la sesion correctamente", user)
     }
+    //si el usuario es admin permito que se renderise el boton, sino no
+    if(user.rol == "ADMINISTRADOR"){
+        parametroControl = true
+    }else{
+        parametroControl = false
+    }
 
     return (
         <Box sx={{ flexGrow: 0 }}>
@@ -39,10 +49,13 @@ export const HeaderNav = () => {
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <h9>Bienvenido {user.nombreYApellido ? user.nombreYApellido : 'deslogueado'}</h9>
                     <div>
-                        <IconButton>
-                            <AdminPanelSettingsIcon color="secondary"></AdminPanelSettingsIcon>
-                        </IconButton>
+                    {parametroControl &&
+                        <IconButton  component={Link}   to="/vistaAdmin">
+                            <AdminPanelSettingsIcon color="secondary" ></AdminPanelSettingsIcon>
+                        </IconButton> }
+                        
                         <IconButton
+                        
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
