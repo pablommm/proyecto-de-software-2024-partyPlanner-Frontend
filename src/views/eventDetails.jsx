@@ -4,19 +4,23 @@ import BasicModalService from 'src/components/modalServicio'
 import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
-import { format } from 'date-fns' // Importar la función format de date-fns
+import { format } from 'date-fns'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+
 
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
+    const [selectedService, setSelectedService] = useState(null)
+
 
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
 
     const handleCloseModal = () => {
         setOpenModal(false)
+        setSelectedService(null)
     }
 
     const handleSectionClick = (sectionName) => {
@@ -27,15 +31,15 @@ const EventDetails = () => {
         setOpenModal(true)
     }
     const handleDeleteService = (serviceId) => {
-        // Lógica para eliminar el servicio
         console.log("Eliminar servicio con ID:", serviceId)
     }
-
     const handleEditService = (service) => {
-        // Lógica para editar el servicio
-        console.log("Editar servicio:", service)
-        handleOpenModal(service)
+        setSelectedService(service)
+        setOpenModal(true)
     }
+
+
+
 
 
 
@@ -175,7 +179,8 @@ const EventDetails = () => {
                     <Add />
                 </Fab>
             }
-            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} />
+            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} servicio={selectedService}
+            />
         </Container>
     )
 }
