@@ -9,7 +9,7 @@ import NuevoEvento from './views/nuevoEvento'
 import EventDetails from './views/eventDetails'
 import UserProfile from './views/UserProfile'
 import VistaAdminView from './views/vistaAdmin'
-
+import CreditCardForm from '../src/components/tarjeta'
 export const PartyRoutes = () => {
 
 
@@ -26,6 +26,7 @@ export const PartyRoutes = () => {
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/nuevo" element={<NuevoEvento />} />
         <Route path="/perfilUsuario" element={<UserProfile />} />
+        <Route path="/tarjeta" element={<CreditCardForm />} />
 
       </Route>
 
