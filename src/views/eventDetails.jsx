@@ -1,14 +1,17 @@
 import { CardMedia, Container, Grid, IconButton, Typography, Fab } from "@mui/material"
-import { EventNote, AccountBalance, LocationOn, Add } from "@mui/icons-material"
+import { EventNote, AccountBalance, LocationOn, Add} from "@mui/icons-material"
+import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
 import BasicModalService from 'src/components/modalServicio'
 import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns'
+import QRCodeComponent from '../components/QR' // Importar la función format de date-fns
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import { Link } from 'react-router-dom'
+
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
@@ -19,6 +22,8 @@ const EventDetails = () => {
 
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
+    const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
+
 
     const handleCloseModal = () => {
         setOpenModal(false)
@@ -114,6 +119,17 @@ const EventDetails = () => {
                         <AccountBalance />
                     </IconButton>
                 </Grid>
+                <Grid item>
+                    <IconButton
+                        onClick={() => handleSectionClick('qr')}
+                        sx={{
+                            transition: "transform 0.2s",
+                            "&:hover": { transform: "scale(1.1)" }
+                        }}
+                    >
+                        <QrCodeTwoToneIcon />
+                    </IconButton>
+                </Grid>
             </Grid>
             {section === 'evento' &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
@@ -133,7 +149,14 @@ const EventDetails = () => {
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
                 </Container>
+            
             }
+            {section === 'qr' && (
+                <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <QRCodeComponent value={qrContent} size={256} />
+                </Container>
+            )}
+
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
                     <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
@@ -150,6 +173,11 @@ const EventDetails = () => {
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
                         </Grid>
+                        
+
+
+
+
                         {event.serviciosAdquiridos.map(servicio =>
                             <React.Fragment key={servicio.id}>
                                 <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -170,7 +198,10 @@ const EventDetails = () => {
                         )}
                     </Grid>
                 </Container>
-            }
+
+            } 
+            
+
 
 
             {section === 'servicios' && event.serviciosAdquiridos.length === 0 &&

@@ -3,8 +3,11 @@ import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import EditIcon from '@mui/icons-material/Edit'
 
+
 const EventCard = ({ event, onEventClick, onEditClick }) => {
+
     const { nombreDelEvento, lugar, fechaEventoIni, fechaEventoFin } = event
+     
 
     const handleEventClick = () => {
         onEventClick(event)
@@ -28,7 +31,9 @@ const EventCard = ({ event, onEventClick, onEditClick }) => {
                     </div>
                     <Typography variant="subtitle1" color="text.secondary" component="div" sx={{ ml: 1 }}>{lugar.nombreDeInstalacion}</Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">{format(new Date(fechaEventoIni), 'dd/MM/yyyy')} / {format(new Date(fechaEventoFin), 'dd/MM/yyyy')}</Typography>
+                    
                 </CardContent>
+                
             </CardActionArea>
         </Card>
     )
