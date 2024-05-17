@@ -13,7 +13,7 @@ class AdminService {
     async getTotalEventos() {
 
         const eventos= await axios.get(`${REST_SERVER_URL}/totalEvents`)
-        console.log('Eventos obtenidos en el service  para el usuario con ID:', eventos)
+        console.log('Eventos obtenidos en el service  para el usuario con ID:', eventos.data)
         return eventos
     }
 

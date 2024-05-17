@@ -190,7 +190,7 @@ export default function Dashboard() {
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#66BB6A', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Total de Eventos Creados</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>157</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{numeroTotalDeEVENTOS}</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
