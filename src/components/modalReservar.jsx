@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import PropTypes from 'prop-types'
-import { TextField, Button, Typography } from "@mui/material"
+import { TextField, Button, Typography, Snackbar, SnackbarContent } from "@mui/material"
 import { useState, useEffect } from 'react'
 import eventoService from 'src/Services/evento.service'
 import { Evento } from 'src/Dominio/evento'
@@ -20,7 +20,7 @@ const style = {
 
 const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toISOString().split('T')[0] // Con esto puedo mostrar bien la hora 
+    return date.toISOString().split('T')[0]
 }
 
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
@@ -30,6 +30,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     const [fechaEventoIni, setFechaEventoIni] = useState('')
     const [fechaEventoFin, setFechaEventoFin] = useState('')
     const [presupuesto, setPresupuesto] = useState('')
+    const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false)
 
     useEffect(() => {
         if (evento) {
@@ -64,15 +65,17 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 nuevoEvento.id = evento.id
                 const respuestaEditarEvento = await eventoService.editarEvento(nuevoEvento)
                 console.log("Respuesta de edición de evento:", respuestaEditarEvento)
+                mostrarSnackbar('¡El evento se editó correctamente!', 'success')
             } else {
                 const respuestaCrearEvento = await eventoService.crearEvento(nuevoEvento)
                 console.log("Respuesta de creación de evento:", respuestaCrearEvento)
+                mostrarSnackbar('¡El evento se creó correctamente!', 'success')
             }
 
-            cerrarModal()
             limpiarDatos()
         } catch (error) {
             console.error('Error al crear o editar el evento:', error)
+            mostrarSnackbar('Error al crear o editar el evento', 'error')
         }
     }
 
@@ -83,81 +86,103 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
         setPresupuesto('')
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        crearOEditarEvento()
+        await crearOEditarEvento()
+    }
+
+    const mostrarSnackbar = (mensaje, variant) => {
+        setMostrarMensajeExito({ mostrar: true, mensaje, variant })
+    }
+
+    const handleCloseSnackbar = () => {
+        setMostrarMensajeExito(false)
+        cerrarModal()
     }
 
     return (
-        <Modal
-            open={openModal}
-            onClose={cerrarModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={style}>
-                <Typography variant="h6" align="center" gutterBottom>
-                    {evento ? "Editar Evento" : "Reservar"}
-                </Typography>
-                <form onSubmit={handleSubmit}>
-                    <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
-                        <TextField
-                            id="standard-basic"
-                            name="nombre"
-                            label="Nombre"
-                            variant="standard"
-                            value={nombreDelEvento}
-                            onChange={(e) => setNombreDelEvento(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="standard-basic"
-                            name="lugar"
-                            label="Lugar"
-                            variant="standard"
-                            style={{ marginBottom: "1rem" }}
-                            value={nombreInstalacion}
-                            disabled
-                        />
-                        <TextField
-                            id="standard-basic"
-                            name="fecha Inicio"
-                            variant="standard"
-                            style={{ marginBottom: "1rem" }}
-                            type="date"
-                            value={fechaEventoIni}
-                            onChange={(e) => setFechaEventoIni(e.target.value)}
-                            disabled={!!evento}
-                        />
-                        <TextField
-                            id="standard-basic"
-                            name="fecha Final"
-                            variant="standard"
-                            style={{ marginBottom: "1rem" }}
-                            type="date"
-                            value={fechaEventoFin}
-                            onChange={(e) => setFechaEventoFin(e.target.value)}
-                            disabled={!!evento}
-                        />
-                        <TextField
-                            id="standard-basic"
-                            name="presupuesto"
-                            label="Presupuesto"
-                            variant="standard"
-                            value={presupuesto}
-                            onChange={(e) => setPresupuesto(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                            disabled={!!evento}
-
-                        />
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Button variant="text" onClick={cerrarModal}>Volver</Button>
-                            <Button type="submit" variant="text">{evento ? "Editar" : "Reservar"}</Button>
+        <>
+            <Modal
+                open={openModal}
+                onClose={cerrarModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography variant="h6" align="center" gutterBottom>
+                        {evento ? "Editar Evento" : "Reservar"}
+                    </Typography>
+                    <form onSubmit={handleSubmit}>
+                        <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
+                            <TextField
+                                id="standard-basic"
+                                name="nombre"
+                                label="Nombre"
+                                variant="standard"
+                                value={nombreDelEvento}
+                                onChange={(e) => setNombreDelEvento(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                name="lugar"
+                                label="Lugar"
+                                variant="standard"
+                                style={{ marginBottom: "1rem" }}
+                                value={nombreInstalacion}
+                                disabled
+                            />
+                            <TextField
+                                id="standard-basic"
+                                name="fecha Inicio"
+                                variant="standard"
+                                style={{ marginBottom: "1rem" }}
+                                type="date"
+                                value={fechaEventoIni}
+                                onChange={(e) => setFechaEventoIni(e.target.value)}
+                                disabled={!!evento}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                name="fecha Final"
+                                variant="standard"
+                                style={{ marginBottom: "1rem" }}
+                                type="date"
+                                value={fechaEventoFin}
+                                onChange={(e) => setFechaEventoFin(e.target.value)}
+                                disabled={!!evento}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                name="presupuesto"
+                                label="Presupuesto"
+                                variant="standard"
+                                value={presupuesto}
+                                onChange={(e) => setPresupuesto(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                                disabled={!!evento}
+                            />
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                <Button variant="text" onClick={cerrarModal}>Volver</Button>
+                                <Button type="submit" variant="text">{evento ? "Editar" : "Reservar"}</Button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </Box>
-        </Modal>
+                    </form>
+                </Box>
+            </Modal>
+
+            <Snackbar
+                anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+                open={mostrarMensajeExito.mostrar}
+                autoHideDuration={2500}
+                onClose={handleCloseSnackbar}
+            >
+                <SnackbarContent
+                    style={{ backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336' }}
+                    message={mostrarMensajeExito.mensaje}
+                />
+            </Snackbar>
+        </>
     )
 }
 
