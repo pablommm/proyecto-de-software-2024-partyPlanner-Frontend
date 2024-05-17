@@ -29,6 +29,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     const [nombreInstalacion, setNombreInstalacion] = useState('')
     const [fechaEventoIni, setFechaEventoIni] = useState('')
     const [fechaEventoFin, setFechaEventoFin] = useState('')
+    const [presupuesto, setPresupuesto] = useState('')
 
     useEffect(() => {
         if (evento) {
@@ -36,6 +37,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
             setNombreInstalacion(evento.lugar.nombreDeInstalacion)
             setFechaEventoIni(formatDate(evento.fechaEventoIni))
             setFechaEventoFin(formatDate(evento.fechaEventoFin))
+            setPresupuesto(evento.presupuesto)
         } else {
             setNombreInstalacion(nombreDeInstalacion)
             limpiarDatos()
@@ -55,6 +57,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
         nuevoEvento.fechaEventoIni = new Date(fechaEventoIni).toISOString()
         nuevoEvento.fechaEventoFin = new Date(fechaEventoFin).toISOString()
         nuevoEvento.owner = localStorage.getItem('usuId')
+        nuevoEvento.presupuesto = presupuesto
 
         try {
             if (evento && evento.id) {
@@ -77,6 +80,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
         setNombreDelEvento('')
         setFechaEventoIni('')
         setFechaEventoFin('')
+        setPresupuesto('')
     }
 
     const handleSubmit = (event) => {
@@ -134,6 +138,17 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                             value={fechaEventoFin}
                             onChange={(e) => setFechaEventoFin(e.target.value)}
                             disabled={!!evento}
+                        />
+                        <TextField
+                            id="standard-basic"
+                            name="presupuesto"
+                            label="Presupuesto"
+                            variant="standard"
+                            value={presupuesto}
+                            onChange={(e) => setPresupuesto(e.target.value)}
+                            style={{ marginBottom: "1rem" }}
+                            disabled={!!evento}
+
                         />
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>Volver</Button>
