@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import { Link } from 'react-router-dom'
 
+
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
@@ -120,6 +121,7 @@ const EventDetails = () => {
                     </IconButton>
                 </Grid>
                 <Grid item>
+
                     <IconButton
                         onClick={() => handleSectionClick('qr')}
                         sx={{
@@ -130,6 +132,7 @@ const EventDetails = () => {
                         <QrCodeTwoToneIcon />
                     </IconButton>
                 </Grid>
+
             </Grid>
             {section === 'evento' &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>

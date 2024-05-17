@@ -18,9 +18,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
 import { Button } from '@mui/material'
+import InstalacionModal from 'src/components/InstalacionModal'
 import HomeIcon from '@mui/icons-material/Home'
 import { useState, useEffect } from "react"
 import adminService from '../Services/admin.service'
+
 // Función para generar datos de ejemplo
 function generateData(rows) {
     const data = []
@@ -69,7 +71,6 @@ function UserTable({ users }) {
     )
 }
 
-// Definir PropTypes para el componente UserTable
 UserTable.propTypes = {
     users: PropTypes.arrayOf(
         PropTypes.shape({
@@ -119,8 +120,6 @@ function InstallationTable({ installations }) {
         </TableContainer>
     )
 }
-
-// Definir PropTypes para el componente InstallationTable
 InstallationTable.propTypes = {
     installations: PropTypes.arrayOf(
         PropTypes.shape({
@@ -135,7 +134,6 @@ InstallationTable.propTypes = {
 }
 
 export default function Dashboard() {
-    // Generar datos de ejemplo
     const users = generateData(20) // Cambia 20 al número deseado
     const installations = [
         {
@@ -146,8 +144,18 @@ export default function Dashboard() {
             amount: 1000,
             description: 'Descripción de la instalación 1',
         },
-        // Agregar más datos de instalaciones según sea necesario
     ]
+
+
+    const [openModal, setOpenModal] = useState(false)
+
+    const handleOpenModal = () => {
+        setOpenModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setOpenModal(false)
+    }
 
 
     useEffect(() => {
@@ -164,6 +172,7 @@ export default function Dashboard() {
         }
         numeroTotalDeEVENTOS()
     }, [])
+
 
     return (
         <div>
@@ -219,13 +228,14 @@ export default function Dashboard() {
 
                 {/* Sección de instalaciones */}
                 <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
+
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <InstallationTable installations={installations} />
                 </Paper>
-                {/* Botón para agregar una nueva instalación */}
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModal} sx={{ marginTop: 2 }}>
                     Agregar Instalación
                 </Button>
+                <InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} />
             </Container>
         </div>
     )

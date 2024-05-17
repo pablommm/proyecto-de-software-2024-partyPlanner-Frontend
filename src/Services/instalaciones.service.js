@@ -1,8 +1,19 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from '../Services/configuracion'
 
+
 class InstalacionService {
 
+    async crearInstalacion(nuevaInstalacion) {
+        try {
+            const crearInstalacion = await axios.post(`${REST_SERVER_URL}/CrearInstalacion`, nuevaInstalacion)
+            console.log('Instalacion creada:', crearInstalacion.data)
+            return crearInstalacion.data
+        } catch (error) {
+            console.error('Error creating instalacion:', error)
+            throw error
+        }
+    }
     async traerinstalaciones() {
         const instalaciones = await axios.get(`${REST_SERVER_URL}/Instalaciones`)
         return instalaciones.data
@@ -18,4 +29,5 @@ class InstalacionService {
         return instalacion.data
     }
 }
-export default InstalacionService
+const instalacionService = new InstalacionService()
+export default instalacionService

@@ -16,7 +16,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-}
+} 
 
 const formatDate = (dateString) => {
     const date = new Date(dateString)

@@ -56,7 +56,10 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
         } else {
             const respuestaCrearServicio = await servicioService.crearServicio(nuevoServicio)
             console.log("Respuesta de creación de servicio:", respuestaCrearServicio)
+            cerrarModal()
+            limpiarDatos()
         }
+
 
         cerrarModal()
     }
@@ -69,7 +72,7 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
 
 
     return (
-        <Modal
+        <Modal 
             open={openModal}
             onClose={cerrarModal}
             aria-labelledby="modal-modal-title"
