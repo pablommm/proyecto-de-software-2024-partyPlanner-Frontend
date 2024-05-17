@@ -16,7 +16,7 @@ const Eventos = () => {
             try {
                 const usuarioId = localStorage.getItem('usuId')
                 const listaDeEventos = await eventoService.getEventosById(usuarioId)
-                console.log("Lista de eventos:", listaDeEventos.data)
+                console.log("Lista de eventos:", listaDeEventos)
                 setEventos(listaDeEventos.data)
             } catch (error) {
                 console.error("Error al traer los eventos:", error)
