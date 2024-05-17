@@ -20,7 +20,19 @@ class EventoService {
         console.log('Eventos obtenidos en el service  para el usuario con ID', usuarioId, ':', eventosByid.data)
         return eventosByid
 
+    }
 
+    async editarEvento(eventoModificado) {
+        try {
+            console.log("llegue al service")
+            console.log("Editando evento con ID:")
+            const editarEvento = await axios.put(`${REST_SERVER_URL}/EditarEvento/${eventoModificado.id}`, eventoModificado)
+            console.log('Evento editado:', editarEvento.data)
+            return editarEvento.data
+        } catch (error) {
+            console.error('Error editing evento:', error)
+            throw error
+        }
     }
 }
 const eventoService = new EventoService()

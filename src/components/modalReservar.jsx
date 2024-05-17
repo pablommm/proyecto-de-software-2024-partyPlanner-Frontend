@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import PropTypes from 'prop-types'
 import { TextField, Button, Typography } from "@mui/material"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import eventoService from 'src/Services/evento.service'
 import { Evento } from 'src/Dominio/evento'
 
@@ -18,29 +18,59 @@ const style = {
     p: 4,
 }
 
-const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
+const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toISOString().split('T')[0] // Con esto puedo mostrar bien la hora 
+}
+
+const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     const { nombreDeInstalacion, id } = instalacion || {}
     const [nombreDelEvento, setNombreDelEvento] = useState('')
+    const [nombreInstalacion, setNombreInstalacion] = useState('')
     const [fechaEventoIni, setFechaEventoIni] = useState('')
     const [fechaEventoFin, setFechaEventoFin] = useState('')
 
-    const crearEventoNuevo = async () => {
+    useEffect(() => {
+        if (evento) {
+            setNombreDelEvento(evento.nombreDelEvento)
+            setNombreInstalacion(evento.lugar.nombreDeInstalacion)
+            setFechaEventoIni(formatDate(evento.fechaEventoIni))
+            setFechaEventoFin(formatDate(evento.fechaEventoFin))
+        } else {
+            setNombreInstalacion(nombreDeInstalacion)
+            limpiarDatos()
+        }
+    }, [evento, nombreDeInstalacion])
+
+    const crearOEditarEvento = async () => {
         const nuevoEvento = new Evento()
         nuevoEvento.nombreDelEvento = nombreDelEvento
-        nuevoEvento.Lugar = id
+
+        if (!evento) {
+            nuevoEvento.Lugar = id
+        } else {
+            nuevoEvento.Lugar = evento.Lugar
+        }
+
         nuevoEvento.fechaEventoIni = new Date(fechaEventoIni).toISOString()
         nuevoEvento.fechaEventoFin = new Date(fechaEventoFin).toISOString()
         nuevoEvento.owner = localStorage.getItem('usuId')
 
-        console.log("Nuevo evento:", nuevoEvento)
+        try {
+            if (evento && evento.id) {
+                nuevoEvento.id = evento.id
+                const respuestaEditarEvento = await eventoService.editarEvento(nuevoEvento)
+                console.log("Respuesta de edición de evento:", respuestaEditarEvento)
+            } else {
+                const respuestaCrearEvento = await eventoService.crearEvento(nuevoEvento)
+                console.log("Respuesta de creación de evento:", respuestaCrearEvento)
+            }
 
-        const respuestaCrearEvento = await eventoService.crearEvento(nuevoEvento)
-        console.log("Respuesta de creación de evento:", respuestaCrearEvento)
-        console.log("Evento creado exitosamente.")
-
-        // Cerrar el modal y limpiar los datos
-        cerrarModal()
-        limpiarDatos()
+            cerrarModal()
+            limpiarDatos()
+        } catch (error) {
+            console.error('Error al crear o editar el evento:', error)
+        }
     }
 
     const limpiarDatos = () => {
@@ -51,8 +81,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log("Submit del formulario")
-        crearEventoNuevo()
+        crearOEditarEvento()
     }
 
     return (
@@ -64,7 +93,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
         >
             <Box sx={style}>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Reservar
+                    {evento ? "Editar Evento" : "Reservar"}
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
@@ -83,7 +112,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
                             label="Lugar"
                             variant="standard"
                             style={{ marginBottom: "1rem" }}
-                            defaultValue={nombreDeInstalacion}
+                            value={nombreInstalacion}
+                            disabled
                         />
                         <TextField
                             id="standard-basic"
@@ -93,6 +123,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
                             type="date"
                             value={fechaEventoIni}
                             onChange={(e) => setFechaEventoIni(e.target.value)}
+                            disabled={!!evento}
                         />
                         <TextField
                             id="standard-basic"
@@ -102,10 +133,11 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
                             type="date"
                             value={fechaEventoFin}
                             onChange={(e) => setFechaEventoFin(e.target.value)}
+                            disabled={!!evento}
                         />
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>Volver</Button>
-                            <Button type="submit" variant="text">Reservar</Button>
+                            <Button type="submit" variant="text">{evento ? "Editar" : "Reservar"}</Button>
                         </div>
                     </div>
                 </form>
@@ -117,7 +149,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion }) => {
 BasicModal.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
-    instalacion: PropTypes.object
+    instalacion: PropTypes.object,
+    evento: PropTypes.object
 }
 
 export default BasicModal
