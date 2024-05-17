@@ -30,7 +30,13 @@ const LoginView = () => {
       localStorage.setItem('usuId', usuarioId.toString())
       console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
       setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-      navigate('/instalaciones')
+      if(usuarioObjeto.rol == "CONSUMIDOR"){
+        navigate('/instalaciones')
+     
+      }else {
+        navigate('/vistaAdmin')
+      
+    }
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
       setError('Error al iniciar sesión. Por favor, verifica tus datos.')

@@ -6,6 +6,7 @@ export class Evento {
         this.fechaEventoFin = ""
         this.serviciosAdquiridos = []
         this.owner = 0
+        this.presupuesto = 0
     }
 
     static fromJson(eventoJson) {

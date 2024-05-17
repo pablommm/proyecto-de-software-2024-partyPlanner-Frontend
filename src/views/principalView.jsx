@@ -30,7 +30,7 @@ const PrincipalView = () => {
     }
 
     return (
-        <Container className="main" style={{ marginBottom: "5rem" }}>
+        <Container className="main" style={{ marginBottom: "10rem" }}>
             <Grid container spacing={3} justifyContent="center">
                 {instalaciones.map((instalacion, index) =>
                     <Grid item key={index}>

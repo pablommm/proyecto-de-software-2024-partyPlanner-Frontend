@@ -12,7 +12,8 @@ import {
   Typography,
 } from '@material-ui/core'
 import TextField from '@mui/material/TextField'
-
+import CreditCardModal from '../components/creditCard'
+ 
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +85,14 @@ const UserProfile = () => {
     }
 }
 
+const handleRoomClick = () => {
+  setOpenModal(true)
+}
+
+const handleCloseModal = () => {
+  setOpenModal(false)
+}
+
   return (
 
     <Box className={classes.root} component="form"
@@ -139,10 +148,13 @@ const UserProfile = () => {
             style={{ margin: '10px', padding: '5px 10px' }}
           />          
 
+
           <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
             Saldo 
           </Typography>
-
+          <Button variant="contained" color="primary" fullWidth onClick={() => handleRoomClick()} >
+        PRUEBA 
+      </Button>
         </Grid>
 
       </Grid>
@@ -152,9 +164,12 @@ const UserProfile = () => {
       </Button>
 
 
+      <CreditCardModal openModal={openModal} cerrarModal={handleCloseModal}></CreditCardModal>
     </Box>
 
   )
 }
+
+
 
 export default UserProfile

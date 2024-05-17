@@ -18,7 +18,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
 import { Button } from '@mui/material'
-
+import HomeIcon from '@mui/icons-material/Home'
+import { useState, useEffect } from "react"
+import adminService from '../Services/admin.service'
 // Función para generar datos de ejemplo
 function generateData(rows) {
     const data = []
@@ -32,6 +34,7 @@ function generateData(rows) {
     return data
 }
 
+
 function UserTable({ users }) {
     const limitedUsers = users.slice(0, 10)
 
@@ -43,6 +46,7 @@ function UserTable({ users }) {
                         <TableCell>ID</TableCell>
                         <TableCell>Nombre</TableCell>
                         <TableCell>Eventos Creados</TableCell>
+                        
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -51,6 +55,12 @@ function UserTable({ users }) {
                             <TableCell>{user.id}</TableCell>
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.eventsCreated}</TableCell>
+                            <TableCell>
+                                
+                                <IconButton>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -92,6 +102,8 @@ function InstallationTable({ installations }) {
                             <TableCell>{installation.capacity}</TableCell>
                             <TableCell>{installation.amount}</TableCell>
                             <TableCell>{installation.description}</TableCell>
+                            
+                            
                             <TableCell>
                                 <IconButton>
                                     <EditIcon />
@@ -137,14 +149,33 @@ export default function Dashboard() {
         // Agregar más datos de instalaciones según sea necesario
     ]
 
+
+    useEffect(() => {
+        const numeroTotalDeEVENTOS = async () => {
+            try {
+                //const usuarioId = localStorage.getItem('usuId')
+
+                const totalEventos = await adminService.getTotalEventos()
+                console.log("Lista de eventos:", totalEventos)
+                //setEventos(listaDeEventos.data)
+            } catch (error) {
+                console.error("Error al traer los eventos:", error)
+            }
+        }
+        numeroTotalDeEVENTOS()
+    }, [])
+
     return (
         <div>
             {/* Barra de navegación */}
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar >
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Panel de Control
                     </Typography>
+                    <IconButton color="inherit" component={Link} to="/instalaciones">
+                        <HomeIcon />
+                    </IconButton>                    
                     {/* Icono de cerrar sesión */}
                     <IconButton color="inherit" component={Link} to="/login">
                         <LogoutIcon />

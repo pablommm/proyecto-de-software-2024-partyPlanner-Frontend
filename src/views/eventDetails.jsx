@@ -7,11 +7,18 @@ import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns'
 import QRCodeComponent from '../components/QR' // Importar la función format de date-fns
-
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
+import { Link } from 'react-router-dom'
 
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
+    const [selectedService, setSelectedService] = useState(null)
+
+
+
 
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
@@ -20,6 +27,7 @@ const EventDetails = () => {
 
     const handleCloseModal = () => {
         setOpenModal(false)
+        setSelectedService(null)
     }
 
     const handleSectionClick = (sectionName) => {
@@ -29,13 +37,17 @@ const EventDetails = () => {
     const handleOpenModal = () => {
         setOpenModal(true)
     }
-
-
-
+    const handleDeleteService = (serviceId) => {
+        console.log("Eliminar servicio con ID:", serviceId)
+    }
+    const handleEditService = (service) => {
+        setSelectedService(service)
+        setOpenModal(true)
+    }
 
 
     // Calcular el total gastado
-    const totalGastado = event.serviciosAdquiridos.reduce((total, servicio) => total + servicio.monto, 0)
+    const totalGastado = event.serviciosAdquiridos.reduce((total, servicio) => total + servicio.monto + (event.lugar.costoDeInstalacion - event.lugar.montoDeReserva), 0)
 
     return (
 
@@ -45,7 +57,11 @@ const EventDetails = () => {
             objectFit: 'cover',
             borderRadius: "0.5rem",
             paddingBottom: "2rem",
+            backgroundColor: "#ffffff"
         }}>
+            <IconButton component={Link} to="/eventos">
+                <ArrowCircleLeftIcon color="9d9d9d" sx={{ fontSize: 50 }}></ArrowCircleLeftIcon>
+            </IconButton>
             <CardMedia
                 component="img"
                 sx={{
@@ -53,11 +69,15 @@ const EventDetails = () => {
                     height: 'auto',
                     objectFit: 'cover',
                     borderRadius: "0.5rem",
-                    marginBottom: "1rem"
+                    marginBottom: "1rem",
+
+
                 }}
-                image="https://starwalk.space/gallery/images/what-is-space/1920x1080.jpg"
+                image={event.lugar.imagenPrincipal}
                 alt="Live from space album cover"
             />
+
+
             <Grid container spacing={2} justifyContent="center" alignContent="center" sx={{
                 marginBottom: "1rem",
                 padding: "1rem", // Espaciado interno para la fila
@@ -112,22 +132,22 @@ const EventDetails = () => {
                 </Grid>
             </Grid>
             {section === 'evento' &&
-                <Container sx={{ backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h5" sx={{ marginBottom: "0.5rem" }}>{event.nombreDelEvento}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Inicio: {format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Fin: {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
+                <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                    <Typography variant="h5" sx={{ color: "#000006", marginBottom: "0.5rem" }}>{event.nombreDelEvento}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006" }}>Inicio: {format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006" }}>Fin: {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
 
                 </Container>
             }
             {section === 'lugar' &&
-                <Container sx={{ backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h5" sx={{ marginBottom: "0.5rem" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Capacidad: {event.lugar.capacidadInstalacion}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Costo: {event.lugar.costoDeInstalacion}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Descripción: {event.lugar.descripcionDeInstalacion}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
-                    <Typography variant="body1" sx={{ color: "rgba(0, 0, 0, 0.6)" }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
+                <Container sx={{ fontWeight: 'bold', backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                    <Typography variant="h5" sx={{ color: "#000006", marginBottom: "0.5rem" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006" }}>Capacidad: {event.lugar.capacidadInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006 " }}>Costo: {event.lugar.costoDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006 " }}>Descripción: {event.lugar.descripcionDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006 " }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
+                    <Typography variant="body1" sx={{ color: "#000006 " }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
                 </Container>
             
             }
@@ -138,17 +158,20 @@ const EventDetails = () => {
             )}
 
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
-                <Container>
-                    <Typography variant="h6" sx={{ marginBottom: "1rem", display: 'flex', justifyContent: 'center' }}>Total Gastado: ${totalGastado}</Typography>
+                <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
                     <Grid container spacing={3} justifyContent="center" className="table-container">
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
                         </Grid>
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
                         </Grid>
-                        <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="h6" className="table-header" sx={{ fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
+                        </Grid>
+                        <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
                         </Grid>
                         
 
@@ -157,21 +180,28 @@ const EventDetails = () => {
 
                         {event.serviciosAdquiridos.map(servicio =>
                             <React.Fragment key={servicio.id}>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
-                                    <Typography variant="body2" sx={{ textAlign: "center" }}>{servicio.categoria}</Typography>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Typography variant={servicio.categoria.length > 6 ? "body2" : "body1"} sx={{ textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{servicio.categoria}</Typography>
                                 </Grid>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>{servicio.nombreDeServicio}</Typography>
                                 </Grid>
-                                <Grid item xs={4} sm={4} sx={{ borderBottom: "1px solid #ccc" }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>${servicio.monto}</Typography>
+                                </Grid>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <IconButton onClick={() => handleEditService(servicio)}><EditIcon /></IconButton>
+                                    <IconButton onClick={() => handleDeleteService(servicio.id)}><DeleteIcon /></IconButton>
+
                                 </Grid>
                             </React.Fragment>
                         )}
                     </Grid>
                 </Container>
+
             } 
             
+
 
 
             {section === 'servicios' && event.serviciosAdquiridos.length === 0 &&
@@ -180,22 +210,25 @@ const EventDetails = () => {
                 </Container>
             }
             {section === 'servicios' &&
-                <Fab color="primary" aria-label="add" sx={{ position: 'fixed', bottom: '1rem', right: '1rem' }} onClick={handleOpenModal}>
+                <Fab color="#000006" aria-label="add" sx={{ position: 'fixed', bottom: '1rem', right: '1rem' }} onClick={handleOpenModal}>
                     <Add />
                 </Fab>
             }
-            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} />
+            <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} servicio={selectedService}
+            />
         </Container>
     )
 }
 
 EventDetails.propTypes = {
     event: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         nombreDelEvento: PropTypes.string.isRequired,
         fechaEventoIni: PropTypes.string.isRequired,
         fechaEventoFin: PropTypes.string.isRequired,
         lugar: PropTypes.shape({
             nombreDeInstalacion: PropTypes.string.isRequired,
+            imagenPrincipal: PropTypes.string.isRequired,
             capacidadInstalacion: PropTypes.number.isRequired,
             costoDeInstalacion: PropTypes.number.isRequired,
             descripcionDeInstalacion: PropTypes.string.isRequired,
