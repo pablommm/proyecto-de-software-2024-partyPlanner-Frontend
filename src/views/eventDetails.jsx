@@ -15,7 +15,7 @@ const EventDetails = () => {
     const [selectedService, setSelectedService] = useState(null)
 
 
-   
+
 
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
@@ -52,10 +52,10 @@ const EventDetails = () => {
             objectFit: 'cover',
             borderRadius: "0.5rem",
             paddingBottom: "2rem",
-             backgroundColor: "#ffffff"
+            backgroundColor: "#ffffff"
         }}>
             <IconButton component={Link} to="/eventos">
-            <ArrowCircleLeftIcon color="9d9d9d" sx={{ fontSize: 50 }}></ArrowCircleLeftIcon>
+                <ArrowCircleLeftIcon color="9d9d9d" sx={{ fontSize: 50 }}></ArrowCircleLeftIcon>
             </IconButton>
             <CardMedia
                 component="img"
@@ -65,14 +65,14 @@ const EventDetails = () => {
                     objectFit: 'cover',
                     borderRadius: "0.5rem",
                     marginBottom: "1rem",
-                    
+
 
                 }}
-                image="https://starwalk.space/gallery/images/what-is-space/1920x1080.jpg"
+                image={event.lugar.imagenPrincipal}
                 alt="Live from space album cover"
             />
-            
-            
+
+
             <Grid container spacing={2} justifyContent="center" alignContent="center" sx={{
                 marginBottom: "1rem",
                 padding: "1rem", // Espaciado interno para la fila
@@ -125,7 +125,7 @@ const EventDetails = () => {
                 </Container>
             }
             {section === 'lugar' &&
-                <Container sx={{ fontWeight: 'bold',backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                <Container sx={{ fontWeight: 'bold', backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
                     <Typography variant="h5" sx={{ color: "#000006", marginBottom: "0.5rem" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006" }}>Capacidad: {event.lugar.capacidadInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Costo: {event.lugar.costoDeInstalacion}</Typography>
@@ -136,32 +136,32 @@ const EventDetails = () => {
             }
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center',fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
+                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
                     <Grid container spacing={3} justifyContent="center" className="table-container">
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006",fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
                         </Grid>
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006",fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Nombre</Typography>
                         </Grid>
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006",fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Monto</Typography>
                         </Grid>
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
-                            <Typography variant="subtitle1" className="table-header" sx={{color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
+                            <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
                         </Grid>
                         {event.serviciosAdquiridos.map(servicio =>
                             <React.Fragment key={servicio.id}>
-                                <Grid item xs={3} sm={3} sx={{ color: "#000006",borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant={servicio.categoria.length > 6 ? "body2" : "body1"} sx={{ textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{servicio.categoria}</Typography>
                                 </Grid>
-                                <Grid item xs={3} sm={3} sx={{ color: "#000006",borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>{servicio.nombreDeServicio}</Typography>
                                 </Grid>
-                                <Grid item xs={3} sm={3} sx={{ color: "#000006",borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant="body2" sx={{ textAlign: "center" }}>${servicio.monto}</Typography>
                                 </Grid>
-                                <Grid item xs={3} sm={3} sx={{ color: "#000006",borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <IconButton onClick={() => handleEditService(servicio)}><EditIcon /></IconButton>
                                     <IconButton onClick={() => handleDeleteService(servicio.id)}><DeleteIcon /></IconButton>
 
@@ -197,6 +197,7 @@ EventDetails.propTypes = {
         fechaEventoFin: PropTypes.string.isRequired,
         lugar: PropTypes.shape({
             nombreDeInstalacion: PropTypes.string.isRequired,
+            imagenPrincipal: PropTypes.string.isRequired,
             capacidadInstalacion: PropTypes.number.isRequired,
             costoDeInstalacion: PropTypes.number.isRequired,
             descripcionDeInstalacion: PropTypes.string.isRequired,
