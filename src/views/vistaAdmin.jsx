@@ -19,7 +19,9 @@ import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
 import { Button } from '@mui/material'
 import InstalacionModal from 'src/components/InstalacionModal'
-import { useState } from 'react'
+import HomeIcon from '@mui/icons-material/Home'
+import { useState, useEffect } from "react"
+import adminService from '../Services/admin.service'
 
 // Función para generar datos de ejemplo
 function generateData(rows) {
@@ -33,6 +35,7 @@ function generateData(rows) {
     }
     return data
 }
+
 
 function UserTable({ users }) {
     const limitedUsers = users.slice(0, 10)
@@ -143,6 +146,7 @@ export default function Dashboard() {
         },
     ]
 
+
     const [openModal, setOpenModal] = useState(false)
 
     const handleOpenModal = () => {
@@ -153,14 +157,34 @@ export default function Dashboard() {
         setOpenModal(false)
     }
 
+
+    useEffect(() => {
+        const numeroTotalDeEVENTOS = async () => {
+            try {
+                //const usuarioId = localStorage.getItem('usuId')
+
+                const totalEventos = await adminService.getTotalEventos()
+                console.log("Lista de eventos:", totalEventos)
+                //setEventos(listaDeEventos.data)
+            } catch (error) {
+                console.error("Error al traer los eventos:", error)
+            }
+        }
+        numeroTotalDeEVENTOS()
+    }, [])
+
+
     return (
         <div>
             {/* Barra de navegación */}
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar >
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Panel de Control
                     </Typography>
+                    <IconButton color="inherit" component={Link} to="/instalaciones">
+                        <HomeIcon />
+                    </IconButton>                    
                     {/* Icono de cerrar sesión */}
                     <IconButton color="inherit" component={Link} to="/login">
                         <LogoutIcon />
