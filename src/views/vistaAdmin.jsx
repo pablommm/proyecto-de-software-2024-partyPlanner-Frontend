@@ -19,7 +19,8 @@ import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
 import { Button } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-
+import { useState, useEffect } from "react"
+import adminService from '../Services/admin.service'
 // Función para generar datos de ejemplo
 function generateData(rows) {
     const data = []
@@ -32,6 +33,7 @@ function generateData(rows) {
     }
     return data
 }
+
 
 function UserTable({ users }) {
     const limitedUsers = users.slice(0, 10)
@@ -146,6 +148,22 @@ export default function Dashboard() {
         },
         // Agregar más datos de instalaciones según sea necesario
     ]
+
+
+    useEffect(() => {
+        const numeroTotalDeEVENTOS = async () => {
+            try {
+                //const usuarioId = localStorage.getItem('usuId')
+
+                const totalEventos = await adminService.getTotalEventos()
+                console.log("Lista de eventos:", totalEventos)
+                //setEventos(listaDeEventos.data)
+            } catch (error) {
+                console.error("Error al traer los eventos:", error)
+            }
+        }
+        numeroTotalDeEVENTOS()
+    }, [])
 
     return (
         <div>
