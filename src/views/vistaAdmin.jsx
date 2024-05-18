@@ -150,7 +150,8 @@ export default function Dashboard() {
     ]
 
     const [numeroTotalDeEVENTOS, setnumeroTotalDeEVENTOS] = useState(0)
-
+    const [traerEventosActivos, setTraerEventosActivos] = useState(0)
+    const [traerTodosLosUsuariosReg, setTraerTodosLosUsuariosReg] = useState(0)
     useEffect(() => {
         const numeroTotalDeEVENTOS = async () => {
             try {
@@ -163,6 +164,30 @@ export default function Dashboard() {
                 console.error("Error al traer los eventos:", error)
             }
         }
+        const traerEventosActivos = async () => {
+            try {
+               // const usuarioId = localStorage.getItem('usuId')
+                const eventActive = await adminService.getTotalEventosActivos()
+                console.log("Lista de eventos:", eventActive.data)
+               setTraerEventosActivos(eventActive.data)
+            } catch (error) {
+                console.error("Error al traer los eventos:", error)
+            }
+        }
+
+        const traerTodosLosUsuariosReg = async () => {
+            try {
+               // const usuarioId = localStorage.getItem('usuId')
+                const userNumber = await adminService.getTotalUser()
+                console.log("Lista de eventos:", userNumber.data)
+               setTraerTodosLosUsuariosReg(userNumber.data)
+            } catch (error) {
+                console.error("Error al traer los eventos:", error)
+            }
+        }
+     
+        traerEventosActivos()
+        traerTodosLosUsuariosReg()
         numeroTotalDeEVENTOS()
     }, [])
 
@@ -197,13 +222,13 @@ export default function Dashboard() {
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#FFA726', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Total de Eventos Activos</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>30</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{traerEventosActivos}</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#1976D2', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Usuarios Registrados</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>459</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{traerTodosLosUsuariosReg}</Typography>
                         </Paper>
                     </Grid>
                 </Grid>
