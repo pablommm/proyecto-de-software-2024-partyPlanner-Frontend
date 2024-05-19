@@ -234,7 +234,7 @@ export default function Dashboard() {
                 </Grid>
 
                 {/* Sección de usuarios */}
-                <Typography variant="h4" sx={{ marginTop: 4 }}>Usuarios</Typography>
+                <Typography variant="h4" sx={{ marginTop: 4, color:'#000000' }}>Usuarios</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <UserTable users={users} />
                 </Paper>
@@ -244,7 +244,7 @@ export default function Dashboard() {
                 </Button>
 
                 {/* Sección de instalaciones */}
-                <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
+                <Typography variant="h4" sx={{ marginTop: 4, color:'#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <InstallationTable installations={installations} />
                 </Paper>
