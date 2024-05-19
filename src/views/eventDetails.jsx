@@ -11,7 +11,9 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import { Link } from 'react-router-dom'
-
+import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
+import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 const EventDetails = () => {
     const location = useLocation()
@@ -162,7 +164,13 @@ const EventDetails = () => {
 
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
+                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado} </Typography>
+                    <CheckCircleTwoToneIcon sx={{ color: '#00913f',fontSize: 40 }}></CheckCircleTwoToneIcon>esta todo bien
+                    <WarningTwoToneIcon sx={{ color: '#FFD300' ,fontSize: 40}}></WarningTwoToneIcon> al limite de tu presupuesto
+                    <ReportTwoToneIcon sx={{ color: '#FF0000' ,fontSize: 40}}></ReportTwoToneIcon> te pasaste del presupuesto
+                    
+                    
+                    
                     <Grid container spacing={3} justifyContent="center" className="table-container">
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
