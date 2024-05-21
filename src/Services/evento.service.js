@@ -34,6 +34,12 @@ class EventoService {
             throw error
         }
     }
+
+
+    async traerServiciosAdquiridos(eventoId) {
+        const servicios = await axios.get(`${REST_SERVER_URL}/serviciosAdquiridos/${eventoId}`)
+        return servicios.data
+    }
 }
 const eventoService = new EventoService()
 export default eventoService

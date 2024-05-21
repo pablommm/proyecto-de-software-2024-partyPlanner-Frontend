@@ -1,8 +1,8 @@
 import { CardMedia, Container, Grid, IconButton, Typography, Fab } from "@mui/material"
-import { EventNote, AccountBalance, LocationOn, Add} from "@mui/icons-material"
+import { EventNote, AccountBalance, LocationOn, Add } from "@mui/icons-material"
 import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
 import BasicModalService from 'src/components/modalServicio'
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom"
 import { format } from 'date-fns'
@@ -14,24 +14,36 @@ import { Link } from 'react-router-dom'
 import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
+import eventoService from "src/Services/evento.service"
 
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
     const [selectedService, setSelectedService] = useState(null)
-
-
-
-
     const [openModal, setOpenModal] = useState(false)
     const [section, setSection] = useState(null)
+    const [services, setServices] = useState([])
     const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
 
+    const traerServiciosAdquiridos = async () => {
+        try {
+            const response = await eventoService.traerServiciosAdquiridos(event.id)
+            setServices(response)
+        } catch (error) {
+            console.error('Error al traer los servicios adquiridos:', error)
+        }
+    }
+
+    useEffect(() => {
+        traerServiciosAdquiridos()
+    }, [event.id])
 
     const handleCloseModal = () => {
         setOpenModal(false)
         setSelectedService(null)
+        traerServiciosAdquiridos()
     }
+
 
     const handleSectionClick = (sectionName) => {
         setSection(sectionName === section ? null : sectionName)
@@ -154,23 +166,20 @@ const EventDetails = () => {
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Localidad De Instalacion: {event.lugar.localidadDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Monto De Reserva: {event.lugar.montoDeReserva}</Typography>
                 </Container>
-            
+
             }
-            {section === 'qr' && (
+            {section === 'qr' &&
                 <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <QRCodeComponent value={qrContent} size={256} />
                 </Container>
-            )}
+            }
 
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado} </Typography>
-                    <CheckCircleTwoToneIcon sx={{ color: '#00913f',fontSize: 40 }}></CheckCircleTwoToneIcon>esta todo bien
-                    <WarningTwoToneIcon sx={{ color: '#FFD300' ,fontSize: 40}}></WarningTwoToneIcon> al limite de tu presupuesto
-                    <ReportTwoToneIcon sx={{ color: '#FF0000' ,fontSize: 40}}></ReportTwoToneIcon> te pasaste del presupuesto
-                    
-                    
-                    
+                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
+                    <CheckCircleTwoToneIcon sx={{ color: '#00913f', fontSize: 40 }} /> Esta todo bien
+                    <WarningTwoToneIcon sx={{ color: '#FFD300', fontSize: 40 }} /> Al limite de tu presupuesto
+                    <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }} /> Excediste tu presupuesto
                     <Grid container spacing={3} justifyContent="center" className="table-container">
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>
@@ -184,12 +193,7 @@ const EventDetails = () => {
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Acciones</Typography>
                         </Grid>
-                        
-
-
-
-
-                        {event.serviciosAdquiridos.map(servicio =>
+                        {services.map(servicio =>
                             <React.Fragment key={servicio.id}>
                                 <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Typography variant={servicio.categoria.length > 6 ? "body2" : "body1"} sx={{ textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{servicio.categoria}</Typography>
@@ -203,17 +207,12 @@ const EventDetails = () => {
                                 <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <IconButton onClick={() => handleEditService(servicio)}><EditIcon /></IconButton>
                                     <IconButton onClick={() => handleDeleteService(servicio.id)}><DeleteIcon /></IconButton>
-
                                 </Grid>
                             </React.Fragment>
                         )}
                     </Grid>
                 </Container>
-
-            } 
-            
-
-
+            }
 
             {section === 'servicios' && event.serviciosAdquiridos.length === 0 &&
                 <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>

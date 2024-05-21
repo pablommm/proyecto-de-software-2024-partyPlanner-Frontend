@@ -11,17 +11,18 @@ const Eventos = () => {
     const [openModal, setOpenModal] = useState(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const traerEventos = async () => {
-            try {
-                const usuarioId = localStorage.getItem('usuId')
-                const listaDeEventos = await eventoService.getEventosById(usuarioId)
-                console.log("Lista de eventos:", listaDeEventos)
-                setEventos(listaDeEventos.data)
-            } catch (error) {
-                console.error("Error al traer los eventos:", error)
-            }
+    const traerEventos = async () => {
+        try {
+            const usuarioId = localStorage.getItem('usuId')
+            const listaDeEventos = await eventoService.getEventosById(usuarioId)
+            console.log("Lista de eventos:", listaDeEventos)
+            setEventos(listaDeEventos.data)
+        } catch (error) {
+            console.error("Error al traer los eventos:", error)
         }
+    }
+
+    useEffect(() => {
         traerEventos()
     }, [])
 
@@ -38,6 +39,7 @@ const Eventos = () => {
     const handleCloseModal = () => {
         setOpenModal(false)
         setSelectedEvento(null)
+        traerEventos()
     }
 
     return (
