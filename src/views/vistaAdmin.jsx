@@ -1,84 +1,11 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom' // Importa Link desde react-router-dom
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
-import TableContainer from '@mui/material/TableContainer'
-import Table from '@mui/material/Table'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableRow from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
-import IconButton from '@mui/material/IconButton'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AddIcon from '@mui/icons-material/Add'
-import LogoutIcon from '@mui/icons-material/Logout' // Importa el icono de Logout
-import { Button } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
-import { useState, useEffect } from "react"
+import { Link } from 'react-router-dom'
+import { AppBar, Toolbar, Typography, Container, Grid, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, IconButton, Button } from '@mui/material'
+import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon, Logout as LogoutIcon, Home as HomeIcon } from '@mui/icons-material'
+import { useState, useEffect } from 'react'
 import adminService from '../Services/admin.service'
-// Función para generar datos de ejemplo
-function generateData(rows) {
-    const data = []
-    for (let i = 0; i < rows; i++) {
-        data.push({
-            id: i + 1,
-            name: `User ${i + 1}`,
-            eventsCreated: Math.floor(Math.random() * 100),
-        })
-    }
-    return data
-}
-
-
-function UserTable({ users }) {
-    const limitedUsers = users.slice(0, 10)
-
-    return (
-        <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Nombre</TableCell>
-                        <TableCell>Eventos Creados</TableCell>
-                        
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {limitedUsers.map((user) =>
-                        <TableRow key={user.id}>
-                            <TableCell>{user.id}</TableCell>
-                            <TableCell>{user.name}</TableCell>
-                            <TableCell>{user.eventsCreated}</TableCell>
-                            <TableCell>
-                                
-                                <IconButton>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    )
-}
-
-// Definir PropTypes para el componente UserTable
-UserTable.propTypes = {
-    users: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            eventsCreated: PropTypes.number.isRequired,
-        })
-    ).isRequired,
-}
+import UserTable from 'src/components/tablaDeUsuarios'
+import usuarioService from 'src/Services/usuario.service'
 
 function InstallationTable({ installations }) {
     return (
@@ -102,8 +29,6 @@ function InstallationTable({ installations }) {
                             <TableCell>{installation.capacity}</TableCell>
                             <TableCell>{installation.amount}</TableCell>
                             <TableCell>{installation.description}</TableCell>
-                            
-                            
                             <TableCell>
                                 <IconButton>
                                     <EditIcon />
@@ -120,7 +45,6 @@ function InstallationTable({ installations }) {
     )
 }
 
-// Definir PropTypes para el componente InstallationTable
 InstallationTable.propTypes = {
     installations: PropTypes.arrayOf(
         PropTypes.shape({
@@ -135,8 +59,6 @@ InstallationTable.propTypes = {
 }
 
 export default function Dashboard() {
-    // Generar datos de ejemplo
-    const users = generateData(20) // Cambia 20 al número deseado
     const installations = [
         {
             id: 1,
@@ -146,109 +68,108 @@ export default function Dashboard() {
             amount: 1000,
             description: 'Descripción de la instalación 1',
         },
-        // Agregar más datos de instalaciones según sea necesario
     ]
 
-    const [numeroTotalDeEVENTOS, setnumeroTotalDeEVENTOS] = useState(0)
-    const [traerEventosActivos, setTraerEventosActivos] = useState(0)
-    const [traerTodosLosUsuariosReg, setTraerTodosLosUsuariosReg] = useState(0)
+    const [numeroTotalDeEventos, setNumeroTotalDeEventos] = useState(0)
+    const [eventosActivos, setEventosActivos] = useState(0)
+    const [totalUsuarios, setTotalUsuarios] = useState(0)
+    const [usuarios, setUsuarios] = useState([])
+
     useEffect(() => {
-        const numeroTotalDeEVENTOS = async () => {
+        const fetchUsuarios = async () => {
             try {
-                //const usuarioId = localStorage.getItem('usuId')
+                const usuariosData = await usuarioService.traerUsuarios()
+                setUsuarios(usuariosData)
+            } catch (error) {
+                console.error("Error al traer los usuarios:", error)
+            }
+        }
+        fetchUsuarios()
+    }, [])
 
+    useEffect(() => {
+        const fetchTotalEventos = async () => {
+            try {
                 const totalEventos = await adminService.getTotalEventos()
-                console.log("Lista de eventos:", totalEventos.data)
-                setnumeroTotalDeEVENTOS(totalEventos.data)
-            } catch (error) {
-                console.error("Error al traer los eventos:", error)
-            }
-        }
-        const traerEventosActivos = async () => {
-            try {
-               // const usuarioId = localStorage.getItem('usuId')
-                const eventActive = await adminService.getTotalEventosActivos()
-                console.log("Lista de eventos:", eventActive.data)
-               setTraerEventosActivos(eventActive.data)
+                setNumeroTotalDeEventos(totalEventos.data)
             } catch (error) {
                 console.error("Error al traer los eventos:", error)
             }
         }
 
-        const traerTodosLosUsuariosReg = async () => {
+        const fetchEventosActivos = async () => {
             try {
-               // const usuarioId = localStorage.getItem('usuId')
-                const userNumber = await adminService.getTotalUser()
-                console.log("Lista de eventos:", userNumber.data)
-               setTraerTodosLosUsuariosReg(userNumber.data)
+                const eventActive = await adminService.getTotalEventosActivos()
+                setEventosActivos(eventActive.data)
             } catch (error) {
                 console.error("Error al traer los eventos:", error)
             }
         }
-     
-        traerEventosActivos()
-        traerTodosLosUsuariosReg()
-        numeroTotalDeEVENTOS()
+
+        const fetchTotalUsuarios = async () => {
+            try {
+                const userNumber = await adminService.getTotalUser()
+                setTotalUsuarios(userNumber.data)
+            } catch (error) {
+                console.error("Error al traer los usuarios:", error)
+            }
+        }
+
+        fetchTotalEventos()
+        fetchEventosActivos()
+        fetchTotalUsuarios()
     }, [])
 
     return (
         <div>
-            {/* Barra de navegación */}
             <AppBar position="static">
-                <Toolbar >
+                <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Panel de Control
                     </Typography>
                     <IconButton color="inherit" component={Link} to="/instalaciones">
                         <HomeIcon />
-                    </IconButton>                    
-                    {/* Icono de cerrar sesión */}
+                    </IconButton>
                     <IconButton color="inherit" component={Link} to="/login">
                         <LogoutIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
 
-            {/* Contenido del panel */}
-            <Container sx={{ paddingTop: 4, paddingBottom: 4 }}> {/* Agrega margen inferior para separar del borde inferior */}
-                {/* Sección de resumen */}
+            <Container sx={{ paddingTop: 4, paddingBottom: 4 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#66BB6A', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Total de Eventos Creados</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{numeroTotalDeEVENTOS}</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{numeroTotalDeEventos}</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#FFA726', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Total de Eventos Activos</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{traerEventosActivos}</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{eventosActivos}</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ padding: 2, backgroundColor: '#1976D2', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Typography variant="h6">Usuarios Registrados</Typography>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{traerTodosLosUsuariosReg}</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{totalUsuarios}</Typography>
                         </Paper>
                     </Grid>
                 </Grid>
 
-                {/* Sección de usuarios */}
-                <Typography variant="h4" sx={{ marginTop: 4, color:'#000000' }}>Usuarios</Typography>
+                <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Usuarios</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
-                    <UserTable users={users} />
+                    <UserTable users={usuarios} />
                 </Paper>
-                {/* Botón para agregar un nuevo usuario */}
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
                     Agregar Usuario
                 </Button>
 
-                {/* Sección de instalaciones */}
-                <Typography variant="h4" sx={{ marginTop: 4, color:'#000000' }}>Instalaciones</Typography>
+                <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <InstallationTable installations={installations} />
                 </Paper>
-                {/* Botón para agregar una nueva instalación */}
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
                     Agregar Instalación
                 </Button>

@@ -227,6 +227,7 @@ const EventDetails = () => {
             <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} servicio={selectedService}
             />
         </Container>
+
     )
 }
 

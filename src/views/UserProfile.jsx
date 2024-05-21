@@ -2,7 +2,7 @@
 import { useContext, useState } from 'react'
 import UserContext from 'src/Services/context'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
   Avatar,
   Box,
@@ -10,10 +10,10 @@ import {
   CardContent,
   Grid,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import TextField from '@mui/material/TextField'
 import CreditCardModal from '../components/creditCard'
- 
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfile = () => {
   const classes = useStyles()
-  const[user] = useContext(UserContext)
+  const [user] = useContext(UserContext)
   //const[user,setUser]= useState(new Usuario())
 
   const [nombreYApellido, setNombreYApellido] = useState('')
@@ -72,26 +72,26 @@ const UserProfile = () => {
   const [pass, setPass] = useState("")
 
 
-  const actualizarUsuario = async() => {
-    try {      
-      const usuarioObjeto = await usuarioService.actualizarUsuario(nombreYApellido,username,pass)    
+  const actualizarUsuario = async () => {
+    try {
+      const usuarioObjeto = await usuarioService.actualizarUsuario(nombreYApellido, username, pass)
       const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
-      localStorage.setItem('usuId', usuarioId.toString())      
+      localStorage.setItem('usuId', usuarioId.toString())
       setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-      
+
     } catch (error) {
       console.error('Error al actualizar usuario', error.message)
       setError('Error al actualizar usuario. Por favor, verifica tus datos.')
     }
-}
+  }
 
-const handleRoomClick = () => {
-  setOpenModal(true)
-}
+  const handleRoomClick = () => {
+    setOpenModal(true)
+  }
 
-const handleCloseModal = () => {
-  setOpenModal(false)
-}
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   return (
 
@@ -112,52 +112,52 @@ const handleCloseModal = () => {
         </Grid>
       </CardContent>
       <form
-          onSubmit={(event) => {
-            event.preventDefault()
-            actualizarUsuario()
-          }}
-        >
-      <Grid container className={classes.statsGrid}>
-        <Grid item className={classes.userInfo} >
+        onSubmit={(event) => {
+          event.preventDefault()
+          actualizarUsuario()
+        }}
+      >
+        <Grid container className={classes.statsGrid}>
+          <Grid item className={classes.userInfo} >
 
-          <TextField
-            className={classes.campo}
-            required
-            id="outlined-required"
-            label="Nombre del usuario"
-            defaultValue= {user.nombreYApellido}
-            onChange={(event) => setNombreYApellido(event.target.value)}
-            style={{ margin: '10px', padding: '5px 10px' }}
-          />
-          <TextField
-            className={classes.campo}
-            required
-            id="outlined-required"
-            label="Username"
-            defaultValue={user.username}
-            onChange={(event) => setUsername(event.target.defaultValue)}
-            style={{ margin: '10px', padding: '5px 10px' }}
-          />
-          <TextField
-            className={classes.campo}
-            required
-            id="outlined-required"
-            label="contrasenia"
-            defaultValue={user.contrasenia}
-            onChange={(event) => setPass(event.target.value)}
-            style={{ margin: '10px', padding: '5px 10px' }}
-          />          
+            <TextField
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="Nombre del usuario"
+              defaultValue={user.nombreYApellido}
+              onChange={(event) => setNombreYApellido(event.target.value)}
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
+            <TextField
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="Username"
+              defaultValue={user.username}
+              onChange={(event) => setUsername(event.target.defaultValue)}
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
+            <TextField
+              className={classes.campo}
+              required
+              id="outlined-required"
+              label="contrasenia"
+              defaultValue={user.contrasenia}
+              onChange={(event) => setPass(event.target.value)}
+              style={{ margin: '10px', padding: '5px 10px' }}
+            />
 
 
-          <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-            Saldo 
-          </Typography>
-          <Button variant="contained" color="primary" fullWidth onClick={() => handleRoomClick()} >
-        PRUEBA 
-      </Button>
+            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+              Saldo
+            </Typography>
+            <Button variant="contained" color="primary" fullWidth onClick={() => handleRoomClick()} >
+              PRUEBA
+            </Button>
+          </Grid>
+
         </Grid>
-
-      </Grid>
       </form>
       <Button variant="contained" color="primary" fullWidth type="submit">
         Guardar Cambios
