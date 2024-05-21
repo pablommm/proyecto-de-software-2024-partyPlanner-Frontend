@@ -24,6 +24,8 @@ const EventDetails = () => {
     const [section, setSection] = useState(null)
     const [services, setServices] = useState([])
     const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
+    const [totalGastado, setTotalGastado] = useState(0)
+
 
     const traerServiciosAdquiridos = async () => {
         try {
@@ -59,10 +61,11 @@ const EventDetails = () => {
         setSelectedService(service)
         setOpenModal(true)
     }
+    useEffect(() => {
+        const total = services.reduce((total, servicio) => total + servicio.monto, 0)
+        setTotalGastado(total)
+    }, [services])
 
-
-    // Calcular el total gastado
-    const totalGastado = event.serviciosAdquiridos.reduce((total, servicio) => total + servicio.monto + (event.lugar.costoDeInstalacion - event.lugar.montoDeReserva), 0)
 
     return (
 
@@ -95,9 +98,9 @@ const EventDetails = () => {
 
             <Grid container spacing={2} justifyContent="center" alignContent="center" sx={{
                 marginBottom: "1rem",
-                padding: "1rem", // Espaciado interno para la fila
-                width: "100%", // Abarcar todo el ancho
-                textAlign: "center" // Centrar los íconos horizontalmente
+                padding: "1rem",
+                width: "100%",
+                textAlign: "center"
 
 
             }}>
@@ -176,7 +179,9 @@ const EventDetails = () => {
 
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
-                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>Total Gastado: ${totalGastado}</Typography>
+                    <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>
+                        Total Gastado: ${totalGastado}
+                    </Typography>
                     <CheckCircleTwoToneIcon sx={{ color: '#00913f', fontSize: 40 }} /> Esta todo bien
                     <WarningTwoToneIcon sx={{ color: '#FFD300', fontSize: 40 }} /> Al limite de tu presupuesto
                     <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }} /> Excediste tu presupuesto
