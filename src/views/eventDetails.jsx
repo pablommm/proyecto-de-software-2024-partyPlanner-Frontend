@@ -44,6 +44,7 @@ const EventDetails = () => {
         setOpenModal(false)
         setSelectedService(null)
         traerServiciosAdquiridos()
+        consultaEstadoPresupuesto(event)
     }
 
 
@@ -66,6 +67,26 @@ const EventDetails = () => {
         setTotalGastado(total)
     }, [services])
 
+        function consultaEstadoPresupuesto(event){
+            var estadoPresupuesto = event.estadoPresupuesto
+            console.log("estoy mostrado el evento",event)
+            console.log("estoy mostrado estado del presupuesto",estadoPresupuesto)
+            var componenteAviso = 0
+
+           
+           if (estadoPresupuesto === 1){
+                componenteAviso = <CheckCircleTwoToneIcon sx={{ color: '#00913f', fontSize: 40 }} Estas dentro de tu presupuesto />
+            }
+            else if (estadoPresupuesto === 2){
+                componenteAviso = <WarningTwoToneIcon sx={{ color: '#FFD300', fontSize: 40 }} te has pasado de tu presupuesto />
+            }
+            else if (estadoPresupuesto === 3){
+                componenteAviso = <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }}> te has pasado de tu presupuesto</ReportTwoToneIcon>
+            }   
+             
+            return componenteAviso    
+        }
+        
 
     return (
 
@@ -180,11 +201,11 @@ const EventDetails = () => {
             {section === 'servicios' && event.serviciosAdquiridos.length > 0 &&
                 <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
                     <Typography variant="h6" sx={{ color: "#000006", marginBottom: "1rem", textAlign: 'center', fontWeight: 'bold' }}>
-                        Total Gastado: ${totalGastado}
+                        Total Gastado: ${totalGastado}  {consultaEstadoPresupuesto(event)}
                     </Typography>
-                    <CheckCircleTwoToneIcon sx={{ color: '#00913f', fontSize: 40 }} /> Esta todo bien
-                    <WarningTwoToneIcon sx={{ color: '#FFD300', fontSize: 40 }} /> Al limite de tu presupuesto
-                    <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }} /> Excediste tu presupuesto
+                    
+
+
                     <Grid container spacing={3} justifyContent="center" className="table-container">
                         <Grid item xs={3} sm={3} sx={{ borderBottom: "1px solid #ccc" }}>
                             <Typography variant="subtitle1" className="table-header" sx={{ color: "#000006", fontWeight: 'bold', textAlign: "center" }}>Categoría</Typography>

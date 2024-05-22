@@ -7,6 +7,7 @@ export class Evento {
         this.serviciosAdquiridos = []
         this.owner = 0
         this.presupuesto = 0
+        this.estadoPresupuesto = 1
     }
 
     static fromJson(eventoJson) {
