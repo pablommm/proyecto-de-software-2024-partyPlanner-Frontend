@@ -1,11 +1,12 @@
-export class Usuario{
-    constructor(){
+export class Usuario {
+    constructor() {
         this.nombreYApellido = ""
         this.username = ""
         this.contrasenia = ""
         this.eventosRealizados = []
         this.rol = ""
-        this.saldo= 0
+        this.saldo = 0
+        this.activo = ""
     }
     static fromJson(UsuarioJSON) {
         const result = Object.assign(new Usuario(), UsuarioJSON)
@@ -13,8 +14,8 @@ export class Usuario{
     }
 }
 
-export class UsuarioRegistro{
-    constructor(){
+export class UsuarioRegistro {
+    constructor() {
         this.nombre = ""
         this.apellido = ""
         this.usuario = ""
@@ -26,8 +27,8 @@ export class UsuarioRegistro{
     }
 }
 
-export class UsuarioActualizado{
-    constructor(){
+export class UsuarioActualizado {
+    constructor() {
         this.nombre = ""
         this.apellido = ""
         this.usuario = ""
