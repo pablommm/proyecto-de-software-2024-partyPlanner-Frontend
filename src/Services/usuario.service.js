@@ -38,6 +38,15 @@ class UsuarioService {
         }
 
     }
+    async desactivarUsuario(id) {
+        try {
+            const response = await axios.delete(`${REST_SERVER_URL}/deleUsuario/${id}`)
+            return response.data
+        } catch (error) {
+            console.error('Error al desactivar el usuario:', error)
+            throw error
+        }
+    }
 
 
 }

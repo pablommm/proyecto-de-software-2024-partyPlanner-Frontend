@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, Container, Grid, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, IconButton, Button } from '@mui/material'
+import { AppBar, Toolbar, Typography, Container, Grid, Paper, IconButton, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon, Logout as LogoutIcon, Home as HomeIcon } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import adminService from '../Services/admin.service'
-import UserTable from 'src/components/tablaDeUsuarios'
+import UserTable from 'src/components/tablaDeUsuarios' // Ajusta la ruta según sea necesario
 import usuarioService from 'src/Services/usuario.service'
 
 function InstallationTable({ installations }) {
@@ -75,18 +75,18 @@ export default function Dashboard() {
     const [totalUsuarios, setTotalUsuarios] = useState(0)
     const [usuarios, setUsuarios] = useState([])
 
-    useEffect(() => {
-        const fetchUsuarios = async () => {
-            try {
-                const usuariosData = await usuarioService.traerUsuarios()
-                setUsuarios(usuariosData)
-            } catch (error) {
-                console.error("Error al traer los usuarios:", error)
-            }
+    const fetchUsuarios = async () => {
+        try {
+            const usuariosData = await usuarioService.traerUsuarios()
+            setUsuarios(usuariosData)
+        } catch (error) {
+            console.error("Error al traer los usuarios:", error)
         }
-        fetchUsuarios()
-    }, [])
+    }
 
+    useEffect(() => {
+        fetchUsuarios() // Llama a fetchUsuarios al montar el componente
+    }, [])
     useEffect(() => {
         const fetchTotalEventos = async () => {
             try {
@@ -160,7 +160,8 @@ export default function Dashboard() {
 
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Usuarios</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
-                    <UserTable users={usuarios} />
+                    {/* Asegúrate de pasar fetchUsuarios como actualizarLista */}
+                    <UserTable users={usuarios} actualizarLista={fetchUsuarios} />
                 </Paper>
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
                     Agregar Usuario
@@ -177,3 +178,4 @@ export default function Dashboard() {
         </div>
     )
 }
+

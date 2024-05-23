@@ -19,7 +19,6 @@ const style = {
 const formatDate = (dateString) => {
     const date = new Date(dateString)
     const formattedDate = date.toISOString().split('T')[0]
-    console.log("Formato de fecha:", formattedDate) // Imprime el formato de fecha
     return formattedDate
 }
 
