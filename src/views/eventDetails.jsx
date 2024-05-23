@@ -101,8 +101,9 @@ const EventDetails = () => {
     }
 
     const handleWhatsAppPress = () => {
-        const url = 'https://api.whatsapp.com/send?text=fedequierealosladyboys'
-        Linking.openURL(url)
+        //const url = 'https://api.whatsapp.com/send?text=fedequierealosladyboys'
+        //Linking.openURL(url)
+        console.log("hola amigo, todo pillo?")
       }
 
 
