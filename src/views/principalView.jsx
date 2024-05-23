@@ -9,7 +9,7 @@ const PrincipalView = () => {
     const [openModal, setOpenModal] = useState(false)
     const [selectedRoom, setSelectedRoom] = useState(null)
     const [instalaciones, setInstalaciones] = useState([])
-    const [términoDeBúsqueda, setTerminoDeBúsqueda] = useState('') 
+    const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('') 
 
     useEffect(() => {
         const fetchInstalaciones = async () => {
@@ -32,14 +32,21 @@ const PrincipalView = () => {
         setOpenModal(false)
     }
 
-    const manejarCambioBúsqueda = (evento) => {
-        setTerminoDeBúsqueda(evento.target.value.toLowerCase()) // Normalizar término de búsqueda
-      }
+   
 
       const manejarPresionarEnter = (event) => {
         if (event.key === 'Enter') {
-          // Implement your search logic here
-          console.log('Realizar búsqueda con:', términoDeBúsqueda)
+            const fetchInstalaciones = async () => {
+                try {
+                    const response = await InstalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
+                    setTerminoDeBusqueda(response.data)
+                } catch (error) {
+                    console.error("Error al obtener las instalaciones:", error)
+                }
+            }
+            fetchInstalaciones()
+          
+          console.log('Realizar búsqueda con:', terminoDeBusqueda)
         }
       }
 

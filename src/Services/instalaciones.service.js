@@ -28,6 +28,13 @@ class InstalacionService {
         const instalacion = await axios.get(`${REST_SERVER_URL}/Instalaciones/${id}`)
         return instalacion.data
     }
+
+    async busquedaDeInstalaciones(data) {
+        const instalacion = await axios.get(`${REST_SERVER_URL}/buscar/${data}`)
+        return instalacion.data
+    }
+
+    
 }
 const instalacionService = new InstalacionService()
 export default instalacionService
