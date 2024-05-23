@@ -1,8 +1,6 @@
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
-import PropTypes from 'prop-types'
-import { TextField, Button, Typography, Snackbar, SnackbarContent } from "@mui/material"
 import { useState, useEffect } from 'react'
+import { Box, Modal, TextField, Button, Typography, Snackbar, SnackbarContent } from '@mui/material'
+import PropTypes from 'prop-types'
 import eventoService from 'src/Services/evento.service'
 import { Evento } from 'src/Dominio/evento'
 
@@ -16,12 +14,16 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-} 
+}
 
 const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toISOString().split('T')[0]
+    const formattedDate = date.toISOString().split('T')[0]
+    console.log("Formato de fecha:", formattedDate) // Imprime el formato de fecha
+    return formattedDate
 }
+
+const fechasDeshabilitadas = ['2024-06-15', '2024-06-20'] // Ejemplo de fechas deshabilitadas
 
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     const { nombreDeInstalacion, id } = instalacion || {}
@@ -31,6 +33,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     const [fechaEventoFin, setFechaEventoFin] = useState('')
     const [presupuesto, setPresupuesto] = useState('')
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false)
+    const [mostrarMensajeError, setMostrarMensajeError] = useState(false)
+    const [errorMensaje, setErrorMensaje] = useState('')
 
     useEffect(() => {
         if (evento) {
@@ -88,6 +92,15 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+
+        // Verificar si las fechas seleccionadas están deshabilitadas
+        if (fechasDeshabilitadas.includes(fechaEventoIni) || fechasDeshabilitadas.includes(fechaEventoFin)) {
+            setErrorMensaje('Las fechas seleccionadas están deshabilitadas')
+            setMostrarMensajeError(true)
+            return // Detener la ejecución si alguna fecha está deshabilitada
+        }
+
+        // Resto del código para crear o editar el evento
         await crearOEditarEvento()
     }
 
@@ -100,6 +113,23 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
         cerrarModal()
     }
 
+    const handleCloseErrorSnackbar = () => {
+        setMostrarMensajeError(false)
+    }
+
+    const disableDates = (date) => {
+        // Formatear la fecha para compararla con las fechas deshabilitadas
+        const formattedDate = new Date(date).toISOString().split('T')[0]
+
+        // Obtener la fecha actual en el mismo formato
+        const today = new Date().toISOString().split('T')[0]
+
+        // Devolver true si la fecha está en la lista de fechas deshabilitadas o es anterior a hoy
+        return fechasDeshabilitadas.includes(formattedDate) || formattedDate < today
+    }
+
+
+
     return (
         <>
             <Modal
@@ -110,10 +140,10 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
             >
                 <Box sx={style}>
                     <Typography variant="h6" align="center" gutterBottom>
-                        {evento ? "Editar Evento" : "Reservar"}
+                        {evento ? 'Editar Evento' : 'Reservar'}
                     </Typography>
                     <form onSubmit={handleSubmit}>
-                        <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', color: 'black' }}>
                             <TextField
                                 id="standard-basic"
                                 name="nombre"
@@ -121,14 +151,14 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                                 variant="standard"
                                 value={nombreDelEvento}
                                 onChange={(e) => setNombreDelEvento(e.target.value)}
-                                style={{ marginBottom: "1rem" }}
+                                style={{ marginBottom: '1rem' }}
                             />
                             <TextField
                                 id="standard-basic"
                                 name="lugar"
                                 label="Lugar"
                                 variant="standard"
-                                style={{ marginBottom: "1rem" }}
+                                style={{ marginBottom: '1rem' }}
                                 value={nombreInstalacion}
                                 disabled
                             />
@@ -136,21 +166,33 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                                 id="standard-basic"
                                 name="fecha Inicio"
                                 variant="standard"
-                                style={{ marginBottom: "1rem" }}
+                                style={{ marginBottom: '1rem' }}
                                 type="date"
                                 value={fechaEventoIni}
                                 onChange={(e) => setFechaEventoIni(e.target.value)}
                                 disabled={!!evento}
+                                InputProps={{
+                                    inputProps: {
+                                        min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
+                                        disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
+                                    },
+                                }}
                             />
                             <TextField
                                 id="standard-basic"
                                 name="fecha Final"
                                 variant="standard"
-                                style={{ marginBottom: "1rem" }}
+                                style={{ marginBottom: '1rem' }}
                                 type="date"
                                 value={fechaEventoFin}
                                 onChange={(e) => setFechaEventoFin(e.target.value)}
                                 disabled={!!evento}
+                                InputProps={{
+                                    inputProps: {
+                                        min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
+                                        disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
+                                    },
+                                }}
                             />
                             <TextField
                                 id="standard-basic"
@@ -159,12 +201,16 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                                 variant="standard"
                                 value={presupuesto}
                                 onChange={(e) => setPresupuesto(e.target.value)}
-                                style={{ marginBottom: "1rem" }}
+                                style={{ marginBottom: '1rem' }}
                                 disabled={!!evento}
                             />
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <Button variant="text" onClick={cerrarModal}>Volver</Button>
-                                <Button type="submit" variant="text">{evento ? "Editar" : "Reservar"}</Button>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button variant="text" onClick={cerrarModal}>
+                                    Volver
+                                </Button>
+                                <Button type="submit" variant="text">
+                                    {evento ? 'Editar' : 'Reservar'}
+                                </Button>
                             </div>
                         </div>
                     </form>
@@ -178,9 +224,20 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 onClose={handleCloseSnackbar}
             >
                 <SnackbarContent
-                    style={{ backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336' }}
+                    style={{
+                        backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336',
+                    }}
                     message={mostrarMensajeExito.mensaje}
                 />
+            </Snackbar>
+
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={mostrarMensajeError}
+                autoHideDuration={2500}
+                onClose={handleCloseErrorSnackbar}
+            >
+                <SnackbarContent style={{ backgroundColor: '#f44336' }} message={errorMensaje} />
             </Snackbar>
         </>
     )
@@ -190,7 +247,7 @@ BasicModal.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
     instalacion: PropTypes.object,
-    evento: PropTypes.object
+    evento: PropTypes.object,
 }
 
 export default BasicModal
