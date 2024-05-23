@@ -1,4 +1,4 @@
-import { CardMedia, Container, Grid, IconButton, Typography, Fab } from "@mui/material"
+import { CardMedia, Container, Grid, IconButton, Typography, Fab, Box } from "@mui/material"
 import { EventNote, AccountBalance, LocationOn, Add } from "@mui/icons-material"
 import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
 import BasicModalService from 'src/components/modalServicio'
@@ -16,6 +16,11 @@ import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import eventoService from "src/Services/evento.service"
 import servicioService from "src/Services/servicio.service"
+
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import ShareIcon from '@mui/icons-material/Share'
+import TelegramIcon from '@mui/icons-material/Telegram'
+//import { Linking } from 'react-native'
 
 const EventDetails = () => {
     const location = useLocation()
@@ -94,6 +99,11 @@ const EventDetails = () => {
 
         return componenteAviso
     }
+
+    const handleWhatsAppPress = () => {
+        const url = 'https://api.whatsapp.com/send?text=fedequierealosladyboys'
+        Linking.openURL(url)
+      }
 
 
     return (
@@ -175,7 +185,7 @@ const EventDetails = () => {
                             "&:hover": { transform: "scale(1.1)" }
                         }}
                     >
-                        <QrCodeTwoToneIcon />
+                        <ShareIcon />
                     </IconButton>
                 </Grid>
 
@@ -203,6 +213,15 @@ const EventDetails = () => {
             {section === 'qr' &&
                 <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <QRCodeComponent value={qrContent} size={256} />
+
+                    <Box sx={{display: 'flex', flexDirection: "column"}}>
+                        <IconButton>
+                        <WhatsAppIcon  onClick={() => handleWhatsAppPress() } sx={{ color: '#008000', fontSize: 50 ,margin: 1}}></WhatsAppIcon>
+                        </IconButton>
+                        <IconButton>
+                        <TelegramIcon sx={{ color: '#0088CC', fontSize: 50 ,margin: 1}}></TelegramIcon>
+                        </IconButton>                        
+                    </Box>
                 </Container>
             }
 
