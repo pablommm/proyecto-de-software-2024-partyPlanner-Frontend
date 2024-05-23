@@ -1,4 +1,3 @@
-// En el componente UserTable
 import PropTypes from 'prop-types'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper } from '@mui/material'
 import usuarioService from 'src/Services/usuario.service'
@@ -6,10 +5,14 @@ import usuarioService from 'src/Services/usuario.service'
 const UserTable = ({ users, actualizarLista }) => {
     const handleCheckboxChange = async (event, userId) => {
         try {
-            await usuarioService.desactivarUsuario(userId)
+            if (event.target.checked) {
+                await usuarioService.activarUsuario(userId)
+            } else {
+                await usuarioService.desactivarUsuario(userId)
+            }
             actualizarLista()
         } catch (error) {
-            console.error('Error al desactivar el usuario:', error)
+            console.error('Error al actualizar el estado del usuario:', error)
         }
     }
 
@@ -53,7 +56,6 @@ UserTable.propTypes = {
             activo: PropTypes.bool.isRequired,
         })
     ).isRequired,
-    // Prop para la función de actualización de la lista
     actualizarLista: PropTypes.func.isRequired,
 }
 

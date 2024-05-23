@@ -47,6 +47,16 @@ class UsuarioService {
             throw error
         }
     }
+    async activarUsuario(id) {
+        try {
+            const response = await axios.put(`${REST_SERVER_URL}/activarUser/${id}`)
+            return response.data
+        } catch (error) {
+            console.error('Error al activar el usuario:', error)
+            throw error
+        }
+    }
+
 
 
 }

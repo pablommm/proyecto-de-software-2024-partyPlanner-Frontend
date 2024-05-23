@@ -85,7 +85,7 @@ export default function Dashboard() {
     }
 
     useEffect(() => {
-        fetchUsuarios() // Llama a fetchUsuarios al montar el componente
+        fetchUsuarios()
     }, [])
     useEffect(() => {
         const fetchTotalEventos = async () => {
@@ -160,7 +160,6 @@ export default function Dashboard() {
 
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Usuarios</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
-                    {/* Asegúrate de pasar fetchUsuarios como actualizarLista */}
                     <UserTable users={usuarios} actualizarLista={fetchUsuarios} />
                 </Paper>
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
