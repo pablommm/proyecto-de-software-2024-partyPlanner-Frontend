@@ -22,6 +22,7 @@ import ShareIcon from '@mui/icons-material/Share'
 import TelegramIcon from '@mui/icons-material/Telegram'
 //import { Linking } from 'react-native'
 
+
 const EventDetails = () => {
     const location = useLocation()
     const event = location.state.event
@@ -101,10 +102,16 @@ const EventDetails = () => {
     }
 
     const handleWhatsAppPress = () => {
+        window.open('https://api.whatsapp.com/send?text=te%20invitamos%20a%20nuestro%20casamiento!')
         //const url = 'https://api.whatsapp.com/send?text=fedequierealosladyboys'
         //Linking.openURL(url)
         console.log("hola amigo, todo pillo?")
       }
+
+    const handletelegram = ()=> {
+        nombreEvento= event.nombreDelEvento
+        window.open('https://t.me/share/url?url=Te invitamos a:&text=Nuestro Casamiento!')
+    }
 
 
     return (
@@ -217,10 +224,13 @@ const EventDetails = () => {
 
                     <Box sx={{display: 'flex', flexDirection: "column"}}>
                         <IconButton>
-                        <WhatsAppIcon  onClick={() => handleWhatsAppPress() } sx={{ color: '#008000', fontSize: 50 ,margin: 1}}></WhatsAppIcon>
+                            <WhatsAppIcon  onClick={() => handleWhatsAppPress() } sx={{ color: '#008000', fontSize: 50 ,margin: 1}}></WhatsAppIcon>
+                        
                         </IconButton>
                         <IconButton>
-                        <TelegramIcon sx={{ color: '#0088CC', fontSize: 50 ,margin: 1}}></TelegramIcon>
+                        <TelegramIcon onClick={() => handletelegram()} sx={{ color: '#0088CC', fontSize: 50 ,margin: 1}}></TelegramIcon>
+
+                        
                         </IconButton>                        
                     </Box>
                 </Container>
