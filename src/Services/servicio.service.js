@@ -27,6 +27,12 @@ class ServicioService {
         return response.data
     }
 
+    async deleteServicio(id) {
+       // console.log("Editando servicio con ID:", servicioABorrar.id)
+        const response = await axios.delete(`${REST_SERVER_URL}/DeletarServicio/${id}`)
+        return response.data
+    }
+
 
 
 }

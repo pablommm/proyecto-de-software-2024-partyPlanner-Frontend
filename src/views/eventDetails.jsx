@@ -15,6 +15,7 @@ import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import eventoService from "src/Services/evento.service"
+import servicioService from "src/Services/servicio.service"
 
 const EventDetails = () => {
     const location = useLocation()
@@ -26,13 +27,21 @@ const EventDetails = () => {
     const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
     const [totalGastado, setTotalGastado] = useState(0)
 
-
     const traerServiciosAdquiridos = async () => {
         try {
             const response = await eventoService.traerServiciosAdquiridos(event.id)
             setServices(response)
         } catch (error) {
             console.error('Error al traer los servicios adquiridos:', error)
+        }
+    }
+    const deleteService = async (serviceId) => {
+        try {
+            console.log("Eliminar servicio con ID:", serviceId)
+            await servicioService.deleteServicio(serviceId)
+            traerServiciosAdquiridos()
+        } catch (error) {
+            console.error('error', error)
         }
     }
 
@@ -55,9 +64,7 @@ const EventDetails = () => {
     const handleOpenModal = () => {
         setOpenModal(true)
     }
-    const handleDeleteService = (serviceId) => {
-        console.log("Eliminar servicio con ID:", serviceId)
-    }
+   
     const handleEditService = (service) => {
         setSelectedService(service)
         setOpenModal(true)
@@ -236,7 +243,7 @@ const EventDetails = () => {
                                 </Grid>
                                 <Grid item xs={3} sm={3} sx={{ color: "#000006", borderBottom: "1px solid #ccc", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <IconButton onClick={() => handleEditService(servicio)}><EditIcon /></IconButton>
-                                    <IconButton onClick={() => handleDeleteService(servicio.id)}><DeleteIcon /></IconButton>
+                                    <IconButton onClick={() => deleteService(servicio.id)}><DeleteIcon /></IconButton>
                                 </Grid>
                             </React.Fragment>
                         )}
