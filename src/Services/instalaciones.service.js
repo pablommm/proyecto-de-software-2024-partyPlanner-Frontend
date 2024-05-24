@@ -30,8 +30,9 @@ class InstalacionService {
     }
 
     async busquedaDeInstalaciones(data) {
-        const instalacion = await axios.get(`${REST_SERVER_URL}/buscar/${data}`)
-        return instalacion.data
+        const instalaciones = await axios.get(`${REST_SERVER_URL}/buscar/${data}`)
+        console.log(instalaciones)
+        return instalaciones
     }
 
     

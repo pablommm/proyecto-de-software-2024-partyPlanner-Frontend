@@ -38,7 +38,7 @@ const PrincipalView = () => {
 
    
     const manejarCambioBúsqueda = (evento) => {
-        setTerminoDeBusqueda(evento.target.value.toLowerCase()) // Normalizar término de búsqueda
+        setTerminoDeBusqueda(evento.target.value) // Normalizar término de búsqueda
       }
 
       const busqueda = async () => {
