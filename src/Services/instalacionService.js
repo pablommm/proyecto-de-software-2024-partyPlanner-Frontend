@@ -9,6 +9,27 @@ class InstalacionService {
     return InstalacionesActivas
 
   }
+  async traerinstalaciones() {
+    const instalaciones = await axios.get(`${REST_SERVER_URL}/Instalaciones`)
+    return instalaciones.data
+}
+
+async traerInstalacionesActivas() {
+    const instalacionesActivas = await axios.get(`${REST_SERVER_URL}/InstalacionesActivas`)
+    return instalacionesActivas.data
+}
+
+async traerInstalacionPorId(id) {
+    const instalacion = await axios.get(`${REST_SERVER_URL}/Instalaciones/${id}`)
+    return instalacion.data
+}
+
+async busquedaDeInstalaciones(data) {
+    const instalaciones = await axios.get(`${REST_SERVER_URL}/buscar/${data}`)
+    console.log(instalaciones)
+    return instalaciones
+}
+
 }
 
 const instalacionService = new InstalacionService()

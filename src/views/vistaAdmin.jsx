@@ -1,75 +1,17 @@
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, Container, Grid, Paper, IconButton, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
-import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon, Logout as LogoutIcon, Home as HomeIcon } from '@mui/icons-material'
+import { AppBar, Toolbar, Typography, Container, Grid, Paper, IconButton, Button } from '@mui/material'
+import { Add as AddIcon, Logout as LogoutIcon, Home as HomeIcon } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import adminService from '../Services/admin.service'
 import UserTable from 'src/components/tablaDeUsuarios' // Ajusta la ruta según sea necesario
 import usuarioService from 'src/Services/usuario.service'
+import InstallationTable from 'src/components/tablaDeInstalacion' // Ajusta la ruta según sea necesario
+import instalacionService from 'src/Services/instalacionService'
 
-function InstallationTable({ installations }) {
-    return (
-        <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Nombre</TableCell>
-                        <TableCell>Ubicación</TableCell>
-                        <TableCell>Capacidad</TableCell>
-                        <TableCell>Monto</TableCell>
-                        <TableCell>Descripción</TableCell>
-                        <TableCell>Acciones</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {installations.map((installation) =>
-                        <TableRow key={installation.id}>
-                            <TableCell>{installation.name}</TableCell>
-                            <TableCell>{installation.location}</TableCell>
-                            <TableCell>{installation.capacity}</TableCell>
-                            <TableCell>{installation.amount}</TableCell>
-                            <TableCell>{installation.description}</TableCell>
-                            <TableCell>
-                                <IconButton>
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    )
-}
-
-InstallationTable.propTypes = {
-    installations: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            location: PropTypes.string.isRequired,
-            capacity: PropTypes.number.isRequired,
-            amount: PropTypes.number.isRequired,
-            description: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-}
 
 export default function Dashboard() {
-    const installations = [
-        {
-            id: 1,
-            name: 'Instalación 1',
-            location: 'Ubicación 1',
-            capacity: 100,
-            amount: 1000,
-            description: 'Descripción de la instalación 1',
-        },
-    ]
 
+    const [installations, setInstallations] = useState([])
     const [numeroTotalDeEventos, setNumeroTotalDeEventos] = useState(0)
     const [eventosActivos, setEventosActivos] = useState(0)
     const [totalUsuarios, setTotalUsuarios] = useState(0)
@@ -84,9 +26,24 @@ export default function Dashboard() {
         }
     }
 
+    const fetchInstallations = async () => {
+        try {
+            const installationsData = await instalacionService.traerinstalaciones()
+            setInstallations(installationsData)
+        } catch (error) {
+            console.error("Error al traer las instalaciones:", error)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchInstallations()
+    }, [])
+
     useEffect(() => {
         fetchUsuarios()
     }, [])
+
     useEffect(() => {
         const fetchTotalEventos = async () => {
             try {
@@ -114,10 +71,21 @@ export default function Dashboard() {
                 console.error("Error al traer los usuarios:", error)
             }
         }
+        const fetchInstallations = async () => {
+            try {
+                const installationsData = await instalacionService.traerinstalaciones()
+                setInstallations(installationsData)
+            } catch (error) {
+                console.error("Error al traer las instalaciones:", error)
+            }
 
+        }
+
+        fetchInstallations()
         fetchTotalEventos()
         fetchEventosActivos()
         fetchTotalUsuarios()
+
     }, [])
 
     return (
@@ -168,7 +136,7 @@ export default function Dashboard() {
 
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
-                    <InstallationTable installations={installations} />
+                    <InstallationTable installations={installations} actualizarInstalacion={fetchInstallations} />
                 </Paper>
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
                     Agregar Instalación
