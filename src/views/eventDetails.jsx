@@ -287,11 +287,9 @@ const EventDetails = () => {
                 </Container>
             }
             {section === 'servicios' &&
-                //<Fab  aria-label="add" sx={{ backgroundColor: 0,boxShadow:0, width:250, }} onClick={handleOpenModal}>
+                
                     <Button variant="contained" size="large" onClick={handleOpenModal} sx={{ width:250, fontSize:15, position: 'fixed', bottom: '1rem', right: '1rem' }}>Agregar Servicio</Button>
-                //</Fab>
-                
-                
+                           
             }
             <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} servicio={selectedService}
             />
