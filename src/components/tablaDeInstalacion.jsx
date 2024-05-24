@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper, IconButton } from '@mui/material'
 import instalacionService from 'src/Services/instalacionService'
+import { Edit as EditIcon} from '@mui/icons-material'
 
 
 const InstallationTable = ({ installations , actualizarInstalacion}) => {
@@ -28,6 +29,7 @@ const InstallationTable = ({ installations , actualizarInstalacion}) => {
                         <TableCell>Capacidad</TableCell>
                         <TableCell>Costo</TableCell>
                         <TableCell>Estado</TableCell>
+                        <TableCell>Editar</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -44,6 +46,13 @@ const InstallationTable = ({ installations , actualizarInstalacion}) => {
                                     onChange={(event) => handleCheckboxChange(event, installation.id)}
                                 />
                             </TableCell>
+                            <TableCell>
+                                <TableCell>{installation.Editar}</TableCell>
+                                    <IconButton>
+                                            <EditIcon />
+                                    </IconButton>
+                            </TableCell>
+                            
                         </TableRow>
                     )}
                 </TableBody>

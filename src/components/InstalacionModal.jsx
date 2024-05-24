@@ -146,3 +146,4 @@ InstalacionModal.propTypes = {
 }
 
 export default InstalacionModal
+ 
