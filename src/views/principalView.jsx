@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import BasicModal from "src/components/modalReservar"
 import InstalacionService from "src/Services/instalacionService"
 import TextField from '@mui/material/TextField'
+import instalacionService from "src/Services/instalaciones.service"
 
 const PrincipalView = () => {
     const [openModal, setOpenModal] = useState(false)
@@ -20,6 +21,9 @@ const PrincipalView = () => {
                 console.error("Error al obtener las instalaciones:", error)
             }
         }
+    
+
+
         fetchInstalaciones()
     }, [])
 
