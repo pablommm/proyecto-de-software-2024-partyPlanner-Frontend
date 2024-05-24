@@ -45,7 +45,7 @@ const PrincipalView = () => {
         try {
             console.log('Realizar búsqueda con:', terminoDeBusqueda)
           const response = await instalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
-          setTerminoDeBusqueda(response.data)
+          setInstalaciones(response.data)
       }
         catch (error) {
           console.error("Error al obtener las instalaciones:", error)
