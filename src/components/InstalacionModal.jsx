@@ -57,7 +57,7 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
         event.preventDefault()
         console.log("Submit del formulario")
 
-        crearInstalacionNueva()
+        //crearInstalacionNueva()
     }
 
     return (

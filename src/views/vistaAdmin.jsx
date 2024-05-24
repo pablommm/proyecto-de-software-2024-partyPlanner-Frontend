@@ -7,6 +7,7 @@ import UserTable from 'src/components/tablaDeUsuarios' // Ajusta la ruta según 
 import usuarioService from 'src/Services/usuario.service'
 import InstallationTable from 'src/components/tablaDeInstalacion' // Ajusta la ruta según sea necesario
 import instalacionService from 'src/Services/instalacionService'
+import InstalacionModal from 'src/components/InstalacionModal' // Ajusta la ruta según sea necesario
 
 
 export default function Dashboard() {
@@ -16,6 +17,16 @@ export default function Dashboard() {
     const [eventosActivos, setEventosActivos] = useState(0)
     const [totalUsuarios, setTotalUsuarios] = useState(0)
     const [usuarios, setUsuarios] = useState([])
+
+    const [openModal, setOpenModal] = useState(false)
+
+    const handleOpenModal = () => {
+        setOpenModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setOpenModal(false)
+    }
 
     const fetchUsuarios = async () => {
         try {
@@ -134,13 +145,17 @@ export default function Dashboard() {
                     Agregar Usuario
                 </Button>
 
+                 {/* Sección de instalaciones */}
+                 <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
+
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <InstallationTable installations={installations} actualizarInstalacion={fetchInstallations} />
                 </Paper>
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModal} sx={{ marginTop: 2 }}>
                     Agregar Instalación
                 </Button>
+                <InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} />
             </Container>
         </div>
     )
