@@ -1,4 +1,4 @@
-import { CardMedia, Container, Grid, IconButton, Typography, Fab, Box } from "@mui/material"
+import { CardMedia, Container, Grid, IconButton, Typography, Fab, Box, Button } from "@mui/material"
 import { EventNote, AccountBalance, LocationOn, Add } from "@mui/icons-material"
 import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
 import BasicModalService from 'src/components/modalServicio'
@@ -287,9 +287,11 @@ const EventDetails = () => {
                 </Container>
             }
             {section === 'servicios' &&
-                <Fab color="#000006" aria-label="add" sx={{ position: 'fixed', bottom: '1rem', right: '1rem' }} onClick={handleOpenModal}>
-                    <Add />
-                </Fab>
+                //<Fab  aria-label="add" sx={{ backgroundColor: 0,boxShadow:0, width:250, }} onClick={handleOpenModal}>
+                    <Button variant="contained" size="large" onClick={handleOpenModal} sx={{ width:250, fontSize:15, position: 'fixed', bottom: '1rem', right: '1rem' }}>Agregar Servicio</Button>
+                //</Fab>
+                
+                
             }
             <BasicModalService openModal={openModal} cerrarModal={handleCloseModal} eventoID={event.id} servicio={selectedService}
             />
