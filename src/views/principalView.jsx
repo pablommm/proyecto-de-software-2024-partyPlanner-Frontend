@@ -37,18 +37,23 @@ const PrincipalView = () => {
         setTerminoDeBusqueda(evento.target.value.toLowerCase()) // Normalizar término de búsqueda
       }
 
+      const busqueda = async () => {
+        try {
+            console.log('Realizar búsqueda con:', terminoDeBusqueda)
+          const response = await instalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
+          setTerminoDeBusqueda(response.data)
+      }
+        catch (error) {
+          console.error("Error al obtener las instalaciones:", error)
+        }
+      }
+
       const manejarPresionarEnter = (event) => {
         if (event.key === 'Enter') {
           
           console.log('Realizar búsqueda con:', terminoDeBusqueda)
 
-          const busqueda = async () => {
-            try {
-                const response = await InstalacionService.busqueda(terminoDeBusqueda)
-                setTerminoDeBusqueda(response.data)
-            } catch (error) {
-                console.error("Error al obtener las instalaciones:", error)
-            }
+          busqueda()
             
         }
       }
