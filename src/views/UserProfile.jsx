@@ -1,3 +1,4 @@
+
 //import React from 'react'
 import { useContext, useState } from 'react'
 import UserContext from 'src/Services/context'
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfile = () => {
   const classes = useStyles()
-  const [user] = useContext(UserContext)
+  const [user,setUser] = useContext(UserContext)
   //const[user,setUser]= useState(new Usuario())
 
   const [nombreYApellido, setNombreYApellido] = useState('')
@@ -117,8 +118,8 @@ const UserProfile = () => {
           actualizarUsuario()
         }}
       >
-        <Grid container className={classes.statsGrid}>
-          <Grid item className={classes.userInfo} >
+        <Grid  container >
+          <Grid sx={{display:'flex', flexDirection:'column'}} >
 
             <TextField
               className={classes.campo}
@@ -150,11 +151,13 @@ const UserProfile = () => {
 
 
             <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
-              Saldo
+              Saldo: $ {user.saldo}
             </Typography>
+            {/*
             <Button variant="contained" color="primary" fullWidth onClick={() => handleRoomClick()} >
               PRUEBA
             </Button>
+            */}
           </Grid>
 
         </Grid>
@@ -164,7 +167,7 @@ const UserProfile = () => {
       </Button>
 
 
-      <CreditCardModal openModal={openModal} cerrarModal={handleCloseModal}></CreditCardModal>
+      {/*<CreditCardModal openModal={openModal} cerrarModal={handleCloseModal}></CreditCardModal>*/}
     </Box>
 
   )
