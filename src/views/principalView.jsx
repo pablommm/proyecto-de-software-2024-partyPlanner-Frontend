@@ -33,20 +33,23 @@ const PrincipalView = () => {
     }
 
    
+    const manejarCambioBúsqueda = (evento) => {
+        setTerminoDeBusqueda(evento.target.value.toLowerCase()) // Normalizar término de búsqueda
+      }
 
       const manejarPresionarEnter = (event) => {
         if (event.key === 'Enter') {
-            const fetchInstalaciones = async () => {
-                try {
-                    const response = await InstalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
-                    setTerminoDeBusqueda(response.data)
-                } catch (error) {
-                    console.error("Error al obtener las instalaciones:", error)
-                }
-            }
-            fetchInstalaciones()
           
           console.log('Realizar búsqueda con:', terminoDeBusqueda)
+
+          const busqueda = async () => {
+            try {
+                const response = await InstalacionService.busqueda(terminoDeBusqueda)
+                setTerminoDeBusqueda(response.data)
+            } catch (error) {
+                console.error("Error al obtener las instalaciones:", error)
+            }
+            
         }
       }
 
@@ -57,7 +60,7 @@ const PrincipalView = () => {
           variant="outlined"
           margin="normal"
           fullWidth
-          value={términoDeBúsqueda}
+          value={terminoDeBusqueda}
           onChange={manejarCambioBúsqueda}
           onKeyDown={manejarPresionarEnter} // Agregar el manejador de Enter
           placeholder="Nombre del salón o localidad"
