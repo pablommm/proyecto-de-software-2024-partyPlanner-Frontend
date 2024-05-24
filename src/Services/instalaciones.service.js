@@ -34,8 +34,13 @@ class InstalacionService {
         console.log(instalaciones)
         return instalaciones
     }
+    async actualizarInstalacion(instalacion) {
+        const instalacionActualizada = await axios.put(`${REST_SERVER_URL}/EditarInstalacion/${instalacion.id}`, instalacion)
+        return instalacionActualizada.data
 
-    
+    }
+
+
 }
 const instalacionService = new InstalacionService()
 export default instalacionService

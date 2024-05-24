@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper, IconButton } from '@mui/material'
+import { Edit as EditIcon } from '@mui/icons-material'
 import instalacionService from 'src/Services/instalacionService'
-import { Edit as EditIcon} from '@mui/icons-material'
 
 
-const InstallationTable = ({ installations , actualizarInstalacion}) => {
+const InstallationTable = ({ installations, actualizarInstalacion, onEdit }) => {
+
     const handleCheckboxChange = async (event, instalacionId) => {
         try {
             if (event.target.checked) {
@@ -48,11 +49,11 @@ const InstallationTable = ({ installations , actualizarInstalacion}) => {
                             </TableCell>
                             <TableCell>
                                 <TableCell>{installation.Editar}</TableCell>
-                                    <IconButton>
-                                            <EditIcon />
-                                    </IconButton>
+                                <IconButton onClick={() => onEdit(installation)}>
+                                    <EditIcon />
+                                </IconButton>
                             </TableCell>
-                            
+
                         </TableRow>
                     )}
                 </TableBody>
@@ -73,6 +74,8 @@ InstallationTable.propTypes = {
         })
     ).isRequired,
     actualizarInstalacion: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+
 }
 
 export default InstallationTable

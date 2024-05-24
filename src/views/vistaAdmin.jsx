@@ -19,6 +19,8 @@ export default function Dashboard() {
     const [usuarios, setUsuarios] = useState([])
 
     const [openModal, setOpenModal] = useState(false)
+    const [selectedInstallation, setSelectedInstallation] = useState(null)
+
 
     const handleOpenModal = () => {
         setOpenModal(true)
@@ -26,6 +28,14 @@ export default function Dashboard() {
 
     const handleCloseModal = () => {
         setOpenModal(false)
+        setSelectedInstallation(null)
+
+
+
+    }
+    const handleEditInstallation = (installation) => {
+        setSelectedInstallation(installation)
+        setOpenModal(true)
     }
 
     const fetchUsuarios = async () => {
@@ -145,17 +155,22 @@ export default function Dashboard() {
                     Agregar Usuario
                 </Button>
 
-                 {/* Sección de instalaciones */}
-                 <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
+                {/* Sección de instalaciones */}
+                <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
 
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
-                    <InstallationTable installations={installations} actualizarInstalacion={fetchInstallations} />
+                    <InstallationTable
+                        installations={installations}
+                        actualizarInstalacion={fetchInstallations}
+                        onEdit={handleEditInstallation}
+                    />
                 </Paper>
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModal} sx={{ marginTop: 2 }}>
                     Agregar Instalación
                 </Button>
-                <InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} />
+                <InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} instalacion={selectedInstallation} actualizarInstalacion={fetchInstallations}
+                />
             </Container>
         </div>
     )

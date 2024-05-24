@@ -2,10 +2,8 @@ import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import PropTypes from 'prop-types'
 import { TextField, Button, Typography } from "@mui/material"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import instalacionService from 'src/Services/instalaciones.service'
-import { Instalaciones } from 'src/Dominio/Instalacion'
-
 
 const style = {
     position: 'absolute',
@@ -19,45 +17,71 @@ const style = {
     p: 4,
 }
 
-const InstalacionModal = ({ openModal, cerrarModal }) => {
+const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInstalacion }) => {
     const [nombre, setNombre] = useState('')
     const [localidad, setLocalidad] = useState('')
-    const [costoInstalacion, setCostoInstalacion] = useState(0)
-    const [capacidadInstalacion, setCapacidadInstalacion] = useState(0)
+    const [costoInstalacion, setCostoInstalacion] = useState('')
+    const [capacidadInstalacion, setCapacidadInstalacion] = useState('')
     const [descripcionInstalacion, setDescripcionInstalacion] = useState('')
     const [imagenPrincipal, setImagenPrincipal] = useState('')
-    // Añade más estados si es necesario para otros datos de la instalación
-
-    const crearInstalacionNueva = async () => {
-        const nuevaInstalacion = new Instalaciones()
-        nuevaInstalacion.nombreDeInstalacion = nombre
-        nuevaInstalacion.localidadDeInstalacion = localidad
-        nuevaInstalacion.costoDeInstalacion = costoInstalacion
-        nuevaInstalacion.capacidadInstalacion = capacidadInstalacion
-        nuevaInstalacion.descripcionDeInstalacion = descripcionInstalacion
-        nuevaInstalacion.imagenPrincipal = imagenPrincipal
 
 
-        const respuestaCrearInstalacion = await instalacionService.crearInstalacion(nuevaInstalacion)
-        console.log("Respuesta de creación de instalación:", respuestaCrearInstalacion)
-        console.log("Instalación creada exitosamente.")
 
-        
-        cerrarModal()
-        limpiarDatos()
+    useEffect(() => {
+        if (instalacion) {
+            setNombre(instalacion.nombreDeInstalacion || '')
+            setLocalidad(instalacion.localidadDeInstalacion || '')
+            setCostoInstalacion(instalacion.costoDeInstalacion || '')
+            setCapacidadInstalacion(instalacion.capacidadInstalacion || '')
+            setDescripcionInstalacion(instalacion.descripcionDeInstalacion || '')
+            setImagenPrincipal(instalacion.imagenPrincipal || '')
+        }
+        else {
+            limpiarDatos()
+        }
+    }, [instalacion])
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        const datosInstalacion = {
+            nombreDeInstalacion: nombre,
+            localidadDeInstalacion: localidad,
+            costoDeInstalacion: costoInstalacion,
+            capacidadInstalacion: capacidadInstalacion,
+            descripcionDeInstalacion: descripcionInstalacion,
+            imagenPrincipal: imagenPrincipal,
+        }
+
+        try {
+            if (instalacion) {
+                const respuestaEditar = await instalacionService.actualizarInstalacion({
+                    ...datosInstalacion,
+                    id: instalacion.id
+                })
+                console.log("Respuesta de edición de instalación:", respuestaEditar)
+                console.log("Instalación editada exitosamente.")
+            } else {
+                const respuestaCrearInstalacion = await instalacionService.crearInstalacion(datosInstalacion)
+                console.log("Respuesta de creación de instalación:", respuestaCrearInstalacion)
+                console.log("Instalación creada exitosamente.")
+            }
+            cerrarModal()
+            limpiarDatos()
+            actualizarInstalacion()
+
+        } catch (error) {
+            console.error('Error al guardar la instalación:', error)
+        }
     }
 
     const limpiarDatos = () => {
         setNombre('')
         setLocalidad('')
-        
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        console.log("Submit del formulario")
-
-        //crearInstalacionNueva()
+        setCostoInstalacion('')
+        setCapacidadInstalacion('')
+        setDescripcionInstalacion('')
+        setImagenPrincipal('')
     }
 
     return (
@@ -69,12 +93,12 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
         >
             <Box sx={style}>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Solicitar Instalación
+                    {instalacion ? 'Editar Instalación' : 'Crear Instalación'}
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
                         <TextField
-                            id="standard-basic"
+                            id="nombre"
                             name="nombre"
                             label="Nombre"
                             variant="standard"
@@ -83,7 +107,7 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
-                            id="standard-basic"
+                            id="localidad"
                             name="localidad"
                             label="Localidad"
                             variant="standard"
@@ -92,7 +116,7 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
-                            id="standard-basic"
+                            id="costo"
                             name="costo"
                             label="Costo"
                             variant="standard"
@@ -101,7 +125,7 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
-                            id="standard-basic"
+                            id="capacidad"
                             name="capacidad"
                             label="Capacidad"
                             variant="standard"
@@ -110,7 +134,7 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
-                            id="standard-basic"
+                            id="descripcion"
                             name="descripcion"
                             label="Descripción"
                             variant="standard"
@@ -119,19 +143,21 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
                             style={{ marginBottom: "1rem" }}
                         />
                         <TextField
-                            id="standard-basic"
+                            id="imagen"
                             name="imagen"
                             label="Imagen"
-                            variant="standard" 
+                            variant="standard"
                             value={imagenPrincipal}
                             onChange={(e) => setImagenPrincipal(e.target.value)}
                             style={{ marginBottom: "1rem" }}
-                        /> 
+                        />
 
                         {/* Agrega más campos si es necesario para la instalación */}
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>Cancelar</Button>
-                            <Button type="submit" variant="text" onClick={crearInstalacionNueva}>Solicitar</Button>
+                            <Button type="submit" variant="text">
+                                {instalacion ? 'Guardar Cambios' : 'Crear'}
+                            </Button>
                         </div>
                     </div>
                 </form>
@@ -143,7 +169,10 @@ const InstalacionModal = ({ openModal, cerrarModal }) => {
 InstalacionModal.propTypes = {
     openModal: PropTypes.bool,
     cerrarModal: PropTypes.func,
+    instalacion: PropTypes.object,
+    actualizarInstalacion: PropTypes.func.isRequired,
+
 }
 
+
 export default InstalacionModal
- 
