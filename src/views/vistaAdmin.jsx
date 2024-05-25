@@ -8,10 +8,10 @@ import usuarioService from 'src/Services/usuario.service'
 import InstallationTable from 'src/components/tablaDeInstalacion' // Ajusta la ruta según sea necesario
 import instalacionService from 'src/Services/instalacionService'
 import InstalacionModal from 'src/components/InstalacionModal' // Ajusta la ruta según sea necesario
-
+import ModalRegistroUserAdminVIew from 'src/components/ModalRegistroUserAdminVIew'
 
 export default function Dashboard() {
-
+    
     const [installations, setInstallations] = useState([])
     const [numeroTotalDeEventos, setNumeroTotalDeEventos] = useState(0)
     const [eventosActivos, setEventosActivos] = useState(0)
@@ -20,18 +20,22 @@ export default function Dashboard() {
 
     const [openModal, setOpenModal] = useState(false)
     const [selectedInstallation, setSelectedInstallation] = useState(null)
-
+    const [openModalUser, setOpenModalUser] = useState(false)
 
     const handleOpenModal = () => {
         setOpenModal(true)
     }
-
+    
+    const handleOpenModalUser = () => {
+        setOpenModalUser(true)
+    }
     const handleCloseModal = () => {
         setOpenModal(false)
         setSelectedInstallation(null)
-
-
-
+    }
+    const handleCloseModalUser = () => {
+        setOpenModalUser(false)
+     
     }
     const handleEditInstallation = (installation) => {
         setSelectedInstallation(installation)
@@ -151,9 +155,12 @@ export default function Dashboard() {
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <UserTable users={usuarios} actualizarLista={fetchUsuarios} />
                 </Paper>
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} sx={{ marginTop: 2 }}>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModalUser}sx={{ marginTop: 2 }}>
                     Agregar Usuario
                 </Button>
+                <ModalRegistroUserAdminVIew openModal={openModalUser} cerrarModal={handleCloseModalUser}
+                />
+              
 
                 {/* Sección de instalaciones */}
                 <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
