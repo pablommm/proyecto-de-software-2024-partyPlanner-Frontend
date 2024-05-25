@@ -92,7 +92,7 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography variant="h6" align="center" gutterBottom>
+                    <Typography variant="h6" align="center" gutterBottom style={{color: servicio ? "black" : "black" }}>
                         {servicio ? 'Editar Servicio' : 'Nuevo Servicio'}
                     </Typography>
                     <form onSubmit={handleSubmit}>

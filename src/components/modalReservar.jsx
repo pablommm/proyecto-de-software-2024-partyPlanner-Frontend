@@ -138,7 +138,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography variant="h6" align="center" gutterBottom>
+                    <Typography variant="h6" align="center" gutterBottom style={{color: evento ? "black" : "black" }}>
                         {evento ? 'Editar Evento' : 'Reservar'}
                     </Typography>
                     <form onSubmit={handleSubmit}>
