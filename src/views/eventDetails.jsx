@@ -166,9 +166,10 @@ const EventDetails = () => {
       month: '2-digit',
       year: 'numeric',
     })
-    const message = `te invitamos a 
-    ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad ${event.lugar.localidadDeInstalacion}`
-    const url = "https://t.me/share/url?url=Te invitamos a:&text=hola"
+    const hours = dateObject.getHours().toString().padStart(2, '0') // Ensure two digits
+
+    const message = `la fecha ${formattedDate} a las ${hours} en la localidad ${event.lugar.localidadDeInstalacion}`
+    const url = `https://t.me/share/url?url=Te invitamos ${event.nombreDelEvento} : &text=${message}`
     window.open(url)
     
   }

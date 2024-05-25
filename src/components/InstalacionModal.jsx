@@ -92,7 +92,7 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography variant="h6" align="center" gutterBottom>
+                <Typography variant="h6" align="center" gutterBottom style={{color: instalacion ? "black" : "black" }}>
                     {instalacion ? 'Editar Instalación' : 'Crear Instalación'}
                 </Typography>
                 <form onSubmit={handleSubmit}>
@@ -146,6 +146,7 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
                             id="imagen"
                             name="imagen"
                             label="Imagen"
+                            type="file"
                             variant="standard"
                             value={imagenPrincipal}
                             onChange={(e) => setImagenPrincipal(e.target.value)}
