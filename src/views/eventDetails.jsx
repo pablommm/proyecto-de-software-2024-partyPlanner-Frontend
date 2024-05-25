@@ -237,7 +237,7 @@ const EventDetails = () => {
             }
 
             {section === 'servicios' && services.length > 0 &&
-                <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                <Container sx={{ backgroundColor: "#DFDFDF", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" , border: "1px solid #000000"}}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
                         <Typography variant="h6" sx={{ color: "#000006", fontWeight: 'bold', marginRight: '0.5rem' }}>
                             Total Gastado: ${totalGastado}
