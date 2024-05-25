@@ -199,7 +199,7 @@ const EventDetails = () => {
 
             </Grid>
             {section === 'evento' &&
-                <Container sx={{ backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                <Container sx={{ backgroundColor: "#DFDFDF", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" , border: "1px solid #000000"}}>
                     <Typography variant="h5" sx={{ color: "#000006", marginBottom: "0.5rem" }}>{event.nombreDelEvento}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006" }}>Inicio: {format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006" }}>Fin: {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}</Typography>
@@ -208,7 +208,7 @@ const EventDetails = () => {
                 </Container>
             }
             {section === 'lugar' &&
-                <Container sx={{ fontWeight: 'bold', backgroundColor: "#9d9d9d", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                <Container sx={{ fontWeight: 'bold', backgroundColor: "#DFDFDF", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" ,border: "1px solid #000000" }}>
                     <Typography variant="h5" sx={{ color: "#000006", marginBottom: "0.5rem" }}>Lugar: {event.lugar.nombreDeInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006" }}>Capacidad: {event.lugar.capacidadInstalacion}</Typography>
                     <Typography variant="body1" sx={{ color: "#000006 " }}>Costo: {event.lugar.costoDeInstalacion}</Typography>
