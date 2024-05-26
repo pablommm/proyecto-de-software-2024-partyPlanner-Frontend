@@ -143,13 +143,8 @@ const EventDetails = () => {
       month: '2-digit',
       year: 'numeric',
     })
-    const timeString = new Date(event.fecha).toLocaleTimeString('es-AR', {
-      hour: 'numeric',
-      minute: 'numeric',
-    })
     const hours = dateObject.getHours().toString().padStart(2, '0') // Ensure two digits
-    const minutes = dateObject.getMinutes().toString().padStart(2, '0') // Ensure two digits
-    const seconds = dateObject.getSeconds().toString().padStart(2, '0')
+
 
     const message = `te invitamos a 
         ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad ${event.lugar.localidadDeInstalacion}`
