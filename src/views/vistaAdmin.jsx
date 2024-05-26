@@ -35,7 +35,7 @@ export default function Dashboard() {
     }
     const handleCloseModalUser = () => {
         setOpenModalUser(false)
-     
+        fetchUsuarios()
     }
     const handleEditInstallation = (installation) => {
         setSelectedInstallation(installation)
@@ -60,14 +60,6 @@ export default function Dashboard() {
         }
 
     }
-
-    useEffect(() => {
-        fetchInstallations()
-    }, [])
-
-    useEffect(() => {
-        fetchUsuarios()
-    }, [])
 
     useEffect(() => {
         const fetchTotalEventos = async () => {
@@ -105,7 +97,8 @@ export default function Dashboard() {
             }
 
         }
-
+        fetchInstallations()
+        fetchUsuarios()
         fetchInstallations()
         fetchTotalEventos()
         fetchEventosActivos()
@@ -158,7 +151,7 @@ export default function Dashboard() {
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModalUser}sx={{ marginTop: 2 }}>
                     Agregar Usuario
                 </Button>
-                <ModalRegistroUserAdminVIew openModal={openModalUser} cerrarModal={handleCloseModalUser}
+                <ModalRegistroUserAdminVIew openModal={openModalUser} cerrarModal={handleCloseModalUser} actualizarUser={fetchUsuarios}
                 />
               
 

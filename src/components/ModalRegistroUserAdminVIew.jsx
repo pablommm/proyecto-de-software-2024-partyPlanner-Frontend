@@ -24,8 +24,8 @@ const style = {
 import { UsuarioRegistro } from 'src/Dominio/Usuario'
 import usuarioService from 'src/Services/usuario.service'
 
-const BasicModalService = ({ openModal, cerrarModal }) => {
-  const navigate = useNavigate()
+const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
+  
   const [nombre, setNombre] = useState('')
   const [apellido, setApellido] = useState('')
   const [username, setUsername] = useState('')
@@ -161,9 +161,10 @@ const BasicModalService = ({ openModal, cerrarModal }) => {
   )
 }
 
-BasicModalService.propTypes = {
+UserModal.propTypes = {
   openModal: PropTypes.bool.isRequired,
   cerrarModal: PropTypes.func.isRequired,
+  actualizarUser: PropTypes.func.isRequired,
 }
 
-export default BasicModalService
+export default UserModal
