@@ -14,10 +14,20 @@ class InstalacionService {
     return instalaciones.data
 }
 
-async traerInstalacionesActivas() {
-    const instalacionesActivas = await axios.get(`${REST_SERVER_URL}/InstalacionesActivas`)
-    return instalacionesActivas.data
+async instalacionesActivar(id){
+    const instalaciones = await axios.put(`${REST_SERVER_URL}/activarInstalacion/${id}`)
+    return instalaciones.data
 }
+
+async instalacionesDesactivar(id){
+    try {  
+        const instalaciones = await axios.delete(`${REST_SERVER_URL}/deleteInstalacion/${id}`)
+        return instalaciones.data
+    } catch (error) {
+        console.error('Error al desactivar la instalacion:', error)
+        throw error
+    }
+    }
 
 async traerInstalacionPorId(id) {
     const instalacion = await axios.get(`${REST_SERVER_URL}/Instalaciones/${id}`)

@@ -9,9 +9,9 @@ const InstallationTable = ({ installations, actualizarInstalacion, onEdit }) => 
     const handleCheckboxChange = async (event, instalacionId) => {
         try {
             if (event.target.checked) {
-                await instalacionService.activarInstalacion(instalacionId)
+                await instalacionService.instalacionesActivar(instalacionId)
             } else {
-                await instalacionService.desactivarInstalacion(instalacionId)
+                await instalacionService.instalacionesDesactivar(instalacionId)
             }
             actualizarInstalacion()
         } catch (error) {
