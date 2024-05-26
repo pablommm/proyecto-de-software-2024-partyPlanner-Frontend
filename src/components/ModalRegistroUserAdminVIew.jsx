@@ -23,7 +23,7 @@ const style = {
 }
 import { UsuarioRegistro } from 'src/Dominio/Usuario'
 import usuarioService from 'src/Services/usuario.service'
-
+    
 const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
   
   const [nombre, setNombre] = useState('')
@@ -42,15 +42,17 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
 
     const respuestaCrearUsuario =
       await usuarioService.crearUsuario(nuevoUsuario)
+    actualizarUser()
+    limpiarDatos()
     console.log('Respuesta de creación de evento:', respuestaCrearUsuario)
     console.log('usuario creado exitosamente.')
   }
 
   const limpiarDatos = () => {
-    setCategoria('')
-    setNombreDeServicio('')
-    setDescripcion('')
-    setMonto('')
+    setNombre('')
+    setApellido('')
+    setUsername('')
+    setPwd('')
   }
 
 

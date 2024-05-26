@@ -22,6 +22,7 @@ export default function Dashboard() {
     const [selectedInstallation, setSelectedInstallation] = useState(null)
     const [openModalUser, setOpenModalUser] = useState(false)
 
+
     const handleOpenModal = () => {
         setOpenModal(true)
     }
