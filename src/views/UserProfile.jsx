@@ -13,8 +13,9 @@ import {
   Typography,
 } from '@mui/material'
 import TextField from '@mui/material/TextField'
-import CreditCardModal from '../components/creditCard'
+//import CreditCardModal from '../components/creditCard'
 
+import CreditView from '../components/tarjetaCreditoPablo'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,13 +87,15 @@ const UserProfile = () => {
     }
   }
 
-  const handleRoomClick = () => {
-    setOpenModal(true)
-  }
+  const [openModal, setOpenModal] = useState(false)
+
 
   const handleCloseModal = () => {
     setOpenModal(false)
   }
+  const handleOpenModal = () => {
+    setOpenModal(true)
+}
 
   return (
 
@@ -118,7 +121,7 @@ const UserProfile = () => {
           actualizarUsuario()
         }}
       >
-        <Grid  container >
+        <Grid container >
           <Grid sx={{display:'flex', flexDirection:'column'}} >
 
             <TextField
@@ -150,7 +153,7 @@ const UserProfile = () => {
             />
 
 
-            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }}>
+            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }} >
               Saldo: $ {user.saldo}
             </Typography>
             {/*
@@ -162,17 +165,15 @@ const UserProfile = () => {
 
         </Grid>
       </form>
-      <Button variant="contained" color="primary" fullWidth type="submit">
+      <Button variant="contained" color="primary" fullWidth type="submit"sx={{margin:1}}>
         Guardar Cambios
       </Button>
-
-
-      {/*<CreditCardModal openModal={openModal} cerrarModal={handleCloseModal}></CreditCardModal>*/}
+      <Button variant="contained" color="primary" fullWidth type="submit" sx={{margin:1}} onClick={handleOpenModal}>
+        Agregar Saldo 
+      </Button>
+      <CreditView openModal={openModal} cerrarModal={handleCloseModal}></CreditView>
     </Box>
 
   )
 }
-
-
-
 export default UserProfile
