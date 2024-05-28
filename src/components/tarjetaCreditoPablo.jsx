@@ -1,7 +1,4 @@
-import Box from '@mui/material/Box'
-import { TextField, Button, Typography } from "@mui/material"
-
-import Modal from '@mui/material/Modal'
+import { Box, TextField, Button, Typography, Modal } from '@mui/material'
 import PropTypes from 'prop-types'
 
 const style = {
@@ -16,11 +13,10 @@ const style = {
     p: 4,
 }
 
-
-const CreditView = ({openModal, cerrarModal}) => {
-
-  
-
+const CreditView = ({ openModal, cerrarModal }) => {
+    const handleSubmit = (event) => {
+        event.preventDefault()
+    }
 
     return (
         <Modal
@@ -33,10 +29,8 @@ const CreditView = ({openModal, cerrarModal}) => {
                 <Typography variant="h6" align="center" gutterBottom>
                     Pagar Reserva
                 </Typography>
-
-                
-                <form >
-                    <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'flex', flexDirection: 'column', color: 'black' }}>
                         <TextField
                             id="cardholder-name"
                             name="cardholderName"
@@ -80,13 +74,13 @@ const CreditView = ({openModal, cerrarModal}) => {
                             <Button variant="text" onClick={cerrarModal}>
                                 Volver
                             </Button>
-                            <Button variant="text" onClick={cerrarModal}>
+                            <Button type="submit" variant="text">
                                 Pagar Reserva
                             </Button>
                         </div>
                     </div>
                 </form>
-                
+
             </Box>
         </Modal>
     )
@@ -94,9 +88,7 @@ const CreditView = ({openModal, cerrarModal}) => {
 
 CreditView.propTypes = {
     openModal: PropTypes.bool.isRequired,
-    cerrarModal: PropTypes.func.isRequired
-
-
+    cerrarModal: PropTypes.func.isRequired,
 }
 
 export default CreditView

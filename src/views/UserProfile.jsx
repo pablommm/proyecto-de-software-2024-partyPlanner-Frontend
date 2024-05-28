@@ -1,20 +1,7 @@
-
-//import React from 'react'
 import { useContext, useState } from 'react'
 import UserContext from 'src/Services/context'
-
 import { makeStyles } from '@mui/styles'
-import {
-  Avatar,
-  Box,
-  Button,
-  CardContent,
-  Grid,
-  Typography,
-} from '@mui/material'
-import TextField from '@mui/material/TextField'
-//import CreditCardModal from '../components/creditCard'
-
+import { Avatar, Box, Button, CardContent, Grid, Typography, TextField } from '@mui/material'
 import CreditView from '../components/tarjetaCreditoPablo'
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     height: 200,
   },
-
   avatar: {
     width: 100,
     height: 100,
@@ -66,36 +52,30 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfile = () => {
   const classes = useStyles()
-  const [user,setUser] = useContext(UserContext)
-  //const[user,setUser]= useState(new Usuario())
-
+  const [user, setUser] = useContext(UserContext)
   const [nombreYApellido, setNombreYApellido] = useState('')
   const [username, setUsername] = useState('')
-  const [pass, setPass] = useState("")
-
+  const [pass, setPass] = useState('')
+  const [openModal, setOpenModal] = useState(false)
 
   const actualizarUsuario = async () => {
     try {
       const usuarioObjeto = await usuarioService.actualizarUsuario(nombreYApellido, username, pass)
-      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
+      const usuarioId = usuarioObjeto.id
       localStorage.setItem('usuId', usuarioId.toString())
-      setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-
+      setUser(usuarioObjeto)
     } catch (error) {
       console.error('Error al actualizar usuario', error.message)
       setError('Error al actualizar usuario. Por favor, verifica tus datos.')
     }
   }
 
-  const [openModal, setOpenModal] = useState(false)
-
-
   const handleCloseModal = () => {
     setOpenModal(false)
   }
   const handleOpenModal = () => {
     setOpenModal(true)
-}
+  }
 
   return (
 
@@ -122,7 +102,7 @@ const UserProfile = () => {
         }}
       >
         <Grid container >
-          <Grid sx={{display:'flex', flexDirection:'column'}} >
+          <Grid sx={{ display: 'flex', flexDirection: 'column' }} >
 
             <TextField
               className={classes.campo}
@@ -164,12 +144,12 @@ const UserProfile = () => {
           </Grid>
 
         </Grid>
+        <Button variant="contained" color="primary" fullWidth type="submit" sx={{ margin: 1 }}>
+          Guardar Cambios
+        </Button>
       </form>
-      <Button variant="contained" color="primary" fullWidth type="submit"sx={{margin:1}}>
-        Guardar Cambios
-      </Button>
-      <Button variant="contained" color="primary" fullWidth type="submit" sx={{margin:1}} onClick={handleOpenModal}>
-        Agregar Saldo 
+      <Button variant="contained" color="primary" fullWidth sx={{ margin: 1 }} onClick={handleOpenModal}>
+        Agregar Saldo
       </Button>
       <CreditView openModal={openModal} cerrarModal={handleCloseModal}></CreditView>
     </Box>
