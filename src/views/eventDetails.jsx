@@ -4,12 +4,10 @@ import {
   Grid,
   IconButton,
   Typography,
-  Fab,
   Box,
   Button,
 } from '@mui/material'
-import { EventNote, AccountBalance, LocationOn, Add } from '@mui/icons-material'
-import QrCodeTwoToneIcon from '@mui/icons-material/QrCodeTwoTone'
+import { EventNote, AccountBalance, LocationOn } from '@mui/icons-material'
 import BasicModalService from 'src/components/modalServicio'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
@@ -29,6 +27,7 @@ import servicioService from 'src/Services/servicio.service'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import ShareIcon from '@mui/icons-material/Share'
 import TelegramIcon from '@mui/icons-material/Telegram'
+import MensajeConfirmacion from 'src/components/MensajeCofirmacion'
 //import { Linking } from 'react-native'
 
 const EventDetails = () => {
@@ -40,6 +39,9 @@ const EventDetails = () => {
   const [services, setServices] = useState([])
   const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
   const [totalGastado, setTotalGastado] = useState(0)
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [serviceToDelete, setServiceToDelete] = useState(null)
+
 
   const traerServiciosAdquiridos = async () => {
     try {
@@ -49,15 +51,21 @@ const EventDetails = () => {
       console.error('Error al traer los servicios adquiridos:', error)
     }
   }
-  const deleteService = async (serviceId) => {
-    try {
-      console.log('Eliminar servicio con ID:', serviceId)
-      await servicioService.deleteServicio(serviceId)
-      traerServiciosAdquiridos()
-    } catch (error) {
-      console.error('error', error)
+  const handleDeleteConfirmed = async () => {
+    if (serviceToDelete) {
+      try {
+        console.log('Eliminar servicio con ID:', serviceToDelete)
+        await servicioService.deleteServicio(serviceToDelete)
+        traerServiciosAdquiridos()
+      } catch (error) {
+        console.error('Error al eliminar servicio:', error)
+      } finally {
+        setShowConfirmDialog(false)
+        setServiceToDelete(null)
+      }
     }
   }
+
 
   useEffect(() => {
     traerServiciosAdquiridos()
@@ -99,7 +107,7 @@ const EventDetails = () => {
     var componenteAviso = 0
 
     if (estadoPresupuesto === 1) {
-      componenteAviso = (
+      componenteAviso =
         <CheckCircleTwoToneIcon
           sx={{ color: '#00913f', fontSize: 40 }}
           Estas
@@ -108,9 +116,9 @@ const EventDetails = () => {
           tu
           presupuesto
         />
-      )
+
     } else if (estadoPresupuesto === 2) {
-      componenteAviso = (
+      componenteAviso =
         <WarningTwoToneIcon
           sx={{ color: '#FFD300', fontSize: 40 }}
           te
@@ -120,18 +128,30 @@ const EventDetails = () => {
           tu
           presupuesto
         />
-      )
+
     } else if (estadoPresupuesto === 3) {
-      componenteAviso = (
+      componenteAviso =
         <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }}>
           {' '}
           te has pasado de tu presupuesto
         </ReportTwoToneIcon>
-      )
+
     }
 
     return componenteAviso
   }
+  // Función para abrir el modal de confirmación
+  const confirmDelete = (serviceId) => {
+    setServiceToDelete(serviceId)
+    setShowConfirmDialog(true)
+  }
+
+  // Función para cerrar el modal de confirmación
+  const handleCloseConfirmDialog = () => {
+    setShowConfirmDialog(false)
+    setServiceToDelete(null)
+  }
+
 
   const handleWhatsAppPress = () => {
     //window.open('https://api.whatsapp.com/send?text=te%20invitamos%20a%20nuestro%20casamiento!')
@@ -166,7 +186,7 @@ const EventDetails = () => {
     const message = `la fecha ${formattedDate} a las ${hours} en la localidad ${event.lugar.localidadDeInstalacion}`
     const url = `https://t.me/share/url?url=Te invitamos ${event.nombreDelEvento} : &text=${message}`
     window.open(url)
-    
+
   }
 
   return (
@@ -256,7 +276,7 @@ const EventDetails = () => {
           </IconButton>
         </Grid>
       </Grid>
-      {section === 'evento' && (
+      {section === 'evento' &&
         <Container
           sx={{
             backgroundColor: '#DFDFDF',
@@ -282,8 +302,8 @@ const EventDetails = () => {
             Lugar: {event.lugar.nombreDeInstalacion}
           </Typography>
         </Container>
-      )}
-      {section === 'lugar' && (
+      }
+      {section === 'lugar' &&
         <Container
           sx={{
             fontWeight: 'bold',
@@ -316,8 +336,8 @@ const EventDetails = () => {
             Monto De Reserva: {event.lugar.montoDeReserva}
           </Typography>
         </Container>
-      )}
-      {section === 'qr' && (
+      }
+      {section === 'qr' &&
         <Container
           sx={{
             display: 'flex',
@@ -343,9 +363,9 @@ const EventDetails = () => {
             </IconButton>
           </Box>
         </Container>
-      )}
+      }
 
-      {section === 'servicios' && services.length > 0 && (
+      {section === 'servicios' && services.length > 0 &&
         <Container
           sx={{
             backgroundColor: '#DFDFDF',
@@ -434,7 +454,7 @@ const EventDetails = () => {
                 Acciones
               </Typography>
             </Grid>
-            {services.map((servicio) => (
+            {services.map((servicio) =>
               <React.Fragment key={servicio.id}>
                 <Grid
                   item
@@ -507,17 +527,26 @@ const EventDetails = () => {
                   <IconButton onClick={() => handleEditService(servicio)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => deleteService(servicio.id)}>
+                  <IconButton onClick={() => confirmDelete(servicio.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </Grid>
               </React.Fragment>
-            ))}
-          </Grid>
-        </Container>
-      )}
+            )}
 
-      {section === 'servicios' && services.length === 0 && (
+          </Grid>
+          <MensajeConfirmacion
+            open={showConfirmDialog}
+            onClose={handleCloseConfirmDialog}
+            onConfirm={handleDeleteConfirmed}
+            title={'Confirmar Eliminación'}
+            message={'¿Estás seguro que deseas eliminar este servicio?'}
+          />
+        </Container>
+
+      }
+
+      {section === 'servicios' && services.length === 0 &&
         <Container
           sx={{
             display: 'flex',
@@ -528,8 +557,8 @@ const EventDetails = () => {
         >
           <Typography variant="body1">No hay servicios adquiridos.</Typography>
         </Container>
-      )}
-      {section === 'servicios' && (
+      }
+      {section === 'servicios' &&
         <Button
           variant="contained"
           size="large"
@@ -544,7 +573,7 @@ const EventDetails = () => {
         >
           Agregar Servicio
         </Button>
-      )}
+      }
       <BasicModalService
         openModal={openModal}
         cerrarModal={handleCloseModal}

@@ -4,10 +4,12 @@ import {
   TextField,
   Button,
   Typography,
-  Grid
+  Grid,
+  SnackbarContent,
+  Snackbar
 } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useState} from 'react'
+import { useState } from 'react'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -21,13 +23,14 @@ const style = {
 }
 import { UsuarioRegistro } from 'src/Dominio/Usuario'
 import usuarioService from 'src/Services/usuario.service'
-    
-const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
-  
+
+const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
+
   const [nombre, setNombre] = useState('')
   const [apellido, setApellido] = useState('')
   const [username, setUsername] = useState('')
   const [pwd, setPwd] = useState('')
+  const [mostrarMensajeExito, setMostrarMensajeExito] = useState({ mostrar: false, mensaje: '', variant: '' })
 
   const crear = async () => {
     const nuevoUsuario = new UsuarioRegistro()
@@ -38,12 +41,18 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
 
     console.log('Nuevo usuario:', nuevoUsuario)
 
-    const respuestaCrearUsuario =
-      await usuarioService.crearUsuario(nuevoUsuario)
-    actualizarUser()
-    limpiarDatos()
-    console.log('Respuesta de creación de evento:', respuestaCrearUsuario)
-    console.log('usuario creado exitosamente.')
+    try {
+      const respuestaCrearUsuario =
+        await usuarioService.crearUsuario(nuevoUsuario)
+      mostrarSnackbar('¡El usuario se creó correctamente!', 'success')
+      actualizarUser()
+      limpiarDatos()
+      console.log('Respuesta de creación de evento:', respuestaCrearUsuario)
+      console.log('usuario creado exitosamente.')
+    } catch (error) {
+      console.error('Error al crear el usuario:', error)
+      mostrarSnackbar('Error al crear el usuario. Inténtelo nuevamente.', 'error')
+    }
   }
 
   const limpiarDatos = () => {
@@ -53,6 +62,13 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
     setPwd('')
   }
 
+  const mostrarSnackbar = (mensaje, variant) => {
+    setMostrarMensajeExito({ mostrar: true, mensaje, variant })
+  }
+
+  const handleCloseSnackbar = () => {
+    setMostrarMensajeExito({ mostrar: false, mensaje: '', variant: '' })
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -60,7 +76,7 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
     crear()
     cerrarModal()
     limpiarDatos()
-}
+  }
 
   return (
     <>
@@ -72,7 +88,7 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
       >
         <Box sx={style}
         >
-         
+
           <Typography
             component="h1"
             variant="h5"
@@ -152,11 +168,23 @@ const UserModal = ({ openModal, cerrarModal,actualizarUser }) => {
             >
               Registrarme
             </Button>
-          
+
           </form>
         </Box>
       </Modal>
-
+      <Snackbar
+        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+        open={mostrarMensajeExito.mostrar}
+        autoHideDuration={2500}
+        onClose={handleCloseSnackbar}
+      >
+        <SnackbarContent
+          style={{
+            backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336',
+          }}
+          message={mostrarMensajeExito.mensaje}
+        />
+      </Snackbar>
     </>
   )
 }

@@ -11,7 +11,7 @@ import InstalacionModal from 'src/components/InstalacionModal' // Ajusta la ruta
 import ModalRegistroUserAdminVIew from 'src/components/ModalRegistroUserAdminVIew'
 
 export default function Dashboard() {
-    
+
     const [installations, setInstallations] = useState([])
     const [numeroTotalDeEventos, setNumeroTotalDeEventos] = useState(0)
     const [eventosActivos, setEventosActivos] = useState(0)
@@ -26,7 +26,7 @@ export default function Dashboard() {
     const handleOpenModal = () => {
         setOpenModal(true)
     }
-    
+
     const handleOpenModalUser = () => {
         setOpenModalUser(true)
     }
@@ -149,15 +149,14 @@ export default function Dashboard() {
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>
                     <UserTable users={usuarios} actualizarLista={fetchUsuarios} />
                 </Paper>
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModalUser}sx={{ marginTop: 2 }}>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModalUser} sx={{ marginTop: 2 }}>
                     Agregar Usuario
                 </Button>
                 <ModalRegistroUserAdminVIew openModal={openModalUser} cerrarModal={handleCloseModalUser} actualizarUser={fetchUsuarios}
                 />
-              
+
 
                 {/* Sección de instalaciones */}
-                <Typography variant="h4" sx={{ marginTop: 4 }}>Instalaciones</Typography>
 
                 <Typography variant="h4" sx={{ marginTop: 4, color: '#000000' }}>Instalaciones</Typography>
                 <Paper sx={{ backgroundColor: 'white', padding: 2, marginTop: 2 }}>

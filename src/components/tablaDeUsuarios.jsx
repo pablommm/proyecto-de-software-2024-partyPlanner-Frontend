@@ -1,18 +1,56 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper } from '@mui/material'
 import usuarioService from 'src/Services/usuario.service'
+import MensajeConfirmacion from './MensajeCofirmacion'
 
 const UserTable = ({ users, actualizarLista }) => {
+    const [showConfirmDialog, setShowConfirmDialog] = React.useState(false)
+    const [userIdToActivate, setUserIdToActivate] = React.useState(null)
+    const [userIdToDeactivate, setUserIdToDeactivate] = React.useState(null)
+
     const handleCheckboxChange = async (event, userId) => {
+        if (event.target.checked) {
+            // Mostrar el diálogo de confirmación al activar usuario
+            setUserIdToActivate(userId)
+            setShowConfirmDialog(true)
+        } else {
+            // Mostrar el diálogo de confirmación al desactivar usuario
+            setUserIdToDeactivate(userId)
+            setShowConfirmDialog(true)
+        }
+    }
+
+    const handleUserActivation = async (userId) => {
         try {
-            if (event.target.checked) {
-                await usuarioService.activarUsuario(userId)
-            } else {
-                await usuarioService.desactivarUsuario(userId)
-            }
+            await usuarioService.activarUsuario(userId)
             actualizarLista()
         } catch (error) {
-            console.error('Error al actualizar el estado del usuario:', error)
+            console.error('Error al activar el usuario:', error)
+        }
+    }
+
+    const handleUserDeactivation = async (userId) => {
+        try {
+            await usuarioService.desactivarUsuario(userId)
+            actualizarLista()
+        } catch (error) {
+            console.error('Error al desactivar el usuario:', error)
+        }
+    }
+
+    const handleCloseConfirmDialog = () => {
+        setShowConfirmDialog(false)
+        setUserIdToActivate(null)
+        setUserIdToDeactivate(null)
+    }
+
+    const handleConfirmDialogAction = async () => {
+        setShowConfirmDialog(false)
+        if (userIdToActivate) {
+            await handleUserActivation(userIdToActivate)
+        } else if (userIdToDeactivate) {
+            await handleUserDeactivation(userIdToDeactivate)
         }
     }
 
@@ -43,6 +81,13 @@ const UserTable = ({ users, actualizarLista }) => {
                     )}
                 </TableBody>
             </Table>
+            <MensajeConfirmacion
+                open={showConfirmDialog}
+                onClose={handleCloseConfirmDialog}
+                onConfirm={handleConfirmDialogAction}
+                title={userIdToActivate ? 'Confirmar Activación' : 'Confirmar Desactivación'}
+                message={userIdToActivate ? '¿Estás seguro que deseas activar este usuario?' : '¿Estás seguro que deseas desactivar este usuario?'}
+            />
         </TableContainer>
     )
 }

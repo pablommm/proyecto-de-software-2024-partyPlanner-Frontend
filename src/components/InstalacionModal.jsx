@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import PropTypes from 'prop-types'
-import { TextField, Button, Typography } from "@mui/material"
+import { TextField, Button, Typography, Snackbar, SnackbarContent } from "@mui/material"
 import { useState, useEffect } from 'react'
 import instalacionService from 'src/Services/instalaciones.service'
 
@@ -24,8 +24,7 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
     const [capacidadInstalacion, setCapacidadInstalacion] = useState('')
     const [descripcionInstalacion, setDescripcionInstalacion] = useState('')
     const [imagenPrincipal, setImagenPrincipal] = useState('')
-
-
+    const [mostrarMensajeExito, setMostrarMensajeExito] = useState({ mostrar: false, mensaje: '', variant: '' })
 
     useEffect(() => {
         if (instalacion) {
@@ -35,8 +34,7 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
             setCapacidadInstalacion(instalacion.capacidadInstalacion || '')
             setDescripcionInstalacion(instalacion.descripcionDeInstalacion || '')
             setImagenPrincipal(instalacion.imagenPrincipal || '')
-        }
-        else {
+        } else {
             limpiarDatos()
         }
     }, [instalacion])
@@ -59,19 +57,21 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
                     ...datosInstalacion,
                     id: instalacion.id
                 })
+                mostrarSnackbar('¡La instalación se actualizó correctamente!', 'success')
                 console.log("Respuesta de edición de instalación:", respuestaEditar)
                 console.log("Instalación editada exitosamente.")
             } else {
                 const respuestaCrearInstalacion = await instalacionService.crearInstalacion(datosInstalacion)
+                mostrarSnackbar('¡La instalación se creó correctamente!', 'success')
                 console.log("Respuesta de creación de instalación:", respuestaCrearInstalacion)
                 console.log("Instalación creada exitosamente.")
             }
             cerrarModal()
             limpiarDatos()
             actualizarInstalacion()
-
         } catch (error) {
             console.error('Error al guardar la instalación:', error)
+            mostrarSnackbar('Error al guardar la instalación. Inténtelo nuevamente.', 'error')
         }
     }
 
@@ -84,86 +84,105 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
         setImagenPrincipal('')
     }
 
-    return (
-        <Modal
-            open={openModal}
-            onClose={cerrarModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={style}>
-                <Typography variant="h6" align="center" gutterBottom style={{color: instalacion ? "black" : "black" }}>
-                    {instalacion ? 'Editar Instalación' : 'Crear Instalación'}
-                </Typography>
-                <form onSubmit={handleSubmit}>
-                    <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
-                        <TextField
-                            id="nombre"
-                            name="nombre"
-                            label="Nombre"
-                            variant="standard"
-                            value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="localidad"
-                            name="localidad"
-                            label="Localidad"
-                            variant="standard"
-                            value={localidad}
-                            onChange={(e) => setLocalidad(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="costo"
-                            name="costo"
-                            label="Costo"
-                            variant="standard"
-                            value={costoInstalacion}
-                            onChange={(e) => setCostoInstalacion(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="capacidad"
-                            name="capacidad"
-                            label="Capacidad"
-                            variant="standard"
-                            value={capacidadInstalacion}
-                            onChange={(e) => setCapacidadInstalacion(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="descripcion"
-                            name="descripcion"
-                            label="Descripción"
-                            variant="standard"
-                            value={descripcionInstalacion}
-                            onChange={(e) => setDescripcionInstalacion(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="imagen"
-                            name="imagen"
-                            label="Imagen"
-                            type="file"
-                            variant="standard"
-                            value={imagenPrincipal}
-                            onChange={(e) => setImagenPrincipal(e.target.value)}
-                            style={{ marginBottom: "1rem" }}
-                        />
+    const mostrarSnackbar = (mensaje, variant) => {
+        setMostrarMensajeExito({ mostrar: true, mensaje, variant })
+    }
 
-                        {/* Agrega más campos si es necesario para la instalación */}
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Button variant="text" onClick={cerrarModal}>Cancelar</Button>
-                            <Button type="submit" variant="text">
-                                {instalacion ? 'Guardar Cambios' : 'Crear'}
-                            </Button>
+    const handleCloseSnackbar = () => {
+        setMostrarMensajeExito({ mostrar: false, mensaje: '', variant: '' })
+    }
+
+    return (
+        <>
+            <Modal
+                open={openModal}
+                onClose={cerrarModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography variant="h6" align="center" gutterBottom>
+                        {instalacion ? 'Editar Instalación' : 'Crear Instalación'}
+                    </Typography>
+                    <form onSubmit={handleSubmit}>
+                        <div style={{ display: "flex", flexDirection: "column", color: "black" }}>
+                            <TextField
+                                id="nombre"
+                                name="nombre"
+                                label="Nombre"
+                                variant="standard"
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="localidad"
+                                name="localidad"
+                                label="Localidad"
+                                variant="standard"
+                                value={localidad}
+                                onChange={(e) => setLocalidad(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="costo"
+                                name="costo"
+                                label="Costo"
+                                variant="standard"
+                                value={costoInstalacion}
+                                onChange={(e) => setCostoInstalacion(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="capacidad"
+                                name="capacidad"
+                                label="Capacidad"
+                                variant="standard"
+                                value={capacidadInstalacion}
+                                onChange={(e) => setCapacidadInstalacion(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="descripcion"
+                                name="descripcion"
+                                label="Descripción"
+                                variant="standard"
+                                value={descripcionInstalacion}
+                                onChange={(e) => setDescripcionInstalacion(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                id="imagen"
+                                name="imagen"
+                                label="Imagen"
+                                type="file"
+                                variant="standard"
+                                value={imagenPrincipal}
+                                onChange={(e) => setImagenPrincipal(e.target.value)}
+                                style={{ marginBottom: "1rem" }}
+                            />
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                <Button variant="text" onClick={cerrarModal}>Cancelar</Button>
+                                <Button type="submit" variant="text">
+                                    {instalacion ? 'Guardar Cambios' : 'Crear'}
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </Box>
-        </Modal>
+                    </form>
+                </Box>
+            </Modal>
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                open={mostrarMensajeExito.mostrar}
+                autoHideDuration={2500}
+                onClose={handleCloseSnackbar}
+            >
+                <SnackbarContent
+                    style={{ backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336' }}
+                    message={mostrarMensajeExito.mensaje}
+                />
+            </Snackbar>
+        </>
     )
 }
 
@@ -172,8 +191,6 @@ InstalacionModal.propTypes = {
     cerrarModal: PropTypes.func,
     instalacion: PropTypes.object,
     actualizarInstalacion: PropTypes.func.isRequired,
-
 }
-
 
 export default InstalacionModal
