@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Box, Modal, TextField, Button, Typography, Snackbar, SnackbarContent } from '@mui/material'
+import { Box, Modal, TextField, Button, Typography, Snackbar, SnackbarContent, Grid } from '@mui/material'
 import PropTypes from 'prop-types'
 import eventoService from 'src/Services/evento.service'
 import { Evento } from 'src/Dominio/evento'
@@ -10,6 +10,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 300,
+    maxHeight: '90vh', // Ajuste máximo de altura para evitar desbordamiento
+    overflowY: 'auto', // Habilitar desplazamiento vertical si es necesario
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -138,7 +140,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography variant="h6" align="center" gutterBottom style={{color: evento ? "black" : "black" }}>
+                    <Typography variant="h6" align="center" gutterBottom style={{ color: evento ? "black" : "black" }}>
                         {evento ? 'Editar Evento' : 'Reservar'}
                     </Typography>
                     <form onSubmit={handleSubmit}>
@@ -161,38 +163,46 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                                 value={nombreInstalacion}
                                 disabled
                             />
-                            <TextField
-                                id="standard-basic"
-                                name="fecha Inicio"
-                                variant="standard"
-                                style={{ marginBottom: '1rem' }}
-                                type="date"
-                                value={fechaEventoIni}
-                                onChange={(e) => setFechaEventoIni(e.target.value)}
-                                disabled={!!evento}
-                                InputProps={{
-                                    inputProps: {
-                                        min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
-                                        disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
-                                    },
-                                }}
-                            />
-                            <TextField
-                                id="standard-basic"
-                                name="fecha Final"
-                                variant="standard"
-                                style={{ marginBottom: '1rem' }}
-                                type="date"
-                                value={fechaEventoFin}
-                                onChange={(e) => setFechaEventoFin(e.target.value)}
-                                disabled={!!evento}
-                                InputProps={{
-                                    inputProps: {
-                                        min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
-                                        disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
-                                    },
-                                }}
-                            />
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="standard-basic"
+                                    name="fechaInicio"
+                                    label="Desde"
+                                    variant="standard"
+                                    type="date"
+                                    value={fechaEventoIni}
+                                    onChange={(e) => setFechaEventoIni(e.target.value)}
+                                    disabled={!!evento}
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }} // Título siempre visible
+                                    InputProps={{
+                                        inputProps: {
+                                            min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
+                                            disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
+                                        },
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="standard-basic"
+                                    name="fechaFin"
+                                    label="Hasta"
+                                    variant="standard"
+                                    type="date"
+                                    value={fechaEventoFin}
+                                    onChange={(e) => setFechaEventoFin(e.target.value)}
+                                    disabled={!!evento}
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }} // Título siempre visible
+                                    InputProps={{
+                                        inputProps: {
+                                            min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
+                                            disabledDates: disableDates // Propiedad personalizada para deshabilitar fechas específicas
+                                        },
+                                    }}
+                                />
+                            </Grid>
                             <TextField
                                 id="standard-basic"
                                 name="presupuesto"
