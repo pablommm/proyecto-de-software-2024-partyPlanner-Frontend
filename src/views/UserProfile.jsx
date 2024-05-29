@@ -82,27 +82,30 @@ const UserProfile = () => {
     <Box className={classes.root} component="form"
       sx={{
         'campo': { m: 5, width: '25ch' },
+         display:"grid"
       }}
       noValidate
       autoComplete="off">
 
-      <CardContent>
-        <Grid container alignItems="center">
-          <Grid item>
+      <CardContent >
+        
+        {/*</Grid><Grid container alignItems="center">*/}
+          <Grid container justifyContent="center">
             <Avatar className={classes.avatar}>
               {/* Imagen de perfil del usuario */}
             </Avatar>
           </Grid>
-        </Grid>
+        
       </CardContent>
       <form
+        
         onSubmit={(event) => {
           event.preventDefault()
           actualizarUsuario()
         }}
       >
-        <Grid container >
-          <Grid sx={{ display: 'flex', flexDirection: 'column' }} >
+        <Grid container  >
+          <Grid sx={{ display: 'flex', flexDirection: 'column', width:"100%" }} >
 
             <TextField
               className={classes.campo}
@@ -133,7 +136,7 @@ const UserProfile = () => {
             />
 
 
-            <Typography variant="h6" className={classes.texto} style={{ margin: '10px', padding: '5px 10px' }} >
+            <Typography variant="h6" className={classes.texto} style={{ margin: '1', padding: '5px 10px' }} >
               Saldo: $ {user.saldo}
             </Typography>
             {/*
@@ -144,11 +147,11 @@ const UserProfile = () => {
           </Grid>
 
         </Grid>
-        <Button variant="contained" color="primary" fullWidth type="submit" sx={{ margin: 1 }}>
+        <Button variant="contained" color="primary" fullWidth type="submit" sx={{ marginTop: 1 }}>
           Guardar Cambios
         </Button>
       </form>
-      <Button variant="contained" color="primary" fullWidth sx={{ margin: 1 }} onClick={handleOpenModal}>
+      <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }} onClick={handleOpenModal}>
         Agregar Saldo
       </Button>
       <CreditView openModal={openModal} cerrarModal={handleCloseModal}></CreditView>
