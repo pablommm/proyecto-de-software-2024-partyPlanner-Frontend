@@ -41,6 +41,7 @@ const EventDetails = () => {
   const [totalGastado, setTotalGastado] = useState(0)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState(null)
+  //const [textoAviso, setTextoAviso] = useState(null) 
 
 
   const traerServiciosAdquiridos = async () => {
@@ -66,10 +67,12 @@ const EventDetails = () => {
     }
   }
 
-
   useEffect(() => {
     traerServiciosAdquiridos()
+
   }, [event.id])
+
+
 
   const handleCloseModal = () => {
     setOpenModal(false)
@@ -90,6 +93,7 @@ const EventDetails = () => {
     setSelectedService(service)
     setOpenModal(true)
   }
+
   useEffect(() => {
     const totalServicios = services.reduce(
       (total, servicio) => total + servicio.monto,
@@ -99,6 +103,12 @@ const EventDetails = () => {
       event.lugar.costoDeInstalacion - event.lugar.montoDeReserva
     setTotalGastado(totalServicios + totalInstalacion)
   }, [services, event.lugar.costoDeInstalacion, event.lugar.montoDeReserva])
+/*
+  useEffect((event) => {
+    consultaEstadoPresupuesto(event)
+
+  }, [totalGastado])
+  */
 
   function consultaEstadoPresupuesto(event) {
     var estadoPresupuesto = event.estadoPresupuesto
@@ -110,31 +120,26 @@ const EventDetails = () => {
       componenteAviso =
         <CheckCircleTwoToneIcon
           sx={{ color: '#00913f', fontSize: 40 }}
-          Estas
-          dentro
-          de
-          tu
-          presupuesto
-        />
+          />
+         // setTextoAviso( "Estas en presupuesto")
 
     } else if (estadoPresupuesto === 2) {
       componenteAviso =
         <WarningTwoToneIcon
           sx={{ color: '#FFD300', fontSize: 40 }}
-          te
-          has
-          pasado
-          de
-          tu
-          presupuesto
+       
         />
+
+        //setTextoAviso( "Estas al limite del presupuesto")
 
     } else if (estadoPresupuesto === 3) {
       componenteAviso =
         <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }}>
-          {' '}
-          te has pasado de tu presupuesto
+          
         </ReportTwoToneIcon>
+
+        //setTextoAviso ("Superaste el presupuesto")
+
 
     }
 
@@ -394,6 +399,7 @@ const EventDetails = () => {
               Total Gastado: ${totalGastado}
             </Typography>
             {consultaEstadoPresupuesto(event)}
+            
           </div>
 
           <Grid
