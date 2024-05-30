@@ -24,6 +24,31 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
     const [capacidadInstalacion, setCapacidadInstalacion] = useState('')
     const [descripcionInstalacion, setDescripcionInstalacion] = useState('')
     const [imagenPrincipal, setImagenPrincipal] = useState('')
+    const [image, setImage] = useState([])
+
+    const uploadToServer = async (e) => {
+        const imageFile = e.target.files[0]
+        const url = `https://api.imgbb.com/1/upload?&key=aa6bb07c1670d6b0bca14de0df39782f&name=${imageFile.name})`
+        const data = new FormData
+        data.append ("image",imageFile)
+        try {
+        const response = await fetch(url, {	
+        method: "POST",
+        body: data,
+        })
+        
+        const responseData = await response.json()
+        console.log('que tengo aca :' + responseData)
+
+        console.log('que tengo aca 2 :' + responseData.data.url)
+        
+        setImage(responseData.data.url)
+        } catch (error) {
+        console.error (error)
+    }
+        }
+        
+
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState({ mostrar: false, mensaje: '', variant: '' })
 
     useEffect(() => {
@@ -156,9 +181,10 @@ const InstalacionModal = ({ openModal, cerrarModal, instalacion, actualizarInsta
                                 name="imagen"
                                 label="Imagen"
                                 type="file"
+                            onChange={uploadToServer}
                                 variant="standard"
                                 value={imagenPrincipal}
-                                onChange={(e) => setImagenPrincipal(e.target.value)}
+                                //onChange={(e) => setImagenPrincipal(e.target.value)}
                                 style={{ marginBottom: "1rem" }}
                             />
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
