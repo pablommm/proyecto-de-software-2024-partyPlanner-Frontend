@@ -55,7 +55,7 @@ const InstalacionModal = ({
 
       console.log('que tengo aca 2 :' + responseData.data.url)
       console.log('que tengo aca 3 :' + (responseData.data.url).toString())
-      setImage(responseData.data.url)
+      setImagenPrincipal(responseData.data.url)
     } catch (error) {
       console.error(error)
     }
@@ -215,7 +215,7 @@ const InstalacionModal = ({
                 type="file"
                 onChange={uploadToServer}
                 variant="standard"
-                value={imagenPrincipal}
+                value={image}
                 //onChange={(e) => setImagenPrincipal(e.target.value)}
                 style={{ marginBottom: '1rem' }}
               />
@@ -224,7 +224,8 @@ const InstalacionModal = ({
                 name="descripcion2"
                 label="Descripción2"
                 variant="standard"
-                value={image}
+                value={imagenPrincipal}
+                onChange={(e) => setImagenPrincipal(e.target.value)}
                 disabled={true}
                 style={{ marginBottom: '1rem' }}
               />
