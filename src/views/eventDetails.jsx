@@ -92,6 +92,7 @@ const EventDetails = () => {
   const handleEditService = (service) => {
     setSelectedService(service)
     setOpenModal(true)
+    consultaEstadoPresupuesto(event)
   }
 
   useEffect(() => {
@@ -149,6 +150,7 @@ const EventDetails = () => {
   const confirmDelete = (serviceId) => {
     setServiceToDelete(serviceId)
     setShowConfirmDialog(true)
+    consultaEstadoPresupuesto(event)
   }
 
   // Función para cerrar el modal de confirmación
