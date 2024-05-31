@@ -29,9 +29,11 @@ export class UsuarioRegistro {
 
 export class UsuarioActualizado {
     constructor() {
-        this.nombreYApellido = ""        
+        this.nombreYApellido = ""
         this.username = ""
-        this.pass = ""
+        this.contrasenia = ""
+        this.saldo = 0
+
     }
     static fromJson(UsuarioJSON) {
         const result = Object.assign(new UsuarioActualizado(), UsuarioJSON)

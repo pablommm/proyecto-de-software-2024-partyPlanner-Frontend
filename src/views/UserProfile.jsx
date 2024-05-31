@@ -1,9 +1,10 @@
-import { useContext, useState,useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import UserContext from 'src/Services/context'
 import { makeStyles } from '@mui/styles'
 import { Avatar, Box, Button, CardContent, Grid, Typography, TextField } from '@mui/material'
 import CreditView from '../components/tarjetaCreditoPablo'
-import { Usuario, UsuarioActualizado } from 'src/Dominio/Usuario'
+import usuarioService from 'src/Services/usuario.service'
+import { UsuarioActualizado } from 'src/Dominio/Usuario'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,39 +57,45 @@ const UserProfile = () => {
   const [user, setUser] = useContext(UserContext)
   const [nombreYApellido, setNombreYApellido] = useState('')
   const [username, setUsername] = useState('')
-  const [pass, setPass] = useState('')
+  const [contrasenia, setContrasenia] = useState('')
   const [saldo, setSaldo] = useState('')
   const [openModal, setOpenModal] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     if (user) {
       setNombreYApellido(user.nombreYApellido)
       setUsername(user.username)
-      setPass(user.contrasenia) // Suponiendo que user tiene un campo contrasenia
+      setContrasenia(user.contrasenia) // Suponiendo que `user` tiene un campo `contrasenia`
+      setSaldo(user.saldo)
+
     }
   }, [user])
 
- 
   const handleSubmit = async (event) => {
+    event.preventDefault()
     console.log("entre al handlesubmit")
     event.preventDefault()
-    
-    const usuarioModificado = new UsuarioActualizado()
-      
-      usuarioModificado.nombreYApellido = nombreYApellido
-      usuarioModificado.username = username
-      usuarioModificado.pass = pass
-      
 
-      
-        try {
-          console.log("estamos enviando este usuario",usuarioModificado)
-          const usuarioNuevo = await usuarioService.actualizarUsuario( usuarioModificado)
-          console.log("nos trae el nuevo usuario",usuarioNuevo)
-        } catch (error) {
-          console.error('Error al actualizar usuario', error.message)
-          setError('Error al actualizar usuario. Por favor, verifica tus datos.')
-        }
+    const usuarioModificado = new UsuarioActualizado()
+
+    usuarioModificado.nombreYApellido = nombreYApellido
+    usuarioModificado.username = username
+    usuarioModificado.contrasenia = contrasenia
+    usuarioModificado.saldo = saldo
+
+
+
+
+    try {
+      console.log("estamos enviando este usuario", usuarioModificado)
+      const usuarioNuevo = await usuarioService.actualizarUsuario(user.id, usuarioModificado)
+      setUser(usuarioModificado)
+      console.log("nos trae el nuevo usuario", usuarioNuevo)
+    } catch (error) {
+      console.error('Error al actualizar usuario', error.message)
+      setError('Error al actualizar usuario. Por favor, verifica tus datos.')
+    }
   }
 
   const handleCloseModal = () => {
@@ -98,29 +105,29 @@ const UserProfile = () => {
     setOpenModal(true)
   }
 
- 
+
 
   return (
 
-    <Box className={classes.root} component="form"
+    <Box className={classes.root}
       sx={{
         'campo': { m: 5, width: '25ch' },
-         display:"grid"
+        display: "grid"
       }}
       noValidate
       autoComplete="off">
 
-      <CardContent >        
-          <Grid container justifyContent="center">
-            <Avatar className={classes.avatar}>              
-            </Avatar>
-          </Grid>
-        
+      <CardContent >
+        <Grid container justifyContent="center">
+          <Avatar className={classes.avatar}>
+          </Avatar>
+        </Grid>
+
       </CardContent>
       <form onSubmit={handleSubmit}>
 
         <Grid container >
-          <Grid sx={{ display: 'flex', flexDirection: 'column', width:"100%" }} >
+          <Grid sx={{ display: 'flex', flexDirection: 'column', width: "100%" }} >
 
             <TextField
               className={classes.campo}
@@ -146,10 +153,9 @@ const UserProfile = () => {
               className={classes.campo}
               required
               id="outlined-required"
-              label="contrasenia"
-              //defaultValue={user.contrasenia}
-              value={pass}
-              onChange={(event) => setPass(event.target.value)}
+              label="Contraseña"
+              value={contrasenia}
+              onChange={(event) => setContrasenia(event.target.value)}
               style={{ margin: '10px', padding: '5px 10px' }}
             />
 
@@ -177,4 +183,5 @@ const UserProfile = () => {
 
   )
 }
+
 export default UserProfile
