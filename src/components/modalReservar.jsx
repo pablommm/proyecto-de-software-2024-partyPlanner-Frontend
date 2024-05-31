@@ -35,7 +35,7 @@ const formatDate = (dateString) => {
   return formattedDate
 }
 
-const fechasDeshabilitadas = ['2024-06-15', '2024-06-20'] // Ejemplo de fechas deshabilitadas
+const fechasDeshabilitadas = ['2024-06-15', '2024-06-20'] 
 
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const { nombreDeInstalacion, id } = instalacion || {}
@@ -71,8 +71,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       nuevoEvento.Lugar = evento.Lugar
     }
 
-    nuevoEvento.fechaEventoIni = new Date(fechaEventoIni).toISOString()
-    nuevoEvento.fechaEventoFin = new Date(fechaEventoFin).toISOString()
+    nuevoEvento.fechaEventoIni = new Date(startDate).toISOString()
+    nuevoEvento.fechaEventoFin = new Date(endDate).toISOString()
     nuevoEvento.owner = localStorage.getItem('usuId')
     nuevoEvento.presupuesto = presupuesto
 
@@ -146,6 +146,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   }
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(null)
+
+  
   const onChange = (dates) => {
     const [start, end] = dates
     console.log('INICIO' + start)
@@ -200,46 +202,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 value={nombreInstalacion}
                 disabled
               />
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-basic"
-                  name="fechaInicio"
-                  label="Desde"
-                  variant="standard"
-                  type="date"
-                  value={fechaEventoIni}
-                  onChange={(e) => setFechaEventoIni(e.target.value)}
-                  disabled={!!evento}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }} // Título siempre visible
-                  InputProps={{
-                    inputProps: {
-                      min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
-                      disabledDates: disableDates, // Propiedad personalizada para deshabilitar fechas específicas
-                    },
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-basic"
-                  name="fechaFin"
-                  label="Hasta"
-                  variant="standard"
-                  type="date"
-                  value={fechaEventoFin}
-                  onChange={(e) => setFechaEventoFin(e.target.value)}
-                  disabled={!!evento}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }} // Título siempre visible
-                  InputProps={{
-                    inputProps: {
-                      min: formatDate(new Date()), // Deshabilitar fechas anteriores a hoy
-                      disabledDates: disableDates, // Propiedad personalizada para deshabilitar fechas específicas
-                    },
-                  }}
-                />
-              </Grid>
+
               <TextField
                 id="standard-basic"
                 name="presupuesto"
@@ -250,6 +213,8 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 style={{ marginBottom: '1rem' }}
                 disabled={!!evento}
               />
+
+              
               <DatePicker
                 minDate={new Date()}
                 selected={startDate}
