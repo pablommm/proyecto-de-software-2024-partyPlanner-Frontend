@@ -21,12 +21,26 @@ const CreditView = ({ openModal, cerrarModal }) => {
         event.preventDefault()
     }
 
+    
     const [cardholderName,setCardholderName] = useState('')
-
+    /*
     const verificaNombreTitular = (event) =>{
         const nuevoValor = event.target.cardholderName.replace(/[^a-zA-Z\s]/g, '')
         setCardholderName(nuevoValor)
     }
+    
+
+    const verificaNombreTitular = (event) => {
+        // Obtener el valor ingresado en el campo de entrada
+        var inputValue = event.target.value
+        // Eliminar números y símbolos del valor ingresado usando una expresión regular
+        inputValue = inputValue.replace(/[^a-z]/g, '')
+        // Convertir el valor a minúsculas
+        inputValue = inputValue.toLowerCase()
+        // Actualizar el estado con el valor limpio y en minúsculas
+        setCardholderName(inputValue)
+    }
+    */
 
     return (
         <Modal
@@ -48,7 +62,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
                             variant="standard"
                             type="text"
                             value={cardholderName}
-                            onChange={verificaNombreTitular}
+                            //onChange={verificaNombreTitular}
                             required
                             style={{ marginBottom: "1rem" }}
                         />

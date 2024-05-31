@@ -92,9 +92,9 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
           <Typography
             component="h1"
             variant="h5"
-            style={{ marginBottom: '1rem' }}
+            style={{ marginBottom: '1rem', color:"black"}}
           >
-            Registrate
+            Creacion usuario
           </Typography>
           <form
             onSubmit={handleSubmit}
@@ -166,7 +166,7 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
             >
-              Registrarme
+              Crear Usuario
             </Button>
 
           </form>
