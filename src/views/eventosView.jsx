@@ -44,10 +44,10 @@ const Eventos = () => {
 
     return (
         <Container className="main" style={{ marginBottom: "5rem" }}>
-            <Grid container spacing={3} justifyContent="center">
+            <Grid container spacing={2} justifyContent="center">
                 {listaEventos && listaEventos.length > 0 ?
                     listaEventos.map((evento, index) =>
-                        <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
+                        <Grid item key={index} xs={12} sm={6.5} md={5} lg={5}>
                             <EventCard event={evento} onEventClick={handleEventClick} onEditClick={handleEditClick} />
                         </Grid>
                     )
