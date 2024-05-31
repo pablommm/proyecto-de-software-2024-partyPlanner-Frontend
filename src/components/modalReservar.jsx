@@ -12,8 +12,8 @@ import {
 import PropTypes from 'prop-types'
 import eventoService from 'src/Services/evento.service'
 import { Evento } from 'src/Dominio/evento'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 const style = {
   position: 'absolute',
