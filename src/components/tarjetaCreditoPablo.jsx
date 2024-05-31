@@ -1,5 +1,6 @@
 import { Box, TextField, Button, Typography, Modal } from '@mui/material'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
 const style = {
     position: 'absolute',
@@ -13,9 +14,18 @@ const style = {
     p: 4,
 }
 
+
+
 const CreditView = ({ openModal, cerrarModal }) => {
     const handleSubmit = (event) => {
         event.preventDefault()
+    }
+
+    const [cardholderName,setCardholderName] = useState('')
+
+    const verificaNombreTitular = (event) =>{
+        const nuevoValor = event.target.cardholderName.replace(/[^a-zA-Z\s]/g, '')
+        setCardholderName(nuevoValor)
     }
 
     return (
@@ -26,8 +36,8 @@ const CreditView = ({ openModal, cerrarModal }) => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography variant="h6" align="center" gutterBottom>
-                    Pagar Reserva
+                <Typography sx={{color:"black"}}variant="h6" align="center" gutterBottom>
+                    Carga de Saldo
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: 'flex', flexDirection: 'column', color: 'black' }}>
@@ -36,6 +46,9 @@ const CreditView = ({ openModal, cerrarModal }) => {
                             name="cardholderName"
                             label="Nombre del Titular"
                             variant="standard"
+                            type="text"
+                            value={cardholderName}
+                            onChange={verificaNombreTitular}
                             required
                             style={{ marginBottom: "1rem" }}
                         />
@@ -44,7 +57,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
                             name="cardNumber"
                             label="Número de Tarjeta"
                             variant="standard"
-                            type="tel"
+                            type="number"
                             inputProps={{ maxLength: 16 }}
                             required
                             style={{ marginBottom: "1rem" }}
@@ -55,7 +68,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
                                 name="expirationDate"
                                 label="Fecha de Vencimiento"
                                 variant="standard"
-                                //type="month"
+                                type="month"
                                 required
                                 style={{ marginRight: "1rem", marginBottom: "1rem", width: "50%" }}
                             />
@@ -64,12 +77,22 @@ const CreditView = ({ openModal, cerrarModal }) => {
                                 name="cvc"
                                 label="CVC"
                                 variant="standard"
-                                type="tel"
+                                type="number"                                
                                 inputProps={{ maxLength: 3 }}
                                 required
                                 style={{ width: "50%" }}
                             />
                         </div>
+                        <TextField
+                            id="input-saldo"
+                            name="saldo"
+                            label="Saldo"
+                            variant="standard"
+                            type=""
+                            
+                            required
+                            style={{ marginBottom: "1rem" }}
+                        />
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button variant="text" onClick={cerrarModal}>
                                 Volver
@@ -78,6 +101,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
                                 Pagar Reserva
                             </Button>
                         </div>
+                        
                     </div>
                 </form>
 
