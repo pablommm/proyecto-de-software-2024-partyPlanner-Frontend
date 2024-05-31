@@ -7,7 +7,6 @@ import {
   Typography,
   Snackbar,
   SnackbarContent,
-
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import eventoService from 'src/Services/evento.service'
@@ -21,8 +20,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 300,
-  maxHeight: '90vh', // Ajuste máximo de altura para evitar desbordamiento
-  //overflowY: '', // Habilitar desplazamiento vertical si es necesario
+  maxHeight: '90vh',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -35,10 +33,8 @@ const formatDate = (dateString) => {
   return formattedDate
 }
 
-const fechasDeshabilitadas = ['2024-06-15', '2024-06-20'] 
-
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
-  const { nombreDeInstalacion, id } = instalacion || {}
+  const { nombreDeInstalacion, id, fechasReservadas } = instalacion || {}
   const [nombreDelEvento, setNombreDelEvento] = useState('')
   const [nombreInstalacion, setNombreInstalacion] = useState('')
   const [fechaEventoIni, setFechaEventoIni] = useState('')
@@ -47,6 +43,9 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false)
   const [mostrarMensajeError, setMostrarMensajeError] = useState(false)
   const [errorMensaje, setErrorMensaje] = useState('')
+  const [startDate, setStartDate] = useState(new Date())
+  const [endDate, setEndDate] = useState(null)
+  const [fechasDeshabilitadas, setFechasDeshabilitadas] = useState([])
 
   useEffect(() => {
     if (evento) {
@@ -60,6 +59,29 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       limpiarDatos()
     }
   }, [evento, nombreDeInstalacion])
+
+  useEffect(() => {
+    if (fechasReservadas) {
+      actualizarFechasDeshabilitadas(fechasReservadas)
+    }
+  }, [fechasReservadas])
+
+  const actualizarFechasDeshabilitadas = (fechas) => {
+    const formattedDates = fechas.map(({ fechaIni, fechaFin }) => {
+      const dates = []
+      const currentDate = new Date(fechaIni)
+      const endDate = new Date(fechaFin)
+
+      while (currentDate <= endDate) {
+        dates.push(new Date(currentDate))
+        currentDate.setDate(currentDate.getDate() + 1)
+      }
+
+      return dates
+    }).flat()
+
+    setFechasDeshabilitadas(formattedDates)
+  }
 
   const crearOEditarEvento = async () => {
     const nuevoEvento = new Evento()
@@ -79,15 +101,19 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     try {
       if (evento && evento.id) {
         nuevoEvento.id = evento.id
-        const respuestaEditarEvento =
-          await eventoService.editarEvento(nuevoEvento)
+        const respuestaEditarEvento = await eventoService.editarEvento(nuevoEvento)
         console.log('Respuesta de edición de evento:', respuestaEditarEvento)
         mostrarSnackbar('¡El evento se editó correctamente!', 'success')
       } else {
-        const respuestaCrearEvento =
-          await eventoService.crearEvento(nuevoEvento)
+        const respuestaCrearEvento = await eventoService.crearEvento(nuevoEvento)
         console.log('Respuesta de creación de evento:', respuestaCrearEvento)
         mostrarSnackbar('¡El evento se creó correctamente!', 'success')
+        // Actualizar fechas reservadas con las nuevas fechas del evento creado
+        const nuevasFechasReservadas = [
+          ...fechasReservadas,
+          { fechaIni: startDate, fechaFin: endDate }
+        ]
+        actualizarFechasDeshabilitadas(nuevasFechasReservadas)
       }
 
       limpiarDatos()
@@ -107,17 +133,15 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    // Verificar si las fechas seleccionadas están deshabilitadas
     if (
       fechasDeshabilitadas.includes(fechaEventoIni) ||
       fechasDeshabilitadas.includes(fechaEventoFin)
     ) {
       setErrorMensaje('Las fechas seleccionadas están deshabilitadas')
       setMostrarMensajeError(true)
-      return // Detener la ejecución si alguna fecha está deshabilitada
+      return
     }
 
-    // Resto del código para crear o editar el evento
     await crearOEditarEvento()
   }
 
@@ -134,29 +158,10 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     setMostrarMensajeError(false)
   }
 
-  const disableDates = (date) => {
-    // Formatear la fecha para compararla con las fechas deshabilitadas
-    const formattedDate = new Date(date).toISOString().split('T')[0]
-
-    // Obtener la fecha actual en el mismo formato
-    const today = new Date().toISOString().split('T')[0]
-
-    // Devolver true si la fecha está en la lista de fechas deshabilitadas o es anterior a hoy
-    return fechasDeshabilitadas.includes(formattedDate) || formattedDate < today
-  }
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(null)
-
-  
   const onChange = (dates) => {
     const [start, end] = dates
-    console.log('INICIO' + start)
-
-    console.log('FIN' + end)
-
     setStartDate(start)
     setEndDate(end)
-
   }
 
   return (
@@ -213,8 +218,9 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 style={{ marginBottom: '1rem' }}
                 disabled={!!evento}
               />
-
-              
+              <Typography variant="subtitle1" style={{ marginBottom: '0.5rem', marginTop: '1rem' }}>
+                Fecha de Reserva
+              </Typography>
               <DatePicker
                 minDate={new Date()}
                 selected={startDate}
@@ -224,10 +230,9 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 excludeDates={fechasDeshabilitadas}
                 selectsRange
                 selectsDisabledDaysInRange
-                 
               />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
                 <Button variant="text" onClick={cerrarModal}>
                   Volver
                 </Button>

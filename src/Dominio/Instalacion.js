@@ -7,6 +7,7 @@ export class Instalaciones {
         this.capacidadInstalacion = 0
         this.localidadDeInstalacion = ""
         this.imagenPrincipal = ""
+        this.fechasReservadas = []
     }
     static fromJson(InstalacionJson) {
         const result = Object.assign(new Instalacion(), InstalacionJson)
