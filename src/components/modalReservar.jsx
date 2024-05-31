@@ -7,7 +7,7 @@ import {
   Typography,
   Snackbar,
   SnackbarContent,
-  Grid,
+
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import eventoService from 'src/Services/evento.service'
@@ -22,7 +22,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 300,
   maxHeight: '90vh', // Ajuste máximo de altura para evitar desbordamiento
-  overflowY: 'auto', // Habilitar desplazamiento vertical si es necesario
+  //overflowY: '', // Habilitar desplazamiento vertical si es necesario
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
