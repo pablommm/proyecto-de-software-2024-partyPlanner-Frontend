@@ -1,12 +1,4 @@
-import {
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  Typography,
-  Box,
-  Button,
-} from '@mui/material'
+import { CardMedia,Container,Grid,IconButton,Typography,Box,Button,} from '@mui/material'
 import { EventNote, AccountBalance, LocationOn } from '@mui/icons-material'
 import BasicModalService from 'src/components/modalServicio'
 import React, { useEffect, useState } from 'react'
@@ -41,8 +33,9 @@ const EventDetails = () => {
   const [totalGastado, setTotalGastado] = useState(0)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState(null)
-  //const [textoAviso, setTextoAviso] = useState(null) 
+  const [textoAviso, setTextoAviso] = useState('estado presupuesto')
 
+  //const [mensajePresupuesto,setMensajePresupuesto] =
 
   const traerServiciosAdquiridos = async () => {
     try {
@@ -69,10 +62,7 @@ const EventDetails = () => {
 
   useEffect(() => {
     traerServiciosAdquiridos()
-
   }, [event.id])
-
-
 
   const handleCloseModal = () => {
     setOpenModal(false)
@@ -122,15 +112,14 @@ const EventDetails = () => {
         <CheckCircleTwoToneIcon
           sx={{ color: '#00913f', fontSize: 40 }}
           />
-         // setTextoAviso( "Estas en presupuesto")
+          setTextoAviso("Estas en presupuesto")
 
     } else if (estadoPresupuesto === 2) {
       componenteAviso =
         <WarningTwoToneIcon
-          sx={{ color: '#FFD300', fontSize: 40 }}
-       
+          sx={{ color: '#FFD300', fontSize: 40 }}          
         />
-
+        setTextoAviso("Estas en presupuesto")
         //setTextoAviso( "Estas al limite del presupuesto")
 
     } else if (estadoPresupuesto === 3) {
@@ -388,6 +377,7 @@ const EventDetails = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '1rem',
+              color:'black'
             }}
           >
             <Typography
@@ -401,6 +391,9 @@ const EventDetails = () => {
               Total Gastado: ${totalGastado}
             </Typography>
             {consultaEstadoPresupuesto(event)}
+            {textoAviso}
+            
+             
             
           </div>
 
