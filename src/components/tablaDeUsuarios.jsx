@@ -1,21 +1,19 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper } from '@mui/material'
 import usuarioService from 'src/Services/usuario.service'
 import MensajeConfirmacion from './MensajeCofirmacion'
+import { useState } from 'react'
 
 const UserTable = ({ users, actualizarLista }) => {
-    const [showConfirmDialog, setShowConfirmDialog] = React.useState(false)
-    const [userIdToActivate, setUserIdToActivate] = React.useState(null)
-    const [userIdToDeactivate, setUserIdToDeactivate] = React.useState(null)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+    const [userIdToActivate, setUserIdToActivate] = useState(null)
+    const [userIdToDeactivate, setUserIdToDeactivate] = useState(null)
 
     const handleCheckboxChange = async (event, userId) => {
         if (event.target.checked) {
-            // Mostrar el diálogo de confirmación al activar usuario
             setUserIdToActivate(userId)
             setShowConfirmDialog(true)
         } else {
-            // Mostrar el diálogo de confirmación al desactivar usuario
             setUserIdToDeactivate(userId)
             setShowConfirmDialog(true)
         }

@@ -4,17 +4,17 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/
 const MensajeConfirmacion = ({ open, onClose, onConfirm, title, message }) => {
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle sx={{ textAlign: 'center' }}>{title}</DialogTitle>
+            <DialogTitle sx={{ textAlign: 'center', fontWeight: "bold" }}>{title}</DialogTitle>
             <DialogContent>
                 <p>{message}</p>
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Button onClick={onClose}>Cancelar</Button>
                 <Button onClick={onConfirm} variant="contained" color="error">
                     Confirmar
                 </Button>
             </DialogActions>
-        </Dialog>
+        </Dialog >
     )
 }
 

@@ -2,23 +2,62 @@ import PropTypes from 'prop-types'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Paper, IconButton } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import instalacionService from 'src/Services/instalacionService'
+import MensajeConfirmacion from './MensajeCofirmacion'
+import { useState } from 'react'
 
 
 const InstallationTable = ({ installations, actualizarInstalacion, onEdit }) => {
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+    const [instaIdToActivate, setInstaIdToActivate] = useState(null)
+    const [instaIdToDeactivate, setInstaIdToDeactivate] = useState(null)
 
     const handleCheckboxChange = async (event, instalacionId) => {
         try {
             if (event.target.checked) {
-                await instalacionService.instalacionesActivar(instalacionId)
+                setInstaIdToActivate(instalacionId)
+                setShowConfirmDialog(true)
             } else {
-                await instalacionService.instalacionesDesactivar(instalacionId)
+                setInstaIdToDeactivate(instalacionId)
+                setShowConfirmDialog(true)
+
             }
-            actualizarInstalacion()
         } catch (error) {
             console.error('Error al actualizar el estado de la instalación:', error)
         }
+
     }
 
+    const handleInstaActivation = async (instalacionId) => {
+        try {
+            await instalacionService.instalacionesActivar(instalacionId)
+            actualizarInstalacion()
+        } catch (error) {
+            console.error('Error al activar instalacion:', error)
+        }
+    }
+
+    const handleInstaDeactivation = async (instalacionId) => {
+        try {
+            await instalacionService.instalacionesDesactivar(instalacionId)
+            actualizarInstalacion()
+        } catch (error) {
+            console.error('Error al desactivar el usuario:', error)
+        }
+    }
+    const handleCloseConfirmDialog = () => {
+        setShowConfirmDialog(false)
+        setInstaIdToActivate(null)
+        setInstaIdToDeactivate(null)
+    }
+
+    const handleConfirmDialogAction = async () => {
+        setShowConfirmDialog(false)
+        if (instaIdToActivate) {
+            await handleInstaActivation(instaIdToActivate)
+        } else if (instaIdToDeactivate) {
+            await handleInstaDeactivation(instaIdToDeactivate)
+        }
+    }
     return (
         <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
             <Table stickyHeader>
@@ -58,6 +97,13 @@ const InstallationTable = ({ installations, actualizarInstalacion, onEdit }) => 
                     )}
                 </TableBody>
             </Table>
+            <MensajeConfirmacion
+                open={showConfirmDialog}
+                onClose={handleCloseConfirmDialog}
+                onConfirm={handleConfirmDialogAction}
+                title={instaIdToActivate ? 'Confirmar Activación' : 'Confirmar Desactivación'}
+                message={instaIdToActivate ? '¿Estás seguro que deseas activar esta instalación?' : '¿Estás seguro que deseas desactivar esta instalación?'}
+            />
         </TableContainer>
     )
 }
