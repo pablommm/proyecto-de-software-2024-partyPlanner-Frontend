@@ -34,7 +34,7 @@ const EventDetails = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState(null)
   const [textoAviso, setTextoAviso] = useState('estado presupuesto')
-  const [componenteAviso, setComponenteAviso] = useState(null)
+
   //const [mensajePresupuesto,setMensajePresupuesto] =
 
   const traerServiciosAdquiridos = async () => {
@@ -58,6 +58,8 @@ const EventDetails = () => {
         setServiceToDelete(null)
       }
     }
+  }
+  const handleDeleteConfirmedEvent = async () => {
   }
 
   useEffect(() => {
@@ -141,7 +143,15 @@ const EventDetails = () => {
     setShowConfirmDialog(true)
     consultaEstadoPresupuesto(event)
   }
-
+  const confirmDeleteEvent = () => {
+    seteventToDelete(event.id)
+    setShowConfirmDialog(true)
+    
+  }
+  const handleCloseConfirmDialogEvent = () => {
+    setShowConfirmDialog(false)
+    seteventToDelete(null)
+  }
   // Función para cerrar el modal de confirmación
   const handleCloseConfirmDialog = () => {
     setShowConfirmDialog(false)
@@ -563,7 +573,7 @@ const EventDetails = () => {
         <Button
           variant="contained"
           size="large"
-          onClick={handleOpenModal}
+          onClick={() => confirmDelete(servicio.id)}
           sx={{
             width: 250,
             fontSize: 15,
@@ -581,6 +591,29 @@ const EventDetails = () => {
         eventoID={event.id}
         servicio={selectedService}
       />
+       <Button
+          variant="contained"
+          size="large"
+          color='secondary'
+          onClick={() => confirmDeleteEvent(event.id)}
+          sx={{
+            width: 125,
+            fontSize: 15,
+            position: 'fixed',
+            bottom: '1rem',
+            left: '1rem',
+          }}
+        >
+          Cancelar
+        </Button>
+        <MensajeConfirmacion
+            open={showConfirmDialog}
+            onClose={handleCloseConfirmDialogEvent}
+            onConfirm={handleDeleteConfirmedEvent}
+            title={'Confirmar Eliminación'}
+            message={'¿Estás seguro que deseas eliminar este evento?'}
+          />
+      
     </Container>
   )
 }

@@ -1,6 +1,6 @@
 import { Box, TextField, Button, Typography, Modal } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+
 
 const style = {
     position: 'absolute',
@@ -22,8 +22,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
     }
 
     
-    const [cardholderName,setCardholderName] = useState('')
-    /*
+    /*  const [cardholderName,setCardholderName] = useState('')
     const verificaNombreTitular = (event) =>{
         const nuevoValor = event.target.cardholderName.replace(/[^a-zA-Z\s]/g, '')
         setCardholderName(nuevoValor)
@@ -55,48 +54,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: 'flex', flexDirection: 'column', color: 'black' }}>
-                        <TextField
-                            id="cardholder-name"
-                            name="cardholderName"
-                            label="Nombre del Titular"
-                            variant="standard"
-                            type="text"
-                            value={cardholderName}
-                            //onChange={verificaNombreTitular}
-                            required
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <TextField
-                            id="card-number"
-                            name="cardNumber"
-                            label="Número de Tarjeta"
-                            variant="standard"
-                            type="number"
-                            inputProps={{ maxLength: 16 }}
-                            required
-                            style={{ marginBottom: "1rem" }}
-                        />
-                        <div style={{ display: "flex" }}>
-                            <TextField
-                                id="expiration-date"
-                                name="expirationDate"
-                                label="Fecha de Vencimiento"
-                                variant="standard"
-                                type="month"
-                                required
-                                style={{ marginRight: "1rem", marginBottom: "1rem", width: "50%" }}
-                            />
-                            <TextField
-                                id="cvc"
-                                name="cvc"
-                                label="CVC"
-                                variant="standard"
-                                type="number"                                
-                                inputProps={{ maxLength: 3 }}
-                                required
-                                style={{ width: "50%" }}
-                            />
-                        </div>
+                        
                         <TextField
                             id="input-saldo"
                             name="saldo"
@@ -107,15 +65,12 @@ const CreditView = ({ openModal, cerrarModal }) => {
                             required
                             style={{ marginBottom: "1rem" }}
                         />
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Button variant="text" onClick={cerrarModal}>
-                                Volver
-                            </Button>
-                            <Button type="submit" variant="text">
-                                Pagar Reserva
-                            </Button>
-                        </div>
-                        
+                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }}>
+        Cargar Saldo
+      </Button>
+                    <Button variant="contained" color="secondary" fullWidth sx={{ marginTop: 1 }} >
+        Cancelar
+      </Button>
                     </div>
                 </form>
 
