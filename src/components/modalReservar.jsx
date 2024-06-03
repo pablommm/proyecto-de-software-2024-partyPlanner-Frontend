@@ -42,7 +42,7 @@ const calcularDiasEntreFechas = (startDate, endDate) => {
 }
 
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
-  const { nombreDeInstalacion, id, fechasReservadas } = instalacion || {}
+  const { nombreDeInstalacion, id, fechasReservadas, montoDeReserva } = instalacion || {}
   const [nombreDelEvento, setNombreDelEvento] = useState('')
   const [nombreInstalacion, setNombreInstalacion] = useState('')
   const [fechaEventoIni, setFechaEventoIni] = useState('')
@@ -55,6 +55,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const [endDate, setEndDate] = useState(null)
   const [fechasDeshabilitadas, setFechasDeshabilitadas] = useState([])
   const [cantidadDias, setCantidadDias] = useState(0)
+
 
   useEffect(() => {
     if (evento) {
@@ -252,9 +253,9 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 Días entre fechas: {cantidadDias}
               </Typography>
               <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>
-                La cantidad a pagar : 0
+                La cantidad a pagar : {montoDeReserva * cantidadDias}
               </Typography>
-
+            
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
                 <Button variant="text" onClick={cerrarModal}>
                   Volver
