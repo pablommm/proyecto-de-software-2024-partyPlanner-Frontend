@@ -34,7 +34,7 @@ const EventDetails = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState(null)
   const [textoAviso, setTextoAviso] = useState('estado presupuesto')
-
+  const [componenteAviso, setComponenteAviso] = useState(null)
   //const [mensajePresupuesto,setMensajePresupuesto] =
 
   const traerServiciosAdquiridos = async () => {
@@ -105,30 +105,30 @@ const EventDetails = () => {
     var estadoPresupuesto = event.estadoPresupuesto
     console.log('estoy mostrado el evento', event)
     console.log('estoy mostrado estado del presupuesto', estadoPresupuesto)
-    var componenteAviso = 0
+    //var componenteAviso = 0
 
     if (estadoPresupuesto === 1) {
-      componenteAviso =
+      setComponenteAviso(
         <CheckCircleTwoToneIcon
           sx={{ color: '#00913f', fontSize: 40 }}
-          />
-          setTextoAviso("Estas en presupuesto")
+          />)
+      setTextoAviso("Estas en presupuesto")
 
     } else if (estadoPresupuesto === 2) {
-      componenteAviso =
+      setComponenteAviso(
         <WarningTwoToneIcon
           sx={{ color: '#FFD300', fontSize: 40 }}          
-        />
+        />)
         setTextoAviso("Estas en presupuesto")
         //setTextoAviso( "Estas al limite del presupuesto")
 
     } else if (estadoPresupuesto === 3) {
-      componenteAviso =
+      setComponenteAviso(
         <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }}>
           
-        </ReportTwoToneIcon>
+        </ReportTwoToneIcon>)
 
-        //setTextoAviso ("Superaste el presupuesto")
+        setTextoAviso ("Superaste el presupuesto")
 
 
     }
