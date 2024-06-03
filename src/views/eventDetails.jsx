@@ -22,6 +22,7 @@ import TelegramIcon from '@mui/icons-material/Telegram'
 import MensajeConfirmacion from 'src/components/MensajeCofirmacion'
 //import { Linking } from 'react-native'
 
+
 const EventDetails = () => {
   const location = useLocation()
   const event = location.state.event
@@ -33,9 +34,82 @@ const EventDetails = () => {
   const [totalGastado, setTotalGastado] = useState(0)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState(null)
-  const [textoAviso, setTextoAviso] = useState('estado presupuesto')
 
+  const [estadoPresupuesto, setEstadoPresupuesto] = useState(0)
+  const [porcentajeGastado, setPorcentajeGastado] = useState(0)
+  const [textoAviso, setTextoAviso] = useState('estado presupuesto')
+  const [componenteAviso, setComponenteAviso] = useState(null)
   //const [mensajePresupuesto,setMensajePresupuesto] =
+
+
+  useEffect(() => {
+    const calculoPorcentaje = () => {
+    
+      const porcentaje = (totalGastado * 100) / event.presupuesto
+      console.log("el estado del porcentaje es:" ,porcentaje)
+      
+      setPorcentajeGastado(porcentaje)
+      actualizarEstadoPresupuesto(porcentaje)
+      console.log("el estado del presupuesto es:" ,estadoPresupuesto)
+    }
+    calculoPorcentaje()
+  }, [totalGastado, event.presupuesto])
+
+  function actualizarEstadoPresupuesto(porcentaje) {
+    console.log("entre a la funcion actualizarEstadoPresupuesto()")
+    if (porcentaje <= 60) {
+      setEstadoPresupuesto(1)
+      setTextoAviso("Estás dentro de tu presupuesto")
+    } else if (porcentaje <= 95) {
+      setEstadoPresupuesto(2)
+      setTextoAviso("Estás al límite de tu presupuesto")
+    } else {
+      setEstadoPresupuesto(3)
+      setTextoAviso("Has superado tu presupuesto")
+    }
+  }
+
+  function consultaEstadoPresupuesto() {
+    if (estadoPresupuesto === 1) {
+      return (
+        <>
+          <CheckCircleTwoToneIcon sx={{ color: '#00913f', fontSize: 40 }} />
+          <Typography
+            variant="h6"
+            sx={{ color: '#000006', fontWeight: 'bold', marginLeft: '0.5rem' }}
+          >
+            {textoAviso}
+          </Typography>
+        </>
+      )
+    } else if (estadoPresupuesto === 2) {
+      return (
+        <>
+          <WarningTwoToneIcon sx={{ color: '#FFD300', fontSize: 40 }} />
+          <Typography
+            variant="h6"
+            sx={{ color: '#000006', fontWeight: 'bold', marginLeft: '0.5rem' }}
+          >
+            {textoAviso}
+          </Typography>
+        </>
+      )
+    } else if (estadoPresupuesto === 3) {
+      return (
+        <>
+          <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }} />
+          <Typography
+            variant="h6"
+            sx={{ color: '#000006', fontWeight: 'bold', marginLeft: '0.5rem' }}
+          >
+            {textoAviso}
+          </Typography>
+        </>
+      )
+    }
+    return null
+  }
+
 
   const traerServiciosAdquiridos = async () => {
     try {
@@ -64,6 +138,8 @@ const EventDetails = () => {
 
   useEffect(() => {
     traerServiciosAdquiridos()
+    
+
   }, [event.id])
 
   const handleCloseModal = () => {
@@ -71,6 +147,8 @@ const EventDetails = () => {
     setSelectedService(null)
     traerServiciosAdquiridos()
     consultaEstadoPresupuesto(event)
+    actualizarEstadoPresupuesto()
+    
   }
 
   const handleSectionClick = (sectionName) => {
@@ -84,7 +162,10 @@ const EventDetails = () => {
   const handleEditService = (service) => {
     setSelectedService(service)
     setOpenModal(true)
+    console.log("el estado del presupuesto es",estadoPresupuesto)
     consultaEstadoPresupuesto(event)
+    calculoPorcentaje()
+    actualizarEstadoPresupuesto()
   }
 
   useEffect(() => {
@@ -92,56 +173,18 @@ const EventDetails = () => {
       (total, servicio) => total + servicio.monto,
       0,
     )
-    const totalInstalacion =
-      event.lugar.costoDeInstalacion - event.lugar.montoDeReserva
+    const totalInstalacion = event.lugar.costoDeInstalacion - event.lugar.montoDeReserva
     setTotalGastado(totalServicios + totalInstalacion)
   }, [services, event.lugar.costoDeInstalacion, event.lugar.montoDeReserva])
-/*
-  useEffect((event) => {
-    consultaEstadoPresupuesto(event)
-
-  }, [totalGastado])
-  */
-
-  function consultaEstadoPresupuesto(event) {
-    var estadoPresupuesto = event.estadoPresupuesto
-    console.log('estoy mostrado el evento', event)
-    console.log('estoy mostrado estado del presupuesto', estadoPresupuesto)
-    //var componenteAviso = 0
-
-    if (estadoPresupuesto === 1) {
-      setComponenteAviso(
-        <CheckCircleTwoToneIcon
-          sx={{ color: '#00913f', fontSize: 40 }}
-          />)
-      setTextoAviso("Estas en presupuesto")
-
-    } else if (estadoPresupuesto === 2) {
-      setComponenteAviso(
-        <WarningTwoToneIcon
-          sx={{ color: '#FFD300', fontSize: 40 }}          
-        />)
-        setTextoAviso("Estas en presupuesto")
-        //setTextoAviso( "Estas al limite del presupuesto")
-
-    } else if (estadoPresupuesto === 3) {
-      setComponenteAviso(
-        <ReportTwoToneIcon sx={{ color: '#FF0000', fontSize: 40 }}>
-          
-        </ReportTwoToneIcon>)
-
-        setTextoAviso ("Superaste el presupuesto")
 
 
-    }
 
-    return componenteAviso
-  }
   // Función para abrir el modal de confirmación
   const confirmDelete = (serviceId) => {
     setServiceToDelete(serviceId)
     setShowConfirmDialog(true)
     consultaEstadoPresupuesto(event)
+    calculoPorcentaje()
   }
   const confirmDeleteEvent = () => {
     seteventToDelete(event.id)
@@ -160,10 +203,7 @@ const EventDetails = () => {
 
 
   const handleWhatsAppPress = () => {
-    //window.open('https://api.whatsapp.com/send?text=te%20invitamos%20a%20nuestro%20casamiento!')
-    //const url = 'https://api.whatsapp.com/send?text=fedequierealosladyboys'
-    //Linking.openURL(url)
-    const dateObject = new Date(event.fechaEventoIni) // Assuming event.fechaEventoIni is a valid Date object
+       const dateObject = new Date(event.fechaEventoIni) // Assuming event.fechaEventoIni is a valid Date object
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
       month: '2-digit',
@@ -401,7 +441,10 @@ const EventDetails = () => {
               Total Gastado: ${totalGastado}
             </Typography>
             {consultaEstadoPresupuesto(event)}
-            {textoAviso}
+            
+            
+
+            
             
              
             
@@ -624,6 +667,7 @@ EventDetails.propTypes = {
     nombreDelEvento: PropTypes.string.isRequired,
     fechaEventoIni: PropTypes.string.isRequired,
     fechaEventoFin: PropTypes.string.isRequired,
+    presupuesto: PropTypes.number.isRequired,
     lugar: PropTypes.shape({
       nombreDeInstalacion: PropTypes.string.isRequired,
       imagenPrincipal: PropTypes.string.isRequired,
