@@ -33,6 +33,14 @@ const formatDate = (dateString) => {
   return formattedDate
 }
 
+const calcularDiasEntreFechas = (startDate, endDate) => {
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const diffInTime = end - start
+  const diffInDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24)) + 1
+  return diffInDays
+}
+
 const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const { nombreDeInstalacion, id, fechasReservadas } = instalacion || {}
   const [nombreDelEvento, setNombreDelEvento] = useState('')
@@ -46,6 +54,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(null)
   const [fechasDeshabilitadas, setFechasDeshabilitadas] = useState([])
+  const [cantidadDias, setCantidadDias] = useState(0)
 
   useEffect(() => {
     if (evento) {
@@ -65,6 +74,13 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       actualizarFechasDeshabilitadas(fechasReservadas)
     }
   }, [fechasReservadas])
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const dias = calcularDiasEntreFechas(startDate, endDate)
+      setCantidadDias(dias)
+    }
+  }, [startDate, endDate])
 
   const actualizarFechasDeshabilitadas = (fechas) => {
     const formattedDates = fechas.map(({ fechaIni, fechaFin }) => {
@@ -231,6 +247,13 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
                 selectsRange
                 selectsDisabledDaysInRange
               />
+
+              <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>
+                Días entre fechas: {cantidadDias}
+              </Typography>
+              <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>
+                La cantidad a pagar : 0
+              </Typography>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
                 <Button variant="text" onClick={cerrarModal}>
