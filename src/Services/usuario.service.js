@@ -57,7 +57,10 @@ class UsuarioService {
         }
     }
 
-
+    async cargarSaldo(id,saldo) {
+        const usuario = await axios.put(`${REST_SERVER_URL}/cargarSaldo/${id}/${saldo}`)
+        return usuario.data
+    }
 
 }
 const usuarioService = new UsuarioService()

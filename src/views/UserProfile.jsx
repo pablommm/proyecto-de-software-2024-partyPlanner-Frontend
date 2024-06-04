@@ -178,7 +178,7 @@ const UserProfile = () => {
       <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }} onClick={handleOpenModal}>
         Agregar Saldo
       </Button>
-      <CreditView openModal={openModal} cerrarModal={handleCloseModal}></CreditView>
+      <CreditView openModal={openModal} cerrarModal={handleCloseModal} usuario={user}></CreditView>
     </Box>
 
   )

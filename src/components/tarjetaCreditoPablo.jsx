@@ -1,5 +1,7 @@
 import { Box, TextField, Button, Typography, Modal } from '@mui/material'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
+import usuarioService from 'src/Services/usuario.service'
 
 
 const style = {
@@ -16,10 +18,23 @@ const style = {
 
 
 
-const CreditView = ({ openModal, cerrarModal }) => {
+const CreditView = ({ openModal, cerrarModal, usuario }) => {
     const handleSubmit = (event) => {
         event.preventDefault()
+        cargarSaldo()
     }
+
+   
+    const cargarSaldo = async () => {
+          try {
+            console.log('Eliminar servicio con ID:', saldo)
+            await usuarioService.cargarSaldo(usuario.id, saldo)
+          } catch (error) {
+            console.error('Error al eliminar servicio:', error)
+          } 
+    
+      }
+    
 
     
     /*  const [cardholderName,setCardholderName] = useState('')
@@ -40,6 +55,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
         setCardholderName(inputValue)
     }
     */
+const [saldo,setSaldo] = useState(0)
 
     return (
         <Modal
@@ -61,11 +77,11 @@ const CreditView = ({ openModal, cerrarModal }) => {
                             label="Saldo"
                             variant="standard"
                             type=""
-                            
+                            onChange={(event) => setSaldo(event.target.value)}
                             required
                             style={{ marginBottom: "1rem" }}
                         />
-                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }}>
+                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }}type="submit">
         Cargar Saldo
       </Button>
                     <Button variant="contained" color="secondary" fullWidth sx={{ marginTop: 1 }} >
@@ -82,6 +98,7 @@ const CreditView = ({ openModal, cerrarModal }) => {
 CreditView.propTypes = {
     openModal: PropTypes.bool.isRequired,
     cerrarModal: PropTypes.func.isRequired,
+    usuario: PropTypes.object
 }
 
 export default CreditView
