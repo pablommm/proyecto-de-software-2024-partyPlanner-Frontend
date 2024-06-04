@@ -64,6 +64,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       setFechaEventoIni(formatDate(evento.fechaEventoIni))
       setFechaEventoFin(formatDate(evento.fechaEventoFin))
       setPresupuesto(evento.presupuesto)
+      
     } else {
       setNombreInstalacion(nombreDeInstalacion)
       limpiarDatos()
@@ -114,6 +115,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
     nuevoEvento.fechaEventoFin = new Date(endDate).toISOString()
     nuevoEvento.owner = localStorage.getItem('usuId')
     nuevoEvento.presupuesto = presupuesto
+    nuevoEvento.dias = cantidadDias
 
     try {
       if (evento && evento.id) {

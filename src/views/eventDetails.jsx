@@ -40,7 +40,7 @@ const EventDetails = () => {
   const [textoAviso, setTextoAviso] = useState('estado presupuesto')
   const [componenteAviso, setComponenteAviso] = useState(null)
   //const [mensajePresupuesto,setMensajePresupuesto] =
-
+  const [eventToDelete, seteventToDelete] = useState(null)
 
   useEffect(() => {
     const calculoPorcentaje = () => {
@@ -134,7 +134,18 @@ const EventDetails = () => {
     }
   }
   const handleDeleteConfirmedEvent = async () => {
-  }
+    if(eventToDelete){
+      try {
+        console.log('Eliminar servicio con ID:', eventToDelete)
+        await eventoService.delete(eventToDelete)
+      } catch (error) {
+        console.error('Error al eliminar servicio:', error)
+      } finally {
+        setShowConfirmDialog(false)
+        seteventToDelete(null)
+      }
+
+  }}
 
   useEffect(() => {
     traerServiciosAdquiridos()
@@ -661,6 +672,7 @@ const EventDetails = () => {
   )
 }
 
+
 EventDetails.propTypes = {
   event: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -688,5 +700,6 @@ EventDetails.propTypes = {
     ).isRequired,
   }).isRequired,
 }
+
 
 export default EventDetails

@@ -4,6 +4,7 @@ import { REST_SERVER_URL } from '../Services/configuracion'
 class EventoService {
     async crearEvento(nuevoEvento) {
         try {
+            console.log(nuevoEvento)
             console.log("llegue al service")
             const crearEvento = await axios.post(`${REST_SERVER_URL}/CrearEventos`, nuevoEvento)
             console.log('Evento creado:', crearEvento.data)
@@ -38,6 +39,11 @@ class EventoService {
 
     async traerServiciosAdquiridos(eventoId) {
         const servicios = await axios.get(`${REST_SERVER_URL}/serviciosAdquiridos/${eventoId}`)
+        return servicios.data
+    }
+
+    async delete(eventoId) {
+        const servicios = await axios.delete(`${REST_SERVER_URL}/DeletarEvento/${eventoId}`)
         return servicios.data
     }
 }
