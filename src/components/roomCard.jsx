@@ -16,7 +16,12 @@ const EventRoomCard = ({ room, onClick }) => {
 
     return (
         <Card sx={{
-            maxWidth: 345,
+            minWidth: 300,
+            minHeight:380,
+
+            maxWidth:300,
+            maxHeight: 500,
+
             borderRadius: '0.5rem',
             border: '1px solid black',
             boxShadow: '-2px 2px 4px 0px rgba(0, 0, 0, 0.75)',
@@ -26,12 +31,13 @@ const EventRoomCard = ({ room, onClick }) => {
                     component="img"
                     height="140"
                     image={imagenPrincipal}
+                    sx={{objectFit:"fill"}}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {nombreDeInstalacion}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" >
                         {expanded ? descripcionDeInstalacion : descripcionDeInstalacion.slice(0, 30)}
                         {descripcionDeInstalacion.length > 30 &&
                             <Button onClick={(e) => { toggleExpanded(); e.stopPropagation() }}>
