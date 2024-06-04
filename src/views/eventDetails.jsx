@@ -616,7 +616,7 @@ const EventDetails = () => {
         <Button
           variant="contained"
           size="large"
-          onClick={() => confirmDelete(servicio.id)}
+          onClick={handleOpenModal}
           sx={{
             width: 250,
             fontSize: 15,
