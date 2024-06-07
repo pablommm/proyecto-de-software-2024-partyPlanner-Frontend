@@ -90,7 +90,7 @@ const UserProfile = () => {
     try {
       console.log("estamos enviando este usuario", usuarioModificado)
       const usuarioNuevo = await usuarioService.actualizarUsuario(user.id, usuarioModificado)
-      setUser(usuarioModificado)
+      setUser(usuarioNuevo)
       console.log("nos trae el nuevo usuario", usuarioNuevo)
     } catch (error) {
       console.error('Error al actualizar usuario', error.message)

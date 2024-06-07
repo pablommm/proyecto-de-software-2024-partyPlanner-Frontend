@@ -29,7 +29,9 @@ class UsuarioService {
 
     async actualizarUsuario(id, usuarioModificado) {
         try {
-            response = await axios.put(`${REST_SERVER_URL}/UsuarioUpdate/${id}`, usuarioModificado)
+            console.log("llegue al service de modificar usuario",usuarioModificado)
+            const response = await axios.put(`${REST_SERVER_URL}/UsuarioUpdate/${id}`, usuarioModificado)
+            console.log("volvi del back el nuevo usuario es:",response)
             return response.data
         }
         catch (error) {
