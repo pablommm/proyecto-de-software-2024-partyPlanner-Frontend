@@ -1,4 +1,4 @@
-import { CardMedia,Container,Grid,IconButton,Typography,Box,Button,} from '@mui/material'
+import { CardMedia, Container, Grid, IconButton, Typography, Box, Button, } from '@mui/material'
 import { EventNote, AccountBalance, LocationOn } from '@mui/icons-material'
 import BasicModalService from 'src/components/modalServicio'
 import React, { useEffect, useState } from 'react'
@@ -33,6 +33,8 @@ const EventDetails = () => {
   const qrContent = `Evento: ${event.nombreDelEvento}\nLugar: ${event.lugar.nombreDeInstalacion}\nFecha: ${format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')} - ${format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}`
   const [totalGastado, setTotalGastado] = useState(0)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [showConfirmDialogEvent, setShowConfirmDialogEvent] = useState(false)
+
   const [serviceToDelete, setServiceToDelete] = useState(null)
 
   const [estadoPresupuesto, setEstadoPresupuesto] = useState(0)
@@ -44,13 +46,13 @@ const EventDetails = () => {
 
   useEffect(() => {
     const calculoPorcentaje = () => {
-    
-      const porcentaje = (totalGastado * 100) / event.presupuesto
-      console.log("el estado del porcentaje es:" ,porcentaje)
-      
+
+      const porcentaje = totalGastado * 100 / event.presupuesto
+      console.log("el estado del porcentaje es:", porcentaje)
+
       setPorcentajeGastado(porcentaje)
       actualizarEstadoPresupuesto(porcentaje)
-      console.log("el estado del presupuesto es:" ,estadoPresupuesto)
+      console.log("el estado del presupuesto es:", estadoPresupuesto)
     }
     calculoPorcentaje()
   }, [totalGastado, event.presupuesto])
@@ -134,22 +136,23 @@ const EventDetails = () => {
     }
   }
   const handleDeleteConfirmedEvent = async () => {
-    if(eventToDelete){
+    if (eventToDelete) {
       try {
         console.log('Eliminar servicio con ID:', eventToDelete)
         await eventoService.delete(eventToDelete)
       } catch (error) {
         console.error('Error al eliminar servicio:', error)
       } finally {
-        setShowConfirmDialog(false)
+        setShowConfirmDialogEvent(false)
         seteventToDelete(null)
       }
 
-  }}
+    }
+  }
 
   useEffect(() => {
     traerServiciosAdquiridos()
-    
+
 
   }, [event.id])
 
@@ -159,7 +162,7 @@ const EventDetails = () => {
     traerServiciosAdquiridos()
     consultaEstadoPresupuesto(event)
     actualizarEstadoPresupuesto()
-    
+
   }
 
   const handleSectionClick = (sectionName) => {
@@ -173,7 +176,7 @@ const EventDetails = () => {
   const handleEditService = (service) => {
     setSelectedService(service)
     setOpenModal(true)
-    console.log("el estado del presupuesto es",estadoPresupuesto)
+    console.log("el estado del presupuesto es", estadoPresupuesto)
     consultaEstadoPresupuesto(event)
     calculoPorcentaje()
     actualizarEstadoPresupuesto()
@@ -199,11 +202,11 @@ const EventDetails = () => {
   }
   const confirmDeleteEvent = () => {
     seteventToDelete(event.id)
-    setShowConfirmDialog(true)
-    
+    setShowConfirmDialogEvent(true)
+
   }
   const handleCloseConfirmDialogEvent = () => {
-    setShowConfirmDialog(false)
+    setShowConfirmDialogEvent(false)
     seteventToDelete(null)
   }
   // Función para cerrar el modal de confirmación
@@ -214,7 +217,7 @@ const EventDetails = () => {
 
 
   const handleWhatsAppPress = () => {
-       const dateObject = new Date(event.fechaEventoIni) // Assuming event.fechaEventoIni is a valid Date object
+    const dateObject = new Date(event.fechaEventoIni) // Assuming event.fechaEventoIni is a valid Date object
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
       month: '2-digit',
@@ -438,7 +441,7 @@ const EventDetails = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '1rem',
-              color:'black'
+              color: 'black'
             }}
           >
             <Typography
@@ -452,13 +455,13 @@ const EventDetails = () => {
               Total Gastado: ${totalGastado}
             </Typography>
             {consultaEstadoPresupuesto(event)}
-            
-            
 
-            
-            
-             
-            
+
+
+
+
+
+
           </div>
 
           <Grid
@@ -645,29 +648,30 @@ const EventDetails = () => {
         eventoID={event.id}
         servicio={selectedService}
       />
-       <Button
-          variant="contained"
-          size="large"
-          color='secondary'
-          onClick={() => confirmDeleteEvent(event.id)}
-          sx={{
-            width: 125,
-            fontSize: 15,
-            position: 'fixed',
-            bottom: '1rem',
-            left: '1rem',
-          }}
-        >
-          Cancelar
-        </Button>
-        <MensajeConfirmacion
-            open={showConfirmDialog}
-            onClose={handleCloseConfirmDialogEvent}
-            onConfirm={handleDeleteConfirmedEvent}
-            title={'Confirmar Eliminación'}
-            message={'¿Estás seguro que deseas eliminar este evento?'}
-          />
-      
+      <Button
+        variant="contained"
+        size="large"
+        color='secondary'
+        onClick={() => confirmDeleteEvent(event.id)}
+        sx={{
+          width: 125,
+          fontSize: 15,
+          position: 'fixed',
+          bottom: '1rem',
+          left: '1rem',
+        }}
+      >
+        Cancelar
+      </Button>
+
+      <MensajeConfirmacion
+        open={showConfirmDialogEvent}
+        onClose={handleCloseConfirmDialogEvent}
+        onConfirm={handleDeleteConfirmedEvent}
+        title={'Confirmar Eliminación'}
+        message={'¿Estás seguro que deseas eliminar este evento?'}
+      />
+
     </Container>
   )
 }
