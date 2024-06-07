@@ -29,7 +29,7 @@ class UsuarioService {
 
     async actualizarUsuario(id, usuarioModificado) {
         try {
-            response = await axios.post(`${REST_SERVER_URL}/UsuarioUpdate/${id}`, usuarioModificado)
+            response = await axios.put(`${REST_SERVER_URL}/UsuarioUpdate/${id}`, usuarioModificado)
             return response.data
         }
         catch (error) {
