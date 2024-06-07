@@ -648,28 +648,40 @@ const EventDetails = () => {
         eventoID={event.id}
         servicio={selectedService}
       />
-      <Button
-        variant="contained"
-        size="large"
-        color='secondary'
-        onClick={() => confirmDeleteEvent(event.id)}
-        sx={{
-          width: 125,
-          fontSize: 15,
-          position: 'fixed',
-          bottom: '1rem',
-          left: '1rem',
-        }}
-      >
-        Cancelar
-      </Button>
+      {section === 'evento' &&
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            bottom: '1rem',
+            width: '100%',
+          }}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            style={{ backgroundColor: '#b71c1c', color: 'white' }}
+            onClick={() => confirmDeleteEvent(event.id)}
+            sx={{
+              fontSize: 15,
+              whiteSpace: 'nowrap',
+              width: 200,
+            }}
+          >
+            Cancelar evento
+          </Button>
+        </div>
+      }
+
 
       <MensajeConfirmacion
         open={showConfirmDialogEvent}
         onClose={handleCloseConfirmDialogEvent}
         onConfirm={handleDeleteConfirmedEvent}
-        title={'Confirmar Eliminación'}
-        message={'¿Estás seguro que deseas eliminar este evento?'}
+        title={'El evento sera desactivado'}
+        message={'¿Estás seguro que deseas cancelar este evento?'}
       />
 
     </Container>
