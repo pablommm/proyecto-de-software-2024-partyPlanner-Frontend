@@ -60,7 +60,7 @@ const LoginView = () => {
         }}
       >
         <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
-        <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }} >
+        <Typography component="h1" variant="h5" style={{ color:"black", marginBottom: '1rem' }} >
           Iniciar sesión
         </Typography>
 

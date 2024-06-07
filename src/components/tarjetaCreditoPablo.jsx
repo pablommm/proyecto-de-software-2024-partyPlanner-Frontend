@@ -27,8 +27,8 @@ const CreditView = ({ openModal, cerrarModal, usuario }) => {
    
     const cargarSaldo = async () => {
           try {
-            console.log('Eliminar servicio con ID:', saldo)
-            await usuarioService.cargarSaldo(usuario.id, saldo)
+            console.log('estas cargando la cantidad de saldo: ', saldo)
+             await usuarioService.cargarSaldo(usuario.id, saldo)
           } catch (error) {
             console.error('Error al eliminar servicio:', error)
           } 
@@ -84,7 +84,7 @@ const [saldo,setSaldo] = useState(0)
                         <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 1 }}type="submit">
         Cargar Saldo
       </Button>
-                    <Button variant="contained" color="secondary" fullWidth sx={{ marginTop: 1 }} >
+                    <Button variant="contained" color="secondary" fullWidth sx={{backgroundColor: '#b71c1c', color: 'white', marginTop: 1 }} >
         Cancelar
       </Button>
                     </div>

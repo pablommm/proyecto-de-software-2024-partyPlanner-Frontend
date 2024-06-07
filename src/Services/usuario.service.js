@@ -2,8 +2,10 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from '../Services/configuracion'
 
+
 class UsuarioService {
 
+    
     async crearUsuario(nuevoUsuario) {
         try {
             console.log("estoy pasando el usuario:", nuevoUsuario)
@@ -60,7 +62,9 @@ class UsuarioService {
     }
 
     async cargarSaldo(id,saldo) {
+        console.log("se llega a service para cargar el saldo")
         const usuario = await axios.put(`${REST_SERVER_URL}/cargarSaldo/${id}/${saldo}`)
+        console.log("volvio del back con el usuario: ",usuario)
         return usuario.data
     }
 
