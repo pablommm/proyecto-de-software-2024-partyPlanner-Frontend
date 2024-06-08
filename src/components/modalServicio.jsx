@@ -64,7 +64,7 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
             limpiarDatos()
         } catch (error) {
             console.error('Error al crear o editar el servicio:', error)
-            mostrarSnackbar('Error al crear o editar el servicio', 'error')
+            mostrarSnackbar('Error al crear o editar el servicio', error)
         }
     }
 

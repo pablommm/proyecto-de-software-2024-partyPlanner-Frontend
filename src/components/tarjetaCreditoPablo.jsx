@@ -1,8 +1,8 @@
 import { Box, TextField, Button, Typography, Modal } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useState,useContext } from 'react'
 import usuarioService from 'src/Services/usuario.service'
-
+import UserContext from 'src/Services/context'
 
 const style = {
     position: 'absolute',
@@ -19,6 +19,9 @@ const style = {
 
 
 const CreditView = ({ openModal, cerrarModal, usuario }) => {
+
+    const [saldo,setSaldo] = useState(0)
+    const [user, setUser] = useContext(UserContext)
     const handleSubmit = (event) => {
         event.preventDefault()
         cargarSaldo()
@@ -27,10 +30,12 @@ const CreditView = ({ openModal, cerrarModal, usuario }) => {
    
     const cargarSaldo = async () => {
           try {
-            console.log('estas cargando la cantidad de saldo: ', saldo)
-             await usuarioService.cargarSaldo(usuario.id, saldo)
+           console.log('estas cargando la cantidad de saldo: ', saldo)
+           const usuarioNuevo = await usuarioService.cargarSaldo(usuario.id, saldo)
+           console.log('del backend recibimos: ', usuarioNuevo)           
+           setUser(usuarioNuevo)
           } catch (error) {
-            console.error('Error al eliminar servicio:', error)
+            console.error('Error al agregar saldo:', error)
           } 
     
       }
@@ -55,7 +60,7 @@ const CreditView = ({ openModal, cerrarModal, usuario }) => {
         setCardholderName(inputValue)
     }
     */
-const [saldo,setSaldo] = useState(0)
+
 
     return (
         <Modal
