@@ -401,6 +401,7 @@ const EventDetails = () => {
         <Container
           sx={{
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             height: '100%',
@@ -408,7 +409,7 @@ const EventDetails = () => {
         >
           <QRCodeComponent value={qrContent} size={256} />
 
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ padding: 3 }}>
             <IconButton>
               <WhatsAppIcon
                 onClick={() => handleWhatsAppPress()}
