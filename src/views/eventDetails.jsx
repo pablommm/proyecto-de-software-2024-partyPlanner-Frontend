@@ -215,8 +215,7 @@ const EventDetails = () => {
     setServiceToDelete(null)
   }
 
-  function mensajeRedesSociales(tipoMensaje){
-    // en esta parte llenamos los datos que vamos a necesitar para el menasaje nomnbre, hora, lugar etc
+  const handleWhatsAppPress = () => {
     const dateObject = new Date(event.fechaEventoIni) 
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
@@ -224,27 +223,9 @@ const EventDetails = () => {
       year: 'numeric',
     })
     const hours = dateObject.getHours().toString().padStart(2, '0')
-    // en esta parte cambiamos el mensaje segun la necesidad
-    if(tipoMensaje == "cancelacion"){
-        const message = `Decidimos cancelar el evento ${event.nombreDelEvento} que era en el dia ${formattedDate}`
-
-      return message
-    }if(tipoMensaje == "invitacionClasica") {
-      const message = `te invitamos a 
-        ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad de ${event.lugar.localidadDeInstalacion}`
-
-      return message
-      
-    }else{
-      return "no se envio nada"
-    }
-
-  }
-
-
-  const handleWhatsAppPress = (tipoMensaje) => {
-
-    const url = `https://wa.me/?text=${mensajeRedesSociales(tipoMensaje)}`
+    const message = `te invitamos a 
+    ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad de ${event.lugar.localidadDeInstalacion}`
+    const url = `https://wa.me/?text=${mensajeRedesSociales(message)}`
     window.open(url)
   }
 
@@ -427,7 +408,7 @@ const EventDetails = () => {
           <Box sx={{ padding: 3 }}>
             <IconButton>
               <WhatsAppIcon
-                onClick={() => handleWhatsAppPress("invitacionClasica")}
+                onClick={() => handleWhatsAppPress()}
                 sx={{ color: '#008000', fontSize: 50, margin: 1 }}
               ></WhatsAppIcon>
             </IconButton>
@@ -696,7 +677,8 @@ const EventDetails = () => {
         onConfirm={handleDeleteConfirmedEvent}
         title={'El evento sera desactivado'}
         message={'¿Estás seguro que deseas cancelar este evento?'}  
-        message2={'¿Necesitas avisar a los invitados que el evento se cancelo?'}      
+        message2={'¿Necesitas avisar a los invitados que el evento se cancelo?'} 
+        datoExtra={event}     
       />
     </Container>
   )
