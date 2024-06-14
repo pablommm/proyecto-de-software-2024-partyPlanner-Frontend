@@ -9,7 +9,7 @@ import {
   Snackbar
 } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -31,6 +31,7 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
   const [username, setUsername] = useState('')
   const [pwd, setPwd] = useState('')
   const [mostrarMensajeExito, setMostrarMensajeExito] = useState({ mostrar: false, mensaje: '', variant: '' })
+  const [snackbarColor, setSnackbarColor] = useState('')
 
   const crear = async () => {
     const nuevoUsuario = new UsuarioRegistro()
@@ -61,6 +62,14 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
     setUsername('')
     setPwd('')
   }
+
+  useEffect(() => {
+    if (mostrarMensajeExito.variant === 'success') {
+      setSnackbarColor('#388e3c')
+    } else if (mostrarMensajeExito.variant === 'error') {
+      setSnackbarColor('#f44336')
+    }
+  }, [mostrarMensajeExito])
 
   const mostrarSnackbar = (mensaje, variant) => {
     setMostrarMensajeExito({ mostrar: true, mensaje, variant })
@@ -180,7 +189,7 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
       >
         <SnackbarContent
           style={{
-            backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336',
+            backgroundColor: snackbarColor,
           }}
           message={mostrarMensajeExito.mensaje}
         />

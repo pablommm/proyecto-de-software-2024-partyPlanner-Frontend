@@ -36,7 +36,6 @@ const InstalacionModal = ({
   const [descripcionInstalacion, setDescripcionInstalacion] = useState('')
   const [imagenPrincipal, setImagenPrincipal] = useState('')
   const [image, setImage] = useState([])
-  
 
   const uploadToServer = async (e) => {
     const imageFile = e.target.files[0]
@@ -48,13 +47,7 @@ const InstalacionModal = ({
         method: 'POST',
         body: data,
       })
-      console.log('que tengo aca -1 :' + url)
-      console.log('que tengo aca -1 :' + data)
       const responseData = await response.json()
-      console.log('que tengo aca :' + responseData)
-
-      console.log('que tengo aca 2 :' + responseData.data.url)
-      console.log('que tengo aca 3 :' + (responseData.data.url).toString())
       setImagenPrincipal(responseData.data.url)
     } catch (error) {
       console.error(error)
@@ -66,6 +59,8 @@ const InstalacionModal = ({
     mensaje: '',
     variant: '',
   })
+
+  const [snackbarColor, setSnackbarColor] = useState('')
 
   useEffect(() => {
     if (instalacion) {
@@ -79,6 +74,14 @@ const InstalacionModal = ({
       limpiarDatos()
     }
   }, [instalacion])
+
+  useEffect(() => {
+    if (mostrarMensajeExito.variant === 'success') {
+      setSnackbarColor('#388e3c')
+    } else if (mostrarMensajeExito.variant === 'error') {
+      setSnackbarColor('#f44336')
+    }
+  }, [mostrarMensajeExito])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -108,15 +111,13 @@ const InstalacionModal = ({
         const respuestaCrearInstalacion =
           await instalacionService.crearInstalacion(datosInstalacion)
         mostrarSnackbar('¡La instalación se creó correctamente!', 'success')
-        console.log(
-          'Respuesta de creación de instalación:',
-          respuestaCrearInstalacion,
-        )
+        console.log('Respuesta de creación de instalación:',respuestaCrearInstalacion)
         console.log('Instalación creada exitosamente.')
       }
       cerrarModal()
       limpiarDatos()
       actualizarInstalacion()
+
     } catch (error) {
       console.error('Error al guardar la instalación:', error)
       mostrarSnackbar(
@@ -249,8 +250,7 @@ const InstalacionModal = ({
       >
         <SnackbarContent
           style={{
-            backgroundColor:
-              mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336',
+            backgroundColor: snackbarColor,
           }}
           message={mostrarMensajeExito.mensaje}
         />

@@ -22,6 +22,7 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
     const [descripcion, setDescripcion] = useState('')
     const [monto, setMonto] = useState('')
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false)
+    const [snackbarColor, setSnackbarColor] = useState('')
 
     useEffect(() => {
         if (servicio) {
@@ -74,6 +75,14 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
         setDescripcion('')
         setMonto('')
     }
+
+    useEffect(() => {
+        if (mostrarMensajeExito.variant === 'success') {
+          setSnackbarColor('#388e3c')
+        } else if (mostrarMensajeExito.variant === 'error') {
+          setSnackbarColor('#f44336')
+        }
+      }, [mostrarMensajeExito])
 
     const mostrarSnackbar = (mensaje, variant) => {
         setMostrarMensajeExito({ mostrar: true, mensaje, variant })
@@ -159,7 +168,7 @@ const BasicModalService = ({ openModal, cerrarModal, eventoID, servicio }) => {
                 onClose={handleCloseSnackbar}
             >
                 <SnackbarContent
-                    style={{ backgroundColor: mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336' }}
+                    style={{ backgroundColor: snackbarColor, }}
                     message={mostrarMensajeExito.mensaje}
                 />
             </Snackbar>

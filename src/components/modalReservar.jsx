@@ -55,7 +55,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
   const [endDate, setEndDate] = useState(null)
   const [fechasDeshabilitadas, setFechasDeshabilitadas] = useState([])
   const [cantidadDias, setCantidadDias] = useState(0)
-
+  const [snackbarColor, setSnackbarColor] = useState('')
 
   useEffect(() => {
     if (evento) {
@@ -163,6 +163,14 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
 
     await crearOEditarEvento()
   }
+
+  useEffect(() => {
+    if (mostrarMensajeExito.variant === 'success') {
+      setSnackbarColor('#388e3c')
+    } else if (mostrarMensajeExito.variant === 'error') {
+      setSnackbarColor('#f44336')
+    }
+  }, [mostrarMensajeExito])
 
   const mostrarSnackbar = (mensaje, variant) => {
     setMostrarMensajeExito({ mostrar: true, mensaje, variant })
@@ -279,11 +287,11 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       >
         <SnackbarContent
           style={{
-            backgroundColor:
-              mostrarMensajeExito.variant === 'success' ? '#388e3c' : '#f44336',
+           backgroundColor: snackbarColor,
           }}
           message={mostrarMensajeExito.mensaje}
         />
+
       </Snackbar>
 
       <Snackbar
