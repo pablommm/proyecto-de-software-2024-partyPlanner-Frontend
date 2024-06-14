@@ -1,10 +1,13 @@
-import { Container, Grid } from '@mui/material'
+import { Container, Grid,Box } from '@mui/material'
 import EventRoomCard from 'src/components/roomCard'
 import { useState, useEffect } from 'react'
 import BasicModal from 'src/components/modalReservar'
 import InstalacionService from 'src/Services/instalacionService'
 import TextField from '@mui/material/TextField'
 import instalacionService from 'src/Services/instalaciones.service'
+import SearchIcon from '@mui/icons-material/Search'
+import IconButton from '@mui/material/IconButton'
+import { InputAdornment } from '@material-ui/core'
 
 const PrincipalView = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -63,10 +66,13 @@ const PrincipalView = () => {
     }
   }
 
+ 
+
   return (
     <Container className="main" style={{ marginBottom: '10rem' }}>
+     
       <TextField
-        label="Buscar salas"
+        label="Buscar salones"
         variant="outlined"
         margin="normal"
         fullWidth
@@ -74,9 +80,19 @@ const PrincipalView = () => {
         onChange={manejarCambioBúsqueda}
         onKeyDown={manejarPresionarEnter} // Agregar el manejador de Enter
         placeholder="Nombre del salón o localidad"
-        helperText="Filtrar por nombre del salón o localidad" // Texto de ayuda opcional
+        helperText="Filtrar por nombre del salón o localidad" // Texto de ayuda opcional        
+        InputProps={{
+          startAdornment: 
+          <InputAdornment position="end">
+            
+              <SearchIcon sx={{paddingRight:1}}/>
+            
+          </InputAdornment>
+        }}
       />
-
+       
+    
+      
       <Grid container spacing={3} justifyContent="center">
         {instalaciones.map((instalacion, index) => (
           <Grid item key={index}>
