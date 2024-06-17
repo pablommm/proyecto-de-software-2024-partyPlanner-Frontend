@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Container, Grid } from '@mui/material'
+import { Checkbox, Container, FormControlLabel, Grid } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom"
 import { useState } from 'react'
 import { UsuarioRegistro } from 'src/Dominio/Usuario'
@@ -11,19 +11,22 @@ import { useNavigate } from 'react-router-dom'
 
 const SignUpView = () => {
     const navigate = useNavigate()
-    const [nombre,setNombre]=useState('')
-    const [apellido,setApellido]=useState('')
-    const [username,setUsername]=useState('')
-    const [pwd,setPwd]=useState('')
-    
+    const [nombre, setNombre] = useState('')
+    const [apellido, setApellido] = useState('')
+    const [username, setUsername] = useState('')
+    const [pwd, setPwd] = useState('')
+    const [publicarInstalacion, setPublicarInstalacion] = useState(false)
 
-    const crear = async() =>{
+
+    const crear = async () => {
         const nuevoUsuario = new UsuarioRegistro()
         nuevoUsuario.nombre = nombre
         nuevoUsuario.apellido = apellido
         nuevoUsuario.usuario = username
         nuevoUsuario.pwd = pwd
-        
+        nuevoUsuario.publicarInstalacion = publicarInstalacion
+
+
         console.log("Nuevo usuario:", nuevoUsuario)
 
         const respuestaCrearUsuario = await usuarioService.crearUsuario(nuevoUsuario)
@@ -65,7 +68,7 @@ const SignUpView = () => {
                     }}
                 >
                     <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="given-name"
                                 name="Nombre"
@@ -91,7 +94,7 @@ const SignUpView = () => {
                                 onChange={(e) => setApellido(e.target.value)}
                             />
                         </Grid>
-                        
+
                         <Grid item xs={12} >
                             <TextField
                                 autoComplete="given-name"
@@ -119,6 +122,25 @@ const SignUpView = () => {
                                 onChange={(e) => setPwd(e.target.value)}
                             />
                         </Grid>
+                        <Grid item xs={12}>
+
+                            <FormControlLabel
+                                value="start"
+                                labelPlacement="start"
+
+
+                                label="¿Quiere publicar su Instalación?"
+                                control={
+                                    <Checkbox
+                                        checked={publicarInstalacion}
+                                        onChange={(e) => setPublicarInstalacion(e.target.checked)}
+                                        color="primary"
+                                    />
+                                }
+
+                            />
+                        </Grid>
+
 
                     </Grid>
                     <Button

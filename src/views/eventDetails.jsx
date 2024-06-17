@@ -216,7 +216,7 @@ const EventDetails = () => {
   }
 
   const handleWhatsAppPress = () => {
-    const dateObject = new Date(event.fechaEventoIni) 
+    const dateObject = new Date(event.fechaEventoIni)
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
       month: '2-digit',
@@ -344,18 +344,20 @@ const EventDetails = () => {
         >
           <Typography
             variant="h5"
-            sx={{ color: '#000006', marginBottom: '0.5rem' }}
+            sx={{
+              color: '#000006', marginBottom: '0.5rem', fontWeight: 'bold',
+            }}
           >
             {event.nombreDelEvento}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006' }}>
-            Inicio: {format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}
+            <strong>Inicio:</strong>{format(new Date(event.fechaEventoIni), 'dd/MM/yyyy')}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006' }}>
-            Fin: {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}
+            <strong>Fin:</strong> {format(new Date(event.fechaEventoFin), 'dd/MM/yyyy')}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006' }}>
-            Lugar: {event.lugar.nombreDeInstalacion}
+            <strong>Lugar:</strong>  {event.lugar.nombreDeInstalacion}
           </Typography>
         </Container>
       }
@@ -372,24 +374,32 @@ const EventDetails = () => {
         >
           <Typography
             variant="h5"
-            sx={{ color: '#000006', marginBottom: '0.5rem' }}
+            sx={{
+              color: '#000006', marginBottom: '0.5rem', fontWeight: 'bold',
+            }}
           >
-            Lugar: {event.lugar.nombreDeInstalacion}
+            <strong>Lugar:</strong> {event.lugar.nombreDeInstalacion}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006' }}>
-            Capacidad: {event.lugar.capacidadInstalacion}
+            <strong>Lugar:</strong>  {event.lugar.capacidadInstalacion}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006 ' }}>
-            Costo: {event.lugar.costoDeInstalacion}
+            <strong>Costo:</strong> {event.lugar.costoDeInstalacion}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006 ' }}>
-            Descripción: {event.lugar.descripcionDeInstalacion}
+            <strong>Descripción:</strong>  {event.lugar.descripcionDeInstalacion}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006 ' }}>
-            Localidad De Instalacion: {event.lugar.localidadDeInstalacion}
+            <strong>Localidad De Instalacion:</strong> {event.lugar.localidadDeInstalacion}
           </Typography>
           <Typography variant="body1" sx={{ color: '#000006 ' }}>
-            Monto De Reserva: {event.lugar.montoDeReserva}
+            <strong>Monto De Reserva:</strong> {event.lugar.montoDeReserva}
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#000006 ' }}>
+            <strong>Correo:</strong> {event.lugar.mail}
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#000006 ' }}>
+            <strong>Numero de contacto:</strong>  {event.lugar.numeroDeTelefono}
           </Typography>
         </Container>
       }
@@ -676,9 +686,9 @@ const EventDetails = () => {
         onClose={handleCloseConfirmDialogEvent}
         onConfirm={handleDeleteConfirmedEvent}
         title={'El evento sera desactivado'}
-        message={'¿Estás seguro que deseas cancelar este evento?'}  
-        message2={'¿Necesitas avisar a los invitados que el evento se cancelo?'} 
-        datoExtra={event}     
+        message={'¿Estás seguro que deseas cancelar este evento?'}
+        message2={'¿Necesitas avisar a los invitados que el evento se cancelo?'}
+        datoExtra={event}
       />
     </Container>
   )
@@ -701,6 +711,10 @@ EventDetails.propTypes = {
       localidadDeInstalacion: PropTypes.string.isRequired,
       montoDeReserva: PropTypes.number.isRequired,
       activo: PropTypes.bool.isRequired,
+      numeroDeTelefono: PropTypes.number.isRequired,
+      mail: PropTypes.string.isRequired,
+
+
     }).isRequired,
     serviciosAdquiridos: PropTypes.arrayOf(
       PropTypes.shape({
