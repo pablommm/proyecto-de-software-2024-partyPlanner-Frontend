@@ -17,7 +17,7 @@ const PrincipalView = () => {
   const [instalaciones, setInstalaciones] = useState([])
   const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('')
   const [openModalInstalacion, setOpenModalInstalacion] = useState(false)
-  const [user, setUser] = useContext(UserContext)
+  const [user] = useContext(UserContext)
 
 
   const fetchInstalaciones = async () => {
