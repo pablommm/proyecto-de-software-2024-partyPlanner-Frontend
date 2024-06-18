@@ -30,13 +30,14 @@ const LoginView = () => {
       localStorage.setItem('usuId', usuarioId.toString())
       console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
       setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-      if(usuarioObjeto.rol == "CONSUMIDOR"){
-        navigate('/instalaciones')
-     
-      }else {
+      if (usuarioObjeto.rol == "ADMINISTRADOR") {
         navigate('/vistaAdmin')
-      
-    }
+
+      } else {
+        navigate('/instalaciones')
+
+
+      }
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
       setError('Error al iniciar sesión. Por favor, verifica tus datos.')
@@ -49,7 +50,7 @@ const LoginView = () => {
 
 
   return (
-    <Container maxWidth="xs" className='main' sx={{marginTop:15}}>
+    <Container maxWidth="xs" className='main' sx={{ marginTop: 15 }}>
       <Box
         sx={{
           display: 'flex',
@@ -60,7 +61,7 @@ const LoginView = () => {
         }}
       >
         <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
-        <Typography component="h1" variant="h5" style={{ color:"black", marginBottom: '1rem' }} >
+        <Typography component="h1" variant="h5" style={{ color: "black", marginBottom: '1rem' }} >
           Iniciar sesión
         </Typography>
 

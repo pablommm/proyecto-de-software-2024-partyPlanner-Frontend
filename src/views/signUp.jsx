@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Checkbox, Container, FormControlLabel, Grid } from '@mui/material'
+import { Checkbox, Container, FormControlLabel, Grid, Alert } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom"
 import { useState } from 'react'
 import { UsuarioRegistro } from 'src/Dominio/Usuario'
@@ -15,8 +15,9 @@ const SignUpView = () => {
     const [apellido, setApellido] = useState('')
     const [username, setUsername] = useState('')
     const [pwd, setPwd] = useState('')
-    const [publicarInstalacion, setPublicarInstalacion] = useState(false)
+    const [rol, setRol] = useState(false)
 
+    const [error, setError] = useState(false)
 
     const crear = async () => {
         const nuevoUsuario = new UsuarioRegistro()
@@ -24,18 +25,24 @@ const SignUpView = () => {
         nuevoUsuario.apellido = apellido
         nuevoUsuario.usuario = username
         nuevoUsuario.pwd = pwd
-        nuevoUsuario.publicarInstalacion = publicarInstalacion
+        nuevoUsuario.rol = rol ? 'PROPIETARIO' : 'CONSUMIDOR'
+
 
 
         console.log("Nuevo usuario:", nuevoUsuario)
+        try {
 
-        const respuestaCrearUsuario = await usuarioService.crearUsuario(nuevoUsuario)
-        console.log("Respuesta de creación de evento:", respuestaCrearUsuario)
-        console.log("usuario creado exitosamente.")
-        navigate('/login')
-
+            const respuestaCrearUsuario = await usuarioService.crearUsuario(nuevoUsuario)
+            console.log("Respuesta de creación de evento:", respuestaCrearUsuario)
+            console.log("usuario creado exitosamente.")
+            navigate('/login')
+        }
+        catch {
+            setError('Este usuario ya existe. Intentelo nuevamente.')
+        }
 
     }
+
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -123,24 +130,20 @@ const SignUpView = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-
                             <FormControlLabel
                                 value="start"
                                 labelPlacement="start"
-
-
                                 label="¿Quiere publicar su Instalación?"
                                 control={
                                     <Checkbox
-                                        checked={publicarInstalacion}
-                                        onChange={(e) => setPublicarInstalacion(e.target.checked)}
+                                        checked={rol}
+                                        onChange={(e) => setRol(e.target.checked)}
                                         color="primary"
                                     />
                                 }
-
+                                sx={{ '& .MuiFormControlLabel-label': { color: 'black' } }}
                             />
                         </Grid>
-
 
                     </Grid>
                     <Button
@@ -156,6 +159,9 @@ const SignUpView = () => {
                             ¿Ya tienes una cuenta? Inicia sesión
                         </RouterLink>
                     </Box>
+                    {error && <Alert severity="error" style={{ position: 'absolute', bottom: '60px' }}> {error}</Alert>
+                    }
+
                 </form>
             </Box>
         </Container>

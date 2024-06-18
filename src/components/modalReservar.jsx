@@ -64,7 +64,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       setFechaEventoIni(formatDate(evento.fechaEventoIni))
       setFechaEventoFin(formatDate(evento.fechaEventoFin))
       setPresupuesto(evento.presupuesto)
-      
+
     } else {
       setNombreInstalacion(nombreDeInstalacion)
       limpiarDatos()
@@ -265,7 +265,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
               <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>
                 La cantidad a pagar : {montoDeReserva * cantidadDias}
               </Typography>
-            
+
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
                 <Button variant="text" onClick={cerrarModal}>
                   Volver
@@ -287,7 +287,7 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
       >
         <SnackbarContent
           style={{
-           backgroundColor: snackbarColor,
+            backgroundColor: snackbarColor,
           }}
           message={mostrarMensajeExito.mensaje}
         />

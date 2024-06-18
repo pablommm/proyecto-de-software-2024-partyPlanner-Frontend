@@ -1,19 +1,24 @@
-import { Container, Grid,Box } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import EventRoomCard from 'src/components/roomCard'
-import { useState, useEffect } from 'react'
+import AddInstalacionCard from 'src/components/addInstalacionCard'
+import { useState, useEffect, useContext } from 'react'
 import BasicModal from 'src/components/modalReservar'
 import InstalacionService from 'src/Services/instalacionService'
 import TextField from '@mui/material/TextField'
 import instalacionService from 'src/Services/instalaciones.service'
 import SearchIcon from '@mui/icons-material/Search'
-import IconButton from '@mui/material/IconButton'
 import { InputAdornment } from '@material-ui/core'
+import AgregarInstalacion from 'src/components/modalNuevaInsta'
+import UserContext from 'src/Services/context'
 
 const PrincipalView = () => {
   const [openModal, setOpenModal] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [instalaciones, setInstalaciones] = useState([])
   const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('')
+  const [openModalInstalacion, setOpenModalInstalacion] = useState(false)
+  const [user, setUser] = useContext(UserContext)
+
 
   const fetchInstalaciones = async () => {
     try {
@@ -38,21 +43,17 @@ const PrincipalView = () => {
   }
 
   const manejarCambioBúsqueda = (evento) => {
-    setTerminoDeBusqueda(evento.target.value) // Normalizar término de búsqueda
+    setTerminoDeBusqueda(evento.target.value)
   }
 
   const busqueda = async () => {
     try {
-      console.log('Realizar búsqueda con:', terminoDeBusqueda)
       if (terminoDeBusqueda !== '') {
-        const response =
-          await instalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
+        const response = await instalacionService.busquedaDeInstalaciones(terminoDeBusqueda)
         setInstalaciones(response.data)
-      }else {
+      } else {
         fetchInstalaciones()
       }
-
-      
     } catch (error) {
       console.error('Error al obtener las instalaciones:', error)
     }
@@ -60,17 +61,21 @@ const PrincipalView = () => {
 
   const manejarPresionarEnter = (event) => {
     if (event.key === 'Enter') {
-      console.log('Realizar búsqueda con:', terminoDeBusqueda)
-
       busqueda()
     }
   }
+  const handleCloseModalInsta = () => {
+    setOpenModalInstalacion(false)
+  }
 
- 
+  const handleAddInstalacionClick = () => {
+    setOpenModalInstalacion(true)
+    console.log('Agregar nueva instalación')
+  }
+
 
   return (
     <Container className="main" style={{ marginBottom: '10rem' }}>
-     
       <TextField
         label="Buscar salones"
         variant="outlined"
@@ -78,35 +83,42 @@ const PrincipalView = () => {
         fullWidth
         value={terminoDeBusqueda}
         onChange={manejarCambioBúsqueda}
-        onKeyDown={manejarPresionarEnter} // Agregar el manejador de Enter
+        onKeyDown={manejarPresionarEnter}
         placeholder="Nombre del salón o localidad"
-        helperText="Filtrar por nombre del salón o localidad" // Texto de ayuda opcional        
+        helperText="Filtrar por nombre del salón o localidad"
         InputProps={{
-          startAdornment: 
-          <InputAdornment position="end">
-            
-              <SearchIcon sx={{paddingRight:1}}/>
-            
-          </InputAdornment>
+          startAdornment:
+            <InputAdornment position="end">
+              <SearchIcon sx={{ paddingRight: 1 }} />
+            </InputAdornment>
+          ,
         }}
       />
-       
-    
-      
       <Grid container spacing={3} justifyContent="center">
-        {instalaciones.map((instalacion, index) => (
+        {user.rol === 'PROPIETARIO' &&
+          <Grid item>
+            <AddInstalacionCard onClick={handleAddInstalacionClick} />
+          </Grid>
+        }
+        {instalaciones.map((instalacion, index) =>
           <Grid item key={index}>
             <EventRoomCard
               room={instalacion}
               onClick={() => handleRoomClick(instalacion)}
             />
           </Grid>
-        ))}
+        )}
       </Grid>
       <BasicModal
         openModal={openModal}
         cerrarModal={handleCloseModal}
+
+      />
+      <AgregarInstalacion
+        openModal={openModalInstalacion}
+        cerrarModal={handleCloseModalInsta}
         instalacion={selectedRoom}
+
       />
     </Container>
   )

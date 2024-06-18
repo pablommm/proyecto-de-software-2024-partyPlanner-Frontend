@@ -10,7 +10,7 @@ import {
     Fade,
 
     Grid,
-    Hidden
+
 } from '@mui/material'
 import { AccountCircle } from "@mui/icons-material"
 import { Link } from 'react-router-dom'
@@ -23,7 +23,7 @@ export const HeaderNav = () => {
     //const [adminAccess,setadminAccess] = useState(false)
 
     var parametroControl = false
-  
+
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -37,9 +37,9 @@ export const HeaderNav = () => {
         console.log("se cerro la sesion correctamente", user)
     }
     //si el usuario es admin permito que se renderise el boton, sino no
-    if(user.rol == "ADMINISTRADOR"){
+    if (user.rol == "ADMINISTRADOR") {
         parametroControl = true
-    }else{
+    } else {
         parametroControl = false
     }
 
@@ -49,13 +49,13 @@ export const HeaderNav = () => {
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <h9>Bienvenido {user.nombreYApellido ? user.nombreYApellido : 'deslogueado'}</h9>
                     <div>
-                    {parametroControl &&
-                        <IconButton  component={Link}   to="/vistaAdmin">
-                            <AdminPanelSettingsIcon color="secondary" ></AdminPanelSettingsIcon>
-                        </IconButton> }
-                        
+                        {parametroControl &&
+                            <IconButton component={Link} to="/vistaAdmin">
+                                <AdminPanelSettingsIcon color="secondary" ></AdminPanelSettingsIcon>
+                            </IconButton>}
+
                         <IconButton
-                        
+
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
