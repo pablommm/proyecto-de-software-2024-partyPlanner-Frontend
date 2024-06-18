@@ -124,6 +124,10 @@ const BasicModal = ({ openModal, cerrarModal, instalacion, evento }) => {
         console.log('Respuesta de edición de evento:', respuestaEditarEvento)
         mostrarSnackbar('¡El evento se editó correctamente!', 'success')
       } else {
+        console.log("cantidad de dias", cantidadDias)
+        console.log("cantidad de dias", montoDeReserva)
+
+
         const respuestaCrearEvento = await eventoService.crearEvento(nuevoEvento)
         console.log('Respuesta de creación de evento:', respuestaCrearEvento)
         mostrarSnackbar('¡El evento se creó correctamente!', 'success')

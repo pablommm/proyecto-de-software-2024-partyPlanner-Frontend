@@ -112,12 +112,12 @@ const PrincipalView = () => {
       <BasicModal
         openModal={openModal}
         cerrarModal={handleCloseModal}
+        instalacion={selectedRoom}
 
       />
       <AgregarInstalacion
         openModal={openModalInstalacion}
         cerrarModal={handleCloseModalInsta}
-        instalacion={selectedRoom}
 
       />
     </Container>
