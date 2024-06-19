@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import { InputAdornment } from '@material-ui/core'
 import AgregarInstalacion from 'src/components/modalNuevaInsta'
 import UserContext from 'src/Services/context'
-import DetallesInstalacion from 'src/components/DetallesDeInstalacion'
+import DetallesInstalacion from 'src/components/DetallesInstalacion'
 
 const PrincipalView = () => {
   const [openModalReservar, setOpenModalReservar] = useState(false)
