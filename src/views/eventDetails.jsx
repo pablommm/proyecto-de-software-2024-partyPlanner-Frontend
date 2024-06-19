@@ -25,7 +25,8 @@ import MensajeConfirmacion from 'src/components/MensajeCofirmacion'
 
 const EventDetails = () => {
   const location = useLocation()
-  const event = location.state.event
+  var event = location.state.event
+  var [evento,setEvento] = useState(event)
   const [selectedService, setSelectedService] = useState(null)
   const [openModal, setOpenModal] = useState(false)
   const [section, setSection] = useState(null)
@@ -34,14 +35,10 @@ const EventDetails = () => {
   const [totalGastado, setTotalGastado] = useState(0)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [showConfirmDialogEvent, setShowConfirmDialogEvent] = useState(false)
-
   const [serviceToDelete, setServiceToDelete] = useState(null)
-
   const [estadoPresupuesto, setEstadoPresupuesto] = useState(0)
   const [porcentajeGastado, setPorcentajeGastado] = useState(0)
   const [textoAviso, setTextoAviso] = useState('estado presupuesto')
-  const [componenteAviso, setComponenteAviso] = useState(null)
-  //const [mensajePresupuesto,setMensajePresupuesto] =
   const [eventToDelete, seteventToDelete] = useState(null)
 
   useEffect(() => {
@@ -55,7 +52,10 @@ const EventDetails = () => {
       console.log("el estado del presupuesto es:", estadoPresupuesto)
     }
     calculoPorcentaje()
-  }, [totalGastado, event.presupuesto])
+  }, [totalGastado, event.presupuesto,])
+
+
+  
 
   function actualizarEstadoPresupuesto(porcentaje) {
     console.log("entre a la funcion actualizarEstadoPresupuesto()")
@@ -136,22 +136,25 @@ const EventDetails = () => {
     }
   }
   const handleDeleteConfirmedEvent = async () => {
+    
     if (eventToDelete) {
       try {
-        console.log('Eliminar servicio con ID:', eventToDelete)
+        console.log('Eliminar evento con ID:', eventToDelete)
         await eventoService.delete(eventToDelete)
       } catch (error) {
-        console.error('Error al eliminar servicio:', error)
+        console.error('Error al eliminar evento:', error)
       } finally {
         setShowConfirmDialogEvent(false)
         seteventToDelete(null)
       }
-
     }
+    actualizarEvento()
   }
 
   useEffect(() => {
-    traerServiciosAdquiridos()
+
+
+    
 
 
   }, [event.id])
@@ -208,42 +211,71 @@ const EventDetails = () => {
   const handleCloseConfirmDialogEvent = () => {
     setShowConfirmDialogEvent(false)
     seteventToDelete(null)
+    actualizarEvento()
   }
   // Función para cerrar el modal de confirmación
   const handleCloseConfirmDialog = () => {
     setShowConfirmDialog(false)
     setServiceToDelete(null)
+    actualizarEvento()
   }
 
-  const handleWhatsAppPress = () => {
-    const dateObject = new Date(event.fechaEventoIni)
+  const actualizarEvento = async () => {
+    try {      
+      const eventoActualizado = await eventoService.getUnEvento(event.id) 
+      setEvento(eventoActualizado)
+      console.log("el estado del evento es ",eventoActualizado.activo)
+      console.log("deposito el evento",eventoActualizado)
+      
+    }catch(error){
+      console.error('Error al traer los servicios adquiridos:', error)
+    }
+  }
+
+
+  
+
+  function mensajeRedesSociales(){
+    // en esta parte llenamos los datos que vamos a necesitar para el menasaje nomnbre, hora, lugar etc
+    const dateObject = new Date(event.fechaEventoIni) 
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     })
     const hours = dateObject.getHours().toString().padStart(2, '0')
-    const message = `te invitamos a 
-    ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad de ${event.lugar.localidadDeInstalacion}`
-    const url = `https://wa.me/?text=${mensajeRedesSociales(message)}`
+    // en esta parte cambiamos el mensaje segun la necesidad
+    if(evento.activo == false){
+        const message = `Decidimos cancelar el evento ${event.nombreDelEvento} que era en el dia ${formattedDate}`
+
+      return message
+    }if(evento.activo == true) {
+      const message = `te invitamos a 
+        ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad de ${event.lugar.localidadDeInstalacion}`
+
+      return message
+
+    }else{
+      return "no se envio nada"
+    }
+
+  }
+
+   const handleWhatsAppPress = () => {
+
+    const url = `https://wa.me/?text=${mensajeRedesSociales()}`
     window.open(url)
   }
 
-  const handletelegram = () => {
+  const handletelegram =() => {
 
-    const dateObject = new Date(event.fechaEventoIni) // Assuming event.fechaEventoIni is a valid Date object
-    const formattedDate = dateObject.toLocaleDateString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
-    const hours = dateObject.getHours().toString().padStart(2, '0') // Ensure two digits
+    const url = `https://t.me/share/url?url= &text=${mensajeRedesSociales()}`
+        window.open(url)
 
-    const message = `la fecha ${formattedDate} a las ${hours} en la localidad ${event.lugar.localidadDeInstalacion}`
-    const url = `https://t.me/share/url?url=Te invitamos ${event.nombreDelEvento} : &text=${message}`
-    window.open(url)
-
+    
   }
+
+  
 
   return (
     <Container
@@ -702,6 +734,7 @@ EventDetails.propTypes = {
     fechaEventoIni: PropTypes.string.isRequired,
     fechaEventoFin: PropTypes.string.isRequired,
     presupuesto: PropTypes.number.isRequired,
+    activo: PropTypes.bool.isRequired,
     lugar: PropTypes.shape({
       nombreDeInstalacion: PropTypes.string.isRequired,
       imagenPrincipal: PropTypes.string.isRequired,

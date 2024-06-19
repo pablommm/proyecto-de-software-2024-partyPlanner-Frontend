@@ -23,6 +23,8 @@ class EventoService {
 
     }
 
+  
+
     async editarEvento(eventoModificado) {
         try {
             console.log("llegue al service")
@@ -40,6 +42,14 @@ class EventoService {
     async traerServiciosAdquiridos(eventoId) {
         const servicios = await axios.get(`${REST_SERVER_URL}/serviciosAdquiridos/${eventoId}`)
         return servicios.data
+    }
+
+    async getUnEvento(eventoID) {
+
+        const eventoActualizado = await axios.get(`${REST_SERVER_URL}/eventosById/${eventoID}`)
+        console.log('traigo el evento con el valor', eventoID, ':', eventoActualizado.data)
+        return eventoActualizado.data
+
     }
 
     async delete(eventoId) {
