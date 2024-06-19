@@ -719,8 +719,7 @@ const EventDetails = () => {
         onConfirm={handleDeleteConfirmedEvent}
         title={'El evento sera desactivado'}
         message={'¿Estás seguro que deseas cancelar este evento?'}
-        message2={'¿Necesitas avisar a los invitados que el evento se cancelo?'}
-        datoExtra={event}
+        
       />
     </Container>
   )
