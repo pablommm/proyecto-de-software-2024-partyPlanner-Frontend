@@ -22,6 +22,7 @@ const CreditView = ({ openModal, cerrarModal, usuario }) => {
 
     const [saldo,setSaldo] = useState(0)
     const [user, setUser] = useContext(UserContext)
+    
     const handleSubmit = (event) => {
         event.preventDefault()
         cargarSaldo()

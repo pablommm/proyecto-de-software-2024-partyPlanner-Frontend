@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { TextField, Button, Container, Box, Grid, Typography, Alert } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { TextField, Button, Container, Box, Grid, Typography, Alert, IconButton, InputAdornment } from '@mui/material'
+import { useState, useEffect, useContext } from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import usuarioService from '../Services/login.service'
 import { Link as RouterLink } from 'react-router-dom'
-
-import { useContext } from 'react'
 import UserContext from 'src/Services/context'
 
 
@@ -12,10 +11,9 @@ const LoginView = () => {
   const navigate = useNavigate()
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(false)
-
   const [user, setUser] = useContext(UserContext)
-
 
   const iniciarSesion = async () => {
     try {
@@ -24,33 +22,35 @@ const LoginView = () => {
 
         return
       }
-      const usuarioObjeto = await usuarioService.validarUsuario(usuario, password)
+      const usuarioObjeto = await usuarioService.validarUsuario(
+        usuario,
+        password,
+      )
       console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
       const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
       localStorage.setItem('usuId', usuarioId.toString())
-      console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
+      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
       setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-      if (usuarioObjeto.rol == "ADMINISTRADOR") {
+      if (usuarioObjeto.rol == 'ADMINISTRADOR') {
         navigate('/vistaAdmin')
-
       } else {
         navigate('/instalaciones')
-
-
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
       setError('Error al iniciar sesión. Por favor, verifica tus datos.')
     }
   }
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   useEffect(() => {
-    console.log("Componente renderizado")
+    console.log('Componente renderizado')
   }, [])
 
-
   return (
-    <Container maxWidth="xs" className='main' sx={{ marginTop: 15 }}>
+    <Container maxWidth="xs" className="main" sx={{ marginTop: 15 }}>
       <Box
         sx={{
           display: 'flex',
@@ -60,8 +60,16 @@ const LoginView = () => {
           mt: 3,
         }}
       >
-        <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
-        <Typography component="h1" variant="h5" style={{ color: "black", marginBottom: '1rem' }} >
+        <img
+          src="/logoIII.png"
+          alt="Logo"
+          style={{ width: '150px', marginBottom: '1rem' }}
+        />
+        <Typography
+          component="h1"
+          variant="h5"
+          style={{ color: 'black', marginBottom: '1rem' }}
+        >
           Iniciar sesión
         </Typography>
 
@@ -92,10 +100,19 @@ const LoginView = () => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 autoComplete="new-password"
                 value={password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
           </Grid>
@@ -110,13 +127,19 @@ const LoginView = () => {
           </Button>
 
           <Box sx={{ textAlign: 'center' }}>
-            <RouterLink to="/sign-up" variant="body2" >
+            <RouterLink to="/sign-up" variant="body2">
               ¿Aún no tienes cuenta? Registrate
             </RouterLink>
           </Box>
-          {error && <Alert severity="error" style={{ position: 'absolute', bottom: '60px' }}> {error}</Alert>
-          }
-
+          {error && (
+            <Alert
+              severity="error"
+              style={{ position: 'absolute', bottom: '60px' }}
+            >
+              {' '}
+              {error}
+            </Alert>
+          )}
         </form>
       </Box>
     </Container>
