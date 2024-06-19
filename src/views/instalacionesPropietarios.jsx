@@ -1,4 +1,5 @@
-import { Container, Grid, TextField } from '@mui/material'
+
+import { Container, Grid, TextField, Typography } from '@mui/material'
 import EventRoomCard from 'src/components/roomCard'
 import { useState, useEffect } from 'react'
 import BasicModal from 'src/components/modalReservar'
@@ -70,7 +71,6 @@ const InstalacionesPropietario = () => {
     return (
         <Container className="main" style={{ marginBottom: '10rem' }}>
             <TextField
-                label="Buscar salones"
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -78,7 +78,6 @@ const InstalacionesPropietario = () => {
                 onChange={manejarCambioBúsqueda}
                 onKeyDown={manejarPresionarEnter}
                 placeholder="Nombre del salón o localidad"
-                helperText="Filtrar por nombre del salón o localidad"
                 InputProps={{
                     startAdornment:
                         <InputAdornment position="end">
@@ -97,7 +96,10 @@ const InstalacionesPropietario = () => {
                         </Grid>
                     )
                     :
-                    <p>No installations available.</p>
+                    <Typography style={{ marginTop: '2rem', color: 'black' }}>
+                        Aún no tienes instalaciones cargadas
+
+                    </Typography>
                 }
             </Grid>
             <BasicModal

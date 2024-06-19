@@ -1,3 +1,5 @@
+
+
 import { Container, Grid } from '@mui/material'
 import EventRoomCard from 'src/components/roomCard'
 import AddInstalacionCard from 'src/components/addInstalacionCard'
@@ -10,9 +12,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import { InputAdornment } from '@material-ui/core'
 import AgregarInstalacion from 'src/components/modalNuevaInsta'
 import UserContext from 'src/Services/context'
+import DetallesInstalacion from 'src/components/DetallesDeInstalacion'
 
 const PrincipalView = () => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModalReservar, setOpenModalReservar] = useState(false)
+  const [openModalDetalles, setOpenModalDetalles] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [instalaciones, setInstalaciones] = useState([])
   const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('')
@@ -33,13 +37,20 @@ const PrincipalView = () => {
     fetchInstalaciones()
   }, [])
 
-  const handleRoomClick = (room) => {
+  const handleRoomClickReservar = (room) => {
     setSelectedRoom(room)
-    setOpenModal(true)
+    setOpenModalReservar(true)
+  }
+  const handleRoomClickDetalles = (room) => {
+    setSelectedRoom(room)
+    setOpenModalDetalles(true)
   }
 
-  const handleCloseModal = () => {
-    setOpenModal(false)
+  const handleCloseModalReservar = () => {
+    setOpenModalReservar(false)
+  }
+  const handleCloseModalDetalles = () => {
+    setOpenModalDetalles(false)
   }
 
   const manejarCambioBúsqueda = (evento) => {
@@ -77,7 +88,6 @@ const PrincipalView = () => {
   return (
     <Container className="main" style={{ marginBottom: '10rem' }}>
       <TextField
-        label="Buscar salones"
         variant="outlined"
         margin="normal"
         fullWidth
@@ -85,7 +95,6 @@ const PrincipalView = () => {
         onChange={manejarCambioBúsqueda}
         onKeyDown={manejarPresionarEnter}
         placeholder="Nombre del salón o localidad"
-        helperText="Filtrar por nombre del salón o localidad"
         InputProps={{
           startAdornment:
             <InputAdornment position="end">
@@ -104,20 +113,29 @@ const PrincipalView = () => {
           <Grid item key={index}>
             <EventRoomCard
               room={instalacion}
-              onClick={() => handleRoomClick(instalacion)}
+              onClickReservar={() => handleRoomClickReservar(instalacion)}
+              onClickDetalles={() => handleRoomClickDetalles(instalacion)}
+
             />
           </Grid>
         )}
       </Grid>
       <BasicModal
-        openModal={openModal}
-        cerrarModal={handleCloseModal}
+        openModal={openModalReservar}
+        cerrarModal={handleCloseModalReservar}
         instalacion={selectedRoom}
 
       />
       <AgregarInstalacion
         openModal={openModalInstalacion}
         cerrarModal={handleCloseModalInsta}
+
+      />
+      <DetallesInstalacion
+        openModal={openModalDetalles}
+        cerrarModal={handleCloseModalDetalles}
+        instalacion={selectedRoom}
+
 
       />
     </Container>

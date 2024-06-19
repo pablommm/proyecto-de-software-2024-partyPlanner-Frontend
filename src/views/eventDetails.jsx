@@ -26,7 +26,7 @@ import MensajeConfirmacion from 'src/components/MensajeCofirmacion'
 const EventDetails = () => {
   const location = useLocation()
   var event = location.state.event
-  var [evento,setEvento] = useState(event)
+  var [evento, setEvento] = useState(event)
   const [selectedService, setSelectedService] = useState(null)
   const [openModal, setOpenModal] = useState(false)
   const [section, setSection] = useState(null)
@@ -55,7 +55,7 @@ const EventDetails = () => {
   }, [totalGastado, event.presupuesto,])
 
 
-  
+
 
   function actualizarEstadoPresupuesto(porcentaje) {
     console.log("entre a la funcion actualizarEstadoPresupuesto()")
@@ -136,7 +136,7 @@ const EventDetails = () => {
     }
   }
   const handleDeleteConfirmedEvent = async () => {
-    
+
     if (eventToDelete) {
       try {
         console.log('Eliminar evento con ID:', eventToDelete)
@@ -154,7 +154,7 @@ const EventDetails = () => {
   useEffect(() => {
 
 
-    
+
 
 
   }, [event.id])
@@ -221,23 +221,23 @@ const EventDetails = () => {
   }
 
   const actualizarEvento = async () => {
-    try {      
-      const eventoActualizado = await eventoService.getUnEvento(event.id) 
+    try {
+      const eventoActualizado = await eventoService.getUnEvento(event.id)
       setEvento(eventoActualizado)
-      console.log("el estado del evento es ",eventoActualizado.activo)
-      console.log("deposito el evento",eventoActualizado)
-      
-    }catch(error){
+      console.log("el estado del evento es ", eventoActualizado.activo)
+      console.log("deposito el evento", eventoActualizado)
+
+    } catch (error) {
       console.error('Error al traer los servicios adquiridos:', error)
     }
   }
 
 
-  
 
-  function mensajeRedesSociales(){
+
+  function mensajeRedesSociales() {
     // en esta parte llenamos los datos que vamos a necesitar para el menasaje nomnbre, hora, lugar etc
-    const dateObject = new Date(event.fechaEventoIni) 
+    const dateObject = new Date(event.fechaEventoIni)
     const formattedDate = dateObject.toLocaleDateString('es-AR', {
       day: '2-digit',
       month: '2-digit',
@@ -245,37 +245,37 @@ const EventDetails = () => {
     })
     const hours = dateObject.getHours().toString().padStart(2, '0')
     // en esta parte cambiamos el mensaje segun la necesidad
-    if(evento.activo == false){
-        const message = `Decidimos cancelar el evento ${event.nombreDelEvento} que era en el dia ${formattedDate}`
+    if (evento.activo == false) {
+      const message = `Decidimos cancelar el evento ${event.nombreDelEvento} que era en el dia ${formattedDate}`
 
       return message
-    }if(evento.activo == true) {
+    } if (evento.activo == true) {
       const message = `te invitamos a 
         ${event.nombreDelEvento} la fecha ${formattedDate} a las ${hours} en la localidad de ${event.lugar.localidadDeInstalacion}`
 
       return message
 
-    }else{
+    } else {
       return "no se envio nada"
     }
 
   }
 
-   const handleWhatsAppPress = () => {
+  const handleWhatsAppPress = () => {
 
     const url = `https://wa.me/?text=${mensajeRedesSociales()}`
     window.open(url)
   }
 
-  const handletelegram =() => {
+  const handletelegram = () => {
 
     const url = `https://t.me/share/url?url= &text=${mensajeRedesSociales()}`
-        window.open(url)
+    window.open(url)
 
-    
+
   }
 
-  
+
 
   return (
     <Container
@@ -370,7 +370,7 @@ const EventDetails = () => {
             backgroundColor: '#DFDFDF',
             padding: '1rem',
             borderRadius: '0.5rem',
-            marginBottom: '1rem',
+            marginBottom: '3rem',
             border: '1px solid #000000',
           }}
         >
@@ -470,7 +470,7 @@ const EventDetails = () => {
             backgroundColor: '#DFDFDF',
             padding: '1rem',
             borderRadius: '0.5rem',
-            marginBottom: '1rem',
+            marginBottom: '3rem',
             border: '1px solid #000000',
           }}
         >
@@ -662,24 +662,34 @@ const EventDetails = () => {
             height: '100%',
           }}
         >
-          <Typography variant="body1">No hay servicios adquiridos.</Typography>
-        </Container>
+          <Typography style={{ marginTop: '2rem', color: 'black' }}>
+            No hay servicios adquiridos
+
+          </Typography>        </Container>
       }
       {section === 'servicios' &&
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleOpenModal}
-          sx={{
-            width: 250,
-            fontSize: 15,
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             position: 'fixed',
             bottom: '1rem',
-            right: '1rem',
+            width: '100%',
           }}
         >
-          Agregar Servicio
-        </Button>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleOpenModal}
+            sx={{
+              width: 250,
+              fontSize: 15,
+            }}
+          >
+            Agregar Servicio
+          </Button>
+        </div>
       }
       <BasicModalService
         openModal={openModal}
@@ -719,7 +729,7 @@ const EventDetails = () => {
         onConfirm={handleDeleteConfirmedEvent}
         title={'El evento sera desactivado'}
         message={'¿Estás seguro que deseas cancelar este evento?'}
-        
+
       />
     </Container>
   )

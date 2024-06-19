@@ -1,4 +1,6 @@
-import { Container, Grid } from "@mui/material"
+
+
+import { Container, Grid, Typography } from "@mui/material"
 import { useState, useEffect } from "react"
 import eventoService from "src/Services/evento.service"
 import EventCard from "src/components/EventCard"
@@ -53,7 +55,10 @@ const Eventos = () => {
                     )
                     :
                     <Grid item xs={12} style={{ textAlign: 'center' }}>
-                        No hay eventos disponibles.
+                        <Typography style={{ marginTop: '2rem', color: 'black' }}>
+                            No hay eventos disponibles
+
+                        </Typography>
                     </Grid>
                 }
             </Grid>

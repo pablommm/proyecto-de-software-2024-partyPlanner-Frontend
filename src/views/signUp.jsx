@@ -1,3 +1,5 @@
+
+
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
@@ -64,7 +66,7 @@ const SignUpView = () => {
             >
                 <img src="/logoIII.png" alt="Logo" style={{ width: '150px', marginBottom: '1rem' }} />
 
-                <Typography component="h1" variant="h5" style={{ marginBottom: '1rem' }}>
+                <Typography component="h1" variant="h5" style={{ marginBottom: '1rem', color: 'black' }}>
                     Registrate
                 </Typography>
                 <form onSubmit={handleSubmit}

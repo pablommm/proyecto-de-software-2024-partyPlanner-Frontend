@@ -1,8 +1,9 @@
+
 import PropTypes from 'prop-types'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import { useState } from "react"
 
-const EventRoomCard = ({ room, onClick }) => {
+const EventRoomCard = ({ room, onClickReservar, onClickDetalles }) => {
     const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
     const [expanded, setExpanded] = useState(false)
 
@@ -11,27 +12,29 @@ const EventRoomCard = ({ room, onClick }) => {
     }
 
     const handleReservarClick = () => {
-        onClick(room)
+        onClickReservar(room)
     }
-
+    const handleDetallesClick = () => {
+        onClickDetalles(room)
+    }
     return (
         <Card sx={{
             minWidth: 300,
-            minHeight:380,
+            minHeight: 380,
 
-            maxWidth:300,
+            maxWidth: 300,
             maxHeight: 500,
 
             borderRadius: '0.5rem',
             border: '1px solid black',
             boxShadow: '-2px 2px 4px 0px rgba(0, 0, 0, 0.75)',
         }}>
-            <CardActionArea onClick={handleReservarClick}>
+            <CardActionArea onClick={handleDetallesClick}>
                 <CardMedia
                     component="img"
                     height="140"
                     image={imagenPrincipal}
-                    sx={{objectFit:"fill"}}
+                    sx={{ objectFit: "fill" }}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
@@ -75,7 +78,10 @@ EventRoomCard.propTypes = {
         capacidadInstalacion: PropTypes.number.isRequired,
         localidadDeInstalacion: PropTypes.string.isRequired,
     }).isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClickReservar: PropTypes.func.isRequired,
+    onClickDetalles: PropTypes.func.isRequired,
+
+
 }
 
 export default EventRoomCard
