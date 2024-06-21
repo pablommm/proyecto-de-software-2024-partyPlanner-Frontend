@@ -6,7 +6,10 @@ import {
   Typography,
   Grid,
   SnackbarContent,
-  Snackbar
+  Snackbar,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useState , useEffect } from 'react'
@@ -32,6 +35,7 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
   const [pwd, setPwd] = useState('')
   const [mostrarMensajeExito, setMostrarMensajeExito] = useState({ mostrar: false, mensaje: '', variant: '' })
   const [snackbarColor, setSnackbarColor] = useState('')
+  const [rol, setRol] = useState('')
 
   const crear = async () => {
     const nuevoUsuario = new UsuarioRegistro()
@@ -62,6 +66,11 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
     setApellido('')
     setUsername('')
     setPwd('')
+    //setRol('')
+  }
+
+  const handleChangeRol = (event) => {
+    setRol(event.target.value)
   }
 
   useEffect(() => {
@@ -168,6 +177,23 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
                   value={pwd}
                   onChange={(e) => setPwd(e.target.value)}
                 />
+              </Grid>
+
+              <Grid item xs={12}>
+                <InputLabel id="rol-usuario">Rol usuario</InputLabel>
+                  <Select
+                      labelId="rol-usuario"
+                      id="rol-usuario"
+                      name="rol-usuario"
+                      value={rol}
+                      onChange={handleChangeRol}
+                      variant="standard"
+                      autoFocus
+                  >
+                      <MenuItem value="CONSUMIDOR">CONSUMIDOR</MenuItem>
+                      <MenuItem value="PROPIETARIO">PROPIETARIO</MenuItem>
+                      <MenuItem value="ADMINISTRADOR">ADMINISTRADOR</MenuItem>
+                  </Select>
               </Grid>
             </Grid>
             <Button
