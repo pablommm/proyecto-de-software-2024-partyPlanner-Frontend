@@ -39,6 +39,7 @@ const UserModal = ({ openModal, cerrarModal, actualizarUser }) => {
     nuevoUsuario.apellido = apellido
     nuevoUsuario.usuario = username
     nuevoUsuario.pwd = pwd
+    nuevoUsuario.rol = "CONSUMIDOR"
 
     console.log('Nuevo usuario:', nuevoUsuario)
 

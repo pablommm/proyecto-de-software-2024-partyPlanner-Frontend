@@ -170,6 +170,7 @@ const EventDetails = () => {
 
   const handleSectionClick = (sectionName) => {
     setSection(sectionName === section ? null : sectionName)
+    traerServiciosAdquiridos()
   }
 
   const handleOpenModal = () => {
