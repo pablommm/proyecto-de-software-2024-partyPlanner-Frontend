@@ -10,9 +10,9 @@ import TextField from '@mui/material/TextField'
 import instalacionService from 'src/Services/instalaciones.service'
 import SearchIcon from '@mui/icons-material/Search'
 import { InputAdornment } from '@material-ui/core'
-import AgregarInstalacion from 'src/components/modalNuevaInsta'
 import UserContext from 'src/Services/context'
 import DetallesInstalacion from 'src/components/DetallesInstalacion'
+import InstalacionModal from 'src/components/InstalacionModal'
 
 const PrincipalView = () => {
   const [openModalReservar, setOpenModalReservar] = useState(false)
@@ -115,6 +115,7 @@ const PrincipalView = () => {
               room={instalacion}
               onClickReservar={() => handleRoomClickReservar(instalacion)}
               onClickDetalles={() => handleRoomClickDetalles(instalacion)}
+              context={"PrincipalView"}
 
             />
           </Grid>
@@ -126,9 +127,10 @@ const PrincipalView = () => {
         instalacion={selectedRoom}
 
       />
-      <AgregarInstalacion
-        openModal={openModalInstalacion}
+      <InstalacionModal openModal={openModalInstalacion}
         cerrarModal={handleCloseModalInsta}
+        instalacion={selectedRoom}
+        actualizarInstalacion={fetchInstalaciones}
 
       />
       <DetallesInstalacion

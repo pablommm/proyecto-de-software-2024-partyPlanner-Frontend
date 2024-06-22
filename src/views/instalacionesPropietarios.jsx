@@ -2,11 +2,11 @@
 import { Container, Grid, TextField, Typography } from '@mui/material'
 import EventRoomCard from 'src/components/roomCard'
 import { useState, useEffect } from 'react'
-import BasicModal from 'src/components/modalReservar'
 import SearchIcon from '@mui/icons-material/Search'
 import { InputAdornment } from '@material-ui/core'
 import usuarioService from 'src/Services/usuario.service'
 import instalacionService from 'src/Services/instalacionService'
+import InstalacionModal from 'src/components/InstalacionModal'
 
 const InstalacionesPropietario = () => {
     const [openModal, setOpenModal] = useState(false)
@@ -91,7 +91,9 @@ const InstalacionesPropietario = () => {
                         <Grid item key={index}>
                             <EventRoomCard
                                 room={instalacion}
-                                onClick={() => handleRoomClick(instalacion)}
+                                onClickDetalles={() => handleRoomClick(instalacion)}
+                                onClickReservar={() => handleRoomClick(instalacion)}
+
                             />
                         </Grid>
                     )
@@ -102,10 +104,11 @@ const InstalacionesPropietario = () => {
                     </Typography>
                 }
             </Grid>
-            <BasicModal
+            <InstalacionModal
                 openModal={openModal}
                 cerrarModal={handleCloseModal}
                 instalacion={selectedRoom}
+                actualizarInstalacion={fetchInstalaciones}
             />
         </Container>
     )

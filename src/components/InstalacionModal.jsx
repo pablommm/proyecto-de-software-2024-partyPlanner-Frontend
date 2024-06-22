@@ -7,6 +7,8 @@ import {
   Typography,
   Snackbar,
   SnackbarContent,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material'
 import { useState, useEffect } from 'react'
 import instalacionService from 'src/Services/instalaciones.service'
@@ -21,6 +23,8 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  maxHeight: '80vh',
+  overflowY: 'auto',
 }
 
 const InstalacionModal = ({
@@ -35,7 +39,19 @@ const InstalacionModal = ({
   const [capacidadInstalacion, setCapacidadInstalacion] = useState('')
   const [descripcionInstalacion, setDescripcionInstalacion] = useState('')
   const [imagenPrincipal, setImagenPrincipal] = useState('')
-  const [image, setImage] = useState([])
+  const [image] = useState([])
+  const [montoDeReserva, setMontoDeReserva] = useState('')
+  const [calle, setCalle] = useState('')
+  const [altura, setAltura] = useState('')
+  const [provincia, setProvincia] = useState('')
+  const [numeroDeTelefono, setNumeroDeTelefono] = useState('')
+  const [mail, setMail] = useState('')
+  const [baños, setBaños] = useState('')
+  const [terraza, setTerraza] = useState(false)
+  const [jardin, setJardin] = useState(false)
+  const [estacionamiento, setEstacionamiento] = useState(false)
+  const [alojamiento, setAlojamiento] = useState(false)
+  const [cocina, setCocina] = useState(false)
 
   const uploadToServer = async (e) => {
     const imageFile = e.target.files[0]
@@ -70,10 +86,23 @@ const InstalacionModal = ({
       setCapacidadInstalacion(instalacion.capacidadInstalacion || '')
       setDescripcionInstalacion(instalacion.descripcionDeInstalacion || '')
       setImagenPrincipal(instalacion.imagenPrincipal || '')
+      setMontoDeReserva(instalacion.montoDeReserva || '')
+      setCalle(instalacion.calle || '')
+      setAltura(instalacion.altura || '')
+      setProvincia(instalacion.provincia || '')
+      setNumeroDeTelefono(instalacion.numeroDeTelefono || '')
+      setMail(instalacion.mail || '')
+      setBaños(instalacion.baños || '')
+      setTerraza(instalacion.terraza || false)
+      setJardin(instalacion.jardin || false)
+      setEstacionamiento(instalacion.estacionamiento || false)
+      setAlojamiento(instalacion.alojamiento || false)
+      setCocina(instalacion.cocina || false)
     } else {
       limpiarDatos()
     }
   }, [instalacion])
+
 
   useEffect(() => {
     if (mostrarMensajeExito.variant === 'success') {
@@ -93,6 +122,19 @@ const InstalacionModal = ({
       capacidadInstalacion: capacidadInstalacion,
       descripcionDeInstalacion: descripcionInstalacion,
       imagenPrincipal: imagenPrincipal,
+      montoDeReserva: montoDeReserva,
+      calle: calle,
+      altura: altura,
+      provincia: provincia,
+      numeroDeTelefono: numeroDeTelefono,
+      mail: mail,
+      baños: baños,
+      terraza: terraza,
+      jardin: jardin,
+      estacionamiento: estacionamiento,
+      alojamiento: alojamiento,
+      cocina: cocina,
+      owner: localStorage.getItem('usuId'),
     }
 
     try {
@@ -111,7 +153,7 @@ const InstalacionModal = ({
         const respuestaCrearInstalacion =
           await instalacionService.crearInstalacion(datosInstalacion)
         mostrarSnackbar('¡La instalación se creó correctamente!', 'success')
-        console.log('Respuesta de creación de instalación:',respuestaCrearInstalacion)
+        console.log('Respuesta de creación de instalación:', respuestaCrearInstalacion)
         console.log('Instalación creada exitosamente.')
       }
       cerrarModal()
@@ -134,6 +176,18 @@ const InstalacionModal = ({
     setCapacidadInstalacion('')
     setDescripcionInstalacion('')
     setImagenPrincipal('')
+    setMontoDeReserva('')
+    setCalle('')
+    setAltura('')
+    setProvincia('')
+    setNumeroDeTelefono('')
+    setMail('')
+    setBaños('')
+    setTerraza(false)
+    setJardin(false)
+    setEstacionamiento(false)
+    setAlojamiento(false)
+    setCocina(false)
   }
 
   const mostrarSnackbar = (mensaje, variant) => {
@@ -230,6 +284,126 @@ const InstalacionModal = ({
                 disabled={true}
                 style={{ marginBottom: '1rem' }}
               />
+              <TextField
+                id="montoDeReserva"
+                name="montoDeReserva"
+                label="Monto de Reserva"
+                variant="standard"
+                value={montoDeReserva}
+                onChange={(e) => setMontoDeReserva(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="calle"
+                name="calle"
+                label="Calle"
+                variant="standard"
+                value={calle}
+                onChange={(e) => setCalle(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="altura"
+                name="altura"
+                label="Altura"
+                variant="standard"
+                value={altura}
+                onChange={(e) => setAltura(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="provincia"
+                name="provincia"
+                label="Provincia"
+                variant="standard"
+                value={provincia}
+                onChange={(e) => setProvincia(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="numeroDeTelefono"
+                name="numeroDeTelefono"
+                label="Número de Teléfono"
+                variant="standard"
+                value={numeroDeTelefono}
+                onChange={(e) => setNumeroDeTelefono(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="mail"
+                name="mail"
+                label="Email"
+                variant="standard"
+                value={mail}
+                onChange={(e) => setMail(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <TextField
+                id="baños"
+                name="baños"
+                label="Cantidad de Baños"
+                variant="standard"
+                value={baños}
+                onChange={(e) => setBaños(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={terraza}
+                    onChange={(e) => setTerraza(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Terraza"
+                style={{ marginBottom: '1rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={jardin}
+                    onChange={(e) => setJardin(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Jardín"
+                style={{ marginBottom: '1rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={estacionamiento}
+                    onChange={(e) => setEstacionamiento(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Estacionamiento"
+                style={{ marginBottom: '1rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={alojamiento}
+                    onChange={(e) => setAlojamiento(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Alojamiento"
+                style={{ marginBottom: '1rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={cocina}
+                    onChange={(e) => setCocina(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Cocina"
+                style={{ marginBottom: '1rem' }}
+              />
+
+
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button variant="text" onClick={cerrarModal}>
                   Cancelar

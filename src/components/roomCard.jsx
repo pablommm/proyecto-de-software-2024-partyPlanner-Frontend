@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import { useState } from "react"
 
-const EventRoomCard = ({ room, onClickReservar, onClickDetalles }) => {
+const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context }) => {
     const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
     const [expanded, setExpanded] = useState(false)
 
@@ -11,11 +11,15 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles }) => {
         setExpanded(!expanded)
     }
 
-    const handleReservarClick = () => {
-        onClickReservar(room)
-    }
     const handleDetallesClick = () => {
         onClickDetalles(room)
+    }
+    const handleButtonClick = () => {
+        if (context === 'PrincipalView') {
+            onClickReservar(room)
+        } else {
+            onClickDetalles(room)
+        }
     }
     return (
         <Card sx={{
@@ -61,8 +65,8 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles }) => {
                 </CardContent>
             </CardActionArea>
             <CardActions style={{ justifyContent: 'center' }}>
-                <Button size="small" color="primary" style={{ justifyContent: 'center' }} onClick={handleReservarClick}>
-                    Reservar
+                <Button size="small" color="primary" style={{ justifyContent: 'center' }} onClick={handleButtonClick}>
+                    {context === 'PrincipalView' ? 'Reservar' : 'Editar Salón'}
                 </Button>
             </CardActions>
         </Card>
@@ -80,6 +84,7 @@ EventRoomCard.propTypes = {
     }).isRequired,
     onClickReservar: PropTypes.func.isRequired,
     onClickDetalles: PropTypes.func.isRequired,
+    context: PropTypes.string.isRequired,
 
 
 }
