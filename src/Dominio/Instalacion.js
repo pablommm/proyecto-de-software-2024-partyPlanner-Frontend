@@ -7,7 +7,7 @@ export class Instalaciones {
         this.capacidadInstalacion = 0
         this.localidadDeInstalacion = ""
         this.imagenPrincipal = ""
-        this.fechasReservadas = []
+        this.fechasReservadas = [] // no
         this.montoDeReserva = 0
         this.calle = ""
         this.altura = 0

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import { useState } from "react"
 
-const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context }) => {
+const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClickEditar }) => {
     const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
     const [expanded, setExpanded] = useState(false)
 
@@ -18,7 +18,7 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context }) => {
         if (context === 'PrincipalView') {
             onClickReservar(room)
         } else {
-            onClickDetalles(room)
+            onClickEditar(room)
         }
     }
     return (
@@ -85,6 +85,8 @@ EventRoomCard.propTypes = {
     onClickReservar: PropTypes.func.isRequired,
     onClickDetalles: PropTypes.func.isRequired,
     context: PropTypes.string.isRequired,
+    onClickEditar: PropTypes.func.isRequired,
+
 
 
 }

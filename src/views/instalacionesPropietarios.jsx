@@ -7,12 +7,15 @@ import { InputAdornment } from '@material-ui/core'
 import usuarioService from 'src/Services/usuario.service'
 import instalacionService from 'src/Services/instalacionService'
 import InstalacionModal from 'src/components/InstalacionModal'
+import DetallesInstalacion from 'src/components/DetallesInstalacion'
 
 const InstalacionesPropietario = () => {
-    const [openModal, setOpenModal] = useState(false)
+    const [openModalEditar, setOpenModalEditar] = useState(false)
     const [selectedRoom, setSelectedRoom] = useState(null)
     const [instalacionesProp, setInstalacionesProp] = useState([])
     const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('')
+    const [openModalDetalles, setOpenModalDetalles] = useState(false)
+
 
     const fetchInstalaciones = async () => {
         const usuarioId = localStorage.getItem('usuId')
@@ -35,13 +38,13 @@ const InstalacionesPropietario = () => {
         fetchInstalaciones()
     }, [])
 
-    const handleRoomClick = (room) => {
+    const handleRoomClickEditar = (room) => {
         setSelectedRoom(room)
-        setOpenModal(true)
+        setOpenModalEditar(true)
     }
 
-    const handleCloseModal = () => {
-        setOpenModal(false)
+    const handleCloseModalEditar = () => {
+        setOpenModalEditar(false)
     }
 
     const manejarCambioBúsqueda = (evento) => {
@@ -67,6 +70,14 @@ const InstalacionesPropietario = () => {
             busqueda()
         }
     }
+    const handleRoomClickDetalles = (room) => {
+        setSelectedRoom(room)
+        setOpenModalDetalles(true)
+    }
+    const handleCloseModalDetalles = () => {
+        setOpenModalDetalles(false)
+    }
+
 
     return (
         <Container className="main" style={{ marginBottom: '10rem' }}>
@@ -91,8 +102,8 @@ const InstalacionesPropietario = () => {
                         <Grid item key={index}>
                             <EventRoomCard
                                 room={instalacion}
-                                onClickDetalles={() => handleRoomClick(instalacion)}
-                                onClickReservar={() => handleRoomClick(instalacion)}
+                                onClickEditar={() => handleRoomClickEditar(instalacion)}
+                                onClickDetalles={() => handleRoomClickDetalles(instalacion)}
 
                             />
                         </Grid>
@@ -105,10 +116,17 @@ const InstalacionesPropietario = () => {
                 }
             </Grid>
             <InstalacionModal
-                openModal={openModal}
-                cerrarModal={handleCloseModal}
+                openModal={openModalEditar}
+                cerrarModal={handleCloseModalEditar}
                 instalacion={selectedRoom}
                 actualizarInstalacion={fetchInstalaciones}
+            />
+            <DetallesInstalacion
+                openModal={openModalDetalles}
+                cerrarModal={handleCloseModalDetalles}
+                instalacion={selectedRoom}
+
+
             />
         </Container>
     )
