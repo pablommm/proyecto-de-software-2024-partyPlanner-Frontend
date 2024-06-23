@@ -126,7 +126,7 @@ const AgregarInstalacion = ({ openModal, cerrarModal, actualizarInstalacion }) =
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography variant="h6" align="center" gutterBottom>
+                <Typography  variant="h6" align="center" gutterBottom  sx={{  color: '#000000' }}>
                     Crear Instalación
                 </Typography>
                 <form onSubmit={handleSubmit}>
