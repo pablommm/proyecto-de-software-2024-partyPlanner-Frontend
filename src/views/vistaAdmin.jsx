@@ -10,7 +10,6 @@ import instalacionService from 'src/Services/instalacionService'
 import InstalacionModal from 'src/components/InstalacionModal' // Ajusta la ruta según sea necesario
 import ModalRegistroUserAdminVIew from 'src/components/ModalRegistroUserAdminVIew'
 
-import AgregarInstalacion from 'src/components/modalNuevaInsta'
 
 export default function Dashboard() {
 
@@ -171,9 +170,9 @@ export default function Dashboard() {
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenModal} sx={{ marginTop: 2 }}>
                     Agregar Instalación
                 </Button>
-                {/*<InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} instalacion={selectedInstallation} actualizarInstalacion={fetchInstallations}
-                /> */}
-                <AgregarInstalacion openModal={openModal} cerrarModal={handleCloseModal} instalacion={selectedInstallation} actualizarInstalacion={fetchInstallations}></AgregarInstalacion>
+                <InstalacionModal openModal={openModal} cerrarModal={handleCloseModal} instalacion={selectedInstallation} actualizarInstalacion={fetchInstallations}
+                />
+                
             </Container>
         </div>
     )
