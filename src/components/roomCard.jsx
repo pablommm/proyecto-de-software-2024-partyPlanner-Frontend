@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import { useState } from "react"
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
 const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClickEditar }) => {
     const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
@@ -64,10 +65,27 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClic
 
                 </CardContent>
             </CardActionArea>
-            <CardActions style={{ justifyContent: 'center' }}>
-                <Button size="small" color="primary" style={{ justifyContent: 'center' }} onClick={handleButtonClick}>
+            <CardActions style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                <Button
+                    size="medium"
+                    color="primary"
+                    variant="contained"
+                    onClick={handleButtonClick}
+                    style={{ marginBottom: '8px', width: '200px' }} // Establecer un ancho fijo
+                >
                     {context === 'PrincipalView' ? 'Reservar' : 'Editar Salón'}
                 </Button>
+                {context === 'Propietario' &&
+                    <Button
+                        size="medium"
+                        variant="contained"
+                        onClick={handleButtonClick}
+                        startIcon={<CalendarTodayIcon />}
+                        style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', width: '200px' }} // Establecer el mismo ancho fijo
+                    >
+                        Bloquear Fecha
+                    </Button>
+                }
             </CardActions>
         </Card>
     )

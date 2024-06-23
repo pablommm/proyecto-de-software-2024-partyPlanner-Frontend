@@ -103,7 +103,7 @@ const PrincipalView = () => {
           ,
         }}
       />
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={3} justifyContent="center" marginTop="0.5rem">
         {user.rol === 'PROPIETARIO' &&
           <Grid item>
             <AddInstalacionCard onClick={handleAddInstalacionClick} />

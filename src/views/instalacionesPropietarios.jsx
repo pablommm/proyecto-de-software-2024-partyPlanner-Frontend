@@ -96,7 +96,7 @@ const InstalacionesPropietario = () => {
                         </InputAdornment>
                 }}
             />
-            <Grid container spacing={3} justifyContent="center">
+            <Grid container spacing={3} justifyContent="center" marginTop="0.5rem">
                 {instalacionesProp && instalacionesProp.length > 0 ?
                     instalacionesProp.map((instalacion, index) =>
                         <Grid item key={index}>
@@ -104,6 +104,7 @@ const InstalacionesPropietario = () => {
                                 room={instalacion}
                                 onClickEditar={() => handleRoomClickEditar(instalacion)}
                                 onClickDetalles={() => handleRoomClickDetalles(instalacion)}
+                                context={'Propietario'}
 
                             />
                         </Grid>

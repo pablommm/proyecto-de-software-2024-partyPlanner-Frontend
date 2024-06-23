@@ -46,7 +46,7 @@ const Eventos = () => {
 
     return (
         <Container className="main" style={{ marginBottom: "5rem" }}>
-            <Grid container spacing={2} justifyContent="center">
+            <Grid container spacing={2} justifyContent="center" marginTop="0.5rem">
                 {listaEventos && listaEventos.length > 0 ?
                     listaEventos.map((evento, index) =>
                         <Grid item key={index} xs={12} sm={6.5} md={5} lg={5}>
