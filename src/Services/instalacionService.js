@@ -45,7 +45,10 @@ class InstalacionService {
         return instalacionActualizada.data
 
     }
-
+    async crearMantenimiento(mantenimiento) {
+        const response = await axios.post('/CrearMantenimiento', mantenimiento)
+        console.log('Mantenimiento creado:', response.data)
+    }
 
 }
 

@@ -4,7 +4,7 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typo
 import { useState } from "react"
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
-const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClickEditar }) => {
+const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClickEditar, onClickFecha }) => {
     const { imagenPrincipal, nombreDeInstalacion, descripcionDeInstalacion, costoDeInstalacion, capacidadInstalacion, localidadDeInstalacion } = room
     const [expanded, setExpanded] = useState(false)
 
@@ -21,6 +21,10 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClic
         } else {
             onClickEditar(room)
         }
+    }
+
+    const handleButtonClickFecha = () => {
+        onClickFecha()
     }
     return (
         <Card sx={{
@@ -71,7 +75,7 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClic
                     color="primary"
                     variant="contained"
                     onClick={handleButtonClick}
-                    style={{ marginBottom: '8px', width: '200px' }} // Establecer un ancho fijo
+                    style={{ marginBottom: '8px', width: '200px' }}
                 >
                     {context === 'PrincipalView' ? 'Reservar' : 'Editar Salón'}
                 </Button>
@@ -79,9 +83,9 @@ const EventRoomCard = ({ room, onClickReservar, onClickDetalles, context, onClic
                     <Button
                         size="medium"
                         variant="contained"
-                        onClick={handleButtonClick}
+                        onClick={handleButtonClickFecha}
                         startIcon={<CalendarTodayIcon />}
-                        style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', width: '200px' }} // Establecer el mismo ancho fijo
+                        style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', width: '200px' }}
                     >
                         Bloquear Fecha
                     </Button>
@@ -104,7 +108,7 @@ EventRoomCard.propTypes = {
     onClickDetalles: PropTypes.func.isRequired,
     context: PropTypes.string.isRequired,
     onClickEditar: PropTypes.func.isRequired,
-
+    onClickFecha: PropTypes.func.isRequired,
 
 
 }

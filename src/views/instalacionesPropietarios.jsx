@@ -8,6 +8,7 @@ import usuarioService from 'src/Services/usuario.service'
 import instalacionService from 'src/Services/instalacionService'
 import InstalacionModal from 'src/components/InstalacionModal'
 import DetallesInstalacion from 'src/components/DetallesInstalacion'
+import ModalMantenimiento from 'src/components/BloquearFechaMantenimiento'
 
 const InstalacionesPropietario = () => {
     const [openModalEditar, setOpenModalEditar] = useState(false)
@@ -15,6 +16,8 @@ const InstalacionesPropietario = () => {
     const [instalacionesProp, setInstalacionesProp] = useState([])
     const [terminoDeBusqueda, setTerminoDeBusqueda] = useState('')
     const [openModalDetalles, setOpenModalDetalles] = useState(false)
+    const [openModalFecha, setOpenModalFecha] = useState(false)
+
 
 
     const fetchInstalaciones = async () => {
@@ -78,7 +81,13 @@ const InstalacionesPropietario = () => {
         setOpenModalDetalles(false)
     }
 
+    const handleRoomClickFecha = () => {
+        setOpenModalFecha(true)
+    }
 
+    const handleCloseModalFecha = () => {
+        setOpenModalFecha(false)
+    }
     return (
         <Container className="main" style={{ marginBottom: '10rem' }}>
             <TextField
@@ -104,6 +113,8 @@ const InstalacionesPropietario = () => {
                                 room={instalacion}
                                 onClickEditar={() => handleRoomClickEditar(instalacion)}
                                 onClickDetalles={() => handleRoomClickDetalles(instalacion)}
+                                onClickFecha={() => handleRoomClickFecha()}
+
                                 context={'Propietario'}
 
                             />
@@ -129,6 +140,15 @@ const InstalacionesPropietario = () => {
 
 
             />
+            <ModalMantenimiento
+                openModal={openModalFecha}
+                cerrarModal={handleCloseModalFecha}
+                instalacion={selectedRoom}
+
+
+
+            />
+
         </Container>
     )
 }
