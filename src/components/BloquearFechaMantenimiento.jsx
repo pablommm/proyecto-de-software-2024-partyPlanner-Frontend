@@ -66,10 +66,12 @@ const ModalMantenimiento = ({ openModal, cerrarModal, instalacion }) => {
             descripcion,
             fechaIni: startDate.toISOString(),
             fechaFin: endDate.toISOString(),
-            instalacionId: instalacion.id
+            instalacionId: instalacion.id,
+            //owner: 1
         }
 
         try {
+            console.log('entre al request de mantenimiento instalacion con ', mantenimiento)
             const respuestaCrearMantenimiento = await instalacionService.crearMantenimiento(mantenimiento)
             console.log('Respuesta de creación de evento:', respuestaCrearMantenimiento)
             mostrarSnackbar('¡La fecha se bloqueó correctamente!', 'success')

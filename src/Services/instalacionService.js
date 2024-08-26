@@ -46,6 +46,8 @@ class InstalacionService {
 
     }
     async crearMantenimiento(mantenimiento) {
+        console.log('Entre al service de instalacion con el ', mantenimiento)
+
         const response = await axios.post('/CrearMantenimiento', mantenimiento)
         console.log('Mantenimiento creado:', response.data)
     }
